@@ -1,7 +1,6 @@
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import Product from "./pages/Product";
-import ProtectedRoute from "./auth/ProtectedRoute";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Header from "./components/Header";
@@ -17,31 +16,10 @@ function App() {
         <Route path="/" element={<Landing />} />
 
         {/* Protected Routes */}
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/products" element={<ProductListing />} />
-        <Route
-          path="/product/:id"
-          element={
-            <ProtectedRoute>
-              <Product />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/product/:id" element={<Product />} />
       </Routes>
       <Footer />
     </Router>
