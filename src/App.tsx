@@ -7,6 +7,7 @@ import "./App.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Landing from "./pages/Landing";
+import ProductListing from "./pages/Products";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/products" element={<ProductListing />} />
         <Route
           path="/product/:id"
           element={
