@@ -7,11 +7,14 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Landing from "./pages/Landing";
 import ProductListing from "./pages/Products";
+import BrandDetail from "./pages/BrandDetail";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
     <Router>
       <Header />
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Landing />} />
 
@@ -20,6 +23,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/products" element={<ProductListing />} />
         <Route path="/product/:id" element={<Product />} />
+        <Route path="/brand/:id" element={<BrandDetail />} />
       </Routes>
       <Footer />
     </Router>
