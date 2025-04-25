@@ -1,16 +1,19 @@
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import Product from "./pages/Product";
-import Login from "./pages/Login";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import Landing from "./pages/Landing";
 
 function App() {
   return (
     <Router>
+      <Header />
       <Routes>
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Landing />} />
 
         {/* Protected Routes */}
         <Route
@@ -38,6 +41,7 @@ function App() {
           }
         />
       </Routes>
+      <Footer />
     </Router>
   );
 }
