@@ -9,6 +9,7 @@ import Landing from "./pages/Landing";
 import ProductListing from "./pages/Products";
 import BrandDetail from "./pages/BrandDetail";
 import ScrollToTop from "./components/ScrollToTop";
+import GreenGame from "./components/GreenGame";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/products" element={<ProductListing />} />
         <Route path="/product/:id" element={<Product />} />
         <Route path="/brand/:id" element={<BrandDetail />} />
+        <Route path="/green-game" element={<GreenGame />} />
       </Routes>
       <Footer />
     </Router>
