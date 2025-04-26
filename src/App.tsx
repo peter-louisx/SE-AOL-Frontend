@@ -11,6 +11,15 @@ import BrandDetail from "./pages/BrandDetail";
 import ScrollToTop from "./components/ScrollToTop";
 import GreenGame from "./components/GreenGame";
 
+// seller's
+import Layout from './components/seller/Layout';
+import SDashboard from './pages/seller/Dashboard';
+import SProducts from './pages/seller/Products';
+import SOrders from './pages/seller/Orders';
+import SAddProduct from './pages/seller/AddProduct';
+import { AppProvider } from './context/AppContext';
+
+// buyer
 function App() {
   return (
     <Router>
@@ -26,10 +35,29 @@ function App() {
         <Route path="/product/:id" element={<Product />} />
         <Route path="/brand/:id" element={<BrandDetail />} />
         <Route path="/green-game" element={<GreenGame />} />
+        
       </Routes>
       <Footer />
     </Router>
   );
 }
+
+// seller
+// function App() {
+//   return (
+//     <AppProvider>
+//       <Router>
+//         <Routes>
+//           <Route path="/" element={<Layout />}>
+//             <Route index element={<SDashboard />} />
+//             <Route path="products" element={<SProducts />} />
+//             <Route path="products/add" element={<SAddProduct />} />
+//             <Route path="orders" element={<SOrders />} />
+//           </Route>
+//         </Routes>
+//       </Router>
+//     </AppProvider>
+//   );
+// }
 
 export default App;
