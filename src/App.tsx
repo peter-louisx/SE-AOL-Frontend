@@ -19,6 +19,10 @@ import SOrders from './pages/seller/Orders';
 import SAddProduct from './pages/seller/AddProduct';
 import { AppProvider } from './context/AppContext';
 
+// Blog
+import Blog from "./pages/Blog";
+import BlogDetail from './pages/BlogDetail';
+
 // buyer
 function App() {
   return (
@@ -57,6 +61,21 @@ function App() {
 //         </Routes>
 //       </Router>
 //     </AppProvider>
+//   );
+// }
+
+// Blog
+// function App() {
+//   return (
+//     <Router>
+//       <Header />
+//       <Routes>
+//       <Route path="/" element={<Landing />} />
+//         <Route path="/blog" element={<Blog />} />
+//         <Route path="/blog/:id" element={<BlogDetail />} />
+//       </Routes>
+//       <Footer />
+//     </Router>
 //   );
 // }
 

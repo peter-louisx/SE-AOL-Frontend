@@ -26,4 +26,6 @@ main {
   text-align: left;
 } */
 
-
+.prose p {
+  text-align: left;
+}
