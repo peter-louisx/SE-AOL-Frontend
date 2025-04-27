@@ -16,7 +16,7 @@ import Layout from './components/seller/Layout';
 import SDashboard from './pages/seller/Dashboard';
 import SProducts from './pages/seller/Products';
 import SOrders from './pages/seller/Orders';
-import SAddProduct from './pages/seller/AddProduct';
+import SOrderDetail from './pages/seller/OrderDetail';
 import { AppProvider } from './context/AppContext';
 
 // Blog
@@ -55,8 +55,8 @@ function App() {
 //           <Route path="/" element={<Layout />}>
 //             <Route index element={<SDashboard />} />
 //             <Route path="products" element={<SProducts />} />
-//             <Route path="products/add" element={<SAddProduct />} />
 //             <Route path="orders" element={<SOrders />} />
+//             <Route path="orders/:id" element={<SOrderDetail />} />
 //           </Route>
 //         </Routes>
 //       </Router>

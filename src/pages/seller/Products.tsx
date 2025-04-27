@@ -63,7 +63,7 @@ const SProducts: React.FC = () => {
   };
 
   const handleAddProduct = (productData: Omit<Product, 'id'>) => {
-    addProduct(productData);
+    addProduct({ ...productData, id: crypto.randomUUID() });
   };
 
   const SortableHeader: React.FC<{

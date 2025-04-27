@@ -1,11 +1,11 @@
-import { Product, Order, SalesData } from '../types';
+import { Product, Order, SalesData, TrackingEvent } from '../types';
 
 export const mockProducts: Product[] = [
   {
     id: '1',
     name: 'Recycled Cotton Tote Bag',
     description: 'Handcrafted tote bag made from 100% recycled cotton.',
-    price: 593835, // 35.99 * 16500
+    price: 593835, 
     stock: 45,
     image: 'https://images.pexels.com/photos/5650026/pexels-photo-5650026.jpeg',
     status: 'active',
@@ -17,7 +17,7 @@ export const mockProducts: Product[] = [
     id: '2',
     name: 'Bamboo Utensil Set',
     description: 'Reusable bamboo utensil set with carrying case.',
-    price: 412335, // 24.99 * 16500
+    price: 412335,
     stock: 78,
     image: 'https://images.pexels.com/photos/6249501/pexels-photo-6249501.jpeg',
     status: 'active',
@@ -29,7 +29,7 @@ export const mockProducts: Product[] = [
     id: '3',
     name: 'Upcycled Denim Jacket',
     description: 'Unique jacket made from upcycled denim materials.',
-    price: 1484835, // 89.99 * 16500
+    price: 1484835, 
     stock: 12,
     image: 'https://images.pexels.com/photos/6626903/pexels-photo-6626903.jpeg',
     status: 'active',
@@ -41,7 +41,7 @@ export const mockProducts: Product[] = [
     id: '4',
     name: 'Solar-Powered Phone Charger',
     description: 'Portable solar panel for charging devices on the go.',
-    price: 989835, // 59.99 * 16500
+    price: 989835, 
     stock: 23,
     image: 'https://images.pexels.com/photos/6636336/pexels-photo-6636336.jpeg',
     status: 'active',
@@ -53,7 +53,7 @@ export const mockProducts: Product[] = [
     id: '5',
     name: 'Compostable Phone Case',
     description: 'Biodegradable phone case made from plant-based materials.',
-    price: 494835, // 29.99 * 16500
+    price: 494835,
     stock: 56,
     image: 'https://images.pexels.com/photos/6714941/pexels-photo-6714941.jpeg',
     status: 'active',
@@ -63,93 +63,138 @@ export const mockProducts: Product[] = [
   },
 ];
 
+const mockTrackingEvents: TrackingEvent[] = [
+  {
+    status: 'Order Picked Up',
+    location: 'Jakarta Warehouse',
+    timestamp: new Date('2024-04-12T10:00:00'),
+    description: 'Package has been picked up by courier',
+  },
+  {
+    status: 'In Transit',
+    location: 'Jakarta Sorting Center',
+    timestamp: new Date('2024-04-15T14:30:00'),
+    description: 'Package is being processed at sorting facility',
+  },
+  {
+    status: 'Out for Delivery',
+    location: 'Bandung Local Hub',
+    timestamp: new Date('2024-04-20T08:00:00'),
+    description: 'Package is out for delivery',
+  },
+];
+
 export const mockOrders: Order[] = [
   {
-    id: 'ORD-001',
+    id: 'ORD-23022025-12345789',
     customerId: 'CUST-1',
-    customerName: 'Emma Johnson',
+    customerName: 'Filbert Naldo Wijaya',
     products: [
       {
         id: 'ITEM-1',
         productId: '1',
-        name: 'Recycled Cotton Tote Bag',
-        price: 593835, // 35.99 * 16500
+        name: 'Coconut Bowl and Spoon',
+        price: 100000,
         quantity: 2,
-      },
+      }
+    ],
+    status: 'new',
+    totalAmount: 100000,
+    createdAt: new Date('2024-04-23'),
+    responseDeadline: new Date('2024-04-30T23:59:00'),
+    shippingAddress: {
+      street: 'Jl. Merdeka No. 123',
+      city: 'Jakarta',
+      state: 'DKI Jakarta',
+      zipCode: '12345',
+      country: 'Indonesia',
+    }
+  },
+  {
+    id: 'ORD-23022025-12345790',
+    customerId: 'CUST-2',
+    customerName: 'Bernard Santosa',
+    products: [
       {
         id: 'ITEM-2',
         productId: '2',
-        name: 'Bamboo Utensil Set',
-        price: 412335, // 24.99 * 16500
-        quantity: 1,
-      },
+        name: 'Coconut Bowl and Spoon',
+        price: 100000,
+        quantity: 2,
+      }
     ],
-    status: 'delivered',
-    totalAmount: 1601005, // (593835 * 2) + 412335
-    createdAt: new Date('2024-04-10'),
+    status: 'in_progress',
+    totalAmount: 100000,
+    createdAt: new Date('2024-04-19'),
+    responseDeadline: new Date('2024-04-26T23:59:00'),
+    shippingDeadline: new Date('2024-05-03T23:59:00'),
     shippingAddress: {
-      street: '123 Green St',
-      city: 'Portland',
-      state: 'OR',
-      zipCode: '97201',
-      country: 'USA',
-    },
+      street: 'Jl. Sendirian No. 11',
+      city: 'Jakarta',
+      state: 'DKI Jakarta',
+      zipCode: '12345',
+      country: 'Indonesia',
+    }
   },
   {
-    id: 'ORD-002',
-    customerId: 'CUST-2',
-    customerName: 'Michael Chen',
+    id: 'ORD-23022025-12345791',
+    customerId: 'CUST-3',
+    customerName: 'Peter',
     products: [
       {
         id: 'ITEM-3',
         productId: '3',
-        name: 'Upcycled Denim Jacket',
-        price: 1484835, // 89.99 * 16500
-        quantity: 1,
-      },
+        name: 'Coconut Bowl and Spoon',
+        price: 100000,
+        quantity: 2,
+      }
     ],
-    status: 'processing',
-    totalAmount: 1484835, // 1484835
-    createdAt: new Date('2024-04-15'),
+    status: 'shipped',
+    totalAmount: 100000,
+    createdAt: new Date('2024-04-01'),
+    responseDeadline: new Date('2024-04-08T23:59:00'),
+    shippingDeadline: new Date('2024-04-15T23:59:00'),
+    estimatedArrival: new Date('2024-04-28T23:59:00'),
+    receiptNumber: 'TRK987654321',
+    trackingHistory: mockTrackingEvents,
     shippingAddress: {
-      street: '456 Eco Ave',
-      city: 'Austin',
-      state: 'TX',
-      zipCode: '78701',
-      country: 'USA',
-    },
+      street: 'Jl. Menyala No. 99',
+      city: 'Jakarta',
+      state: 'DKI Jakarta',
+      zipCode: '12345',
+      country: 'Indonesia',
+    }
   },
   {
-    id: 'ORD-003',
-    customerId: 'CUST-3',
-    customerName: 'Sophia Rodriguez',
+    id: 'ORD-23022025-12345792',
+    customerId: 'CUST-4',
+    customerName: 'Jason Oakley',
     products: [
       {
         id: 'ITEM-4',
         productId: '4',
-        name: 'Solar-Powered Phone Charger',
-        price: 989835, // 59.99 * 16500
-        quantity: 1,
-      },
-      {
-        id: 'ITEM-5',
-        productId: '5',
-        name: 'Compostable Phone Case',
-        price: 494835, // 29.99 * 16500
-        quantity: 1,
-      },
+        name: 'Coconut Bowl and Spoon',
+        price: 100000,
+        quantity: 2,
+      }
     ],
-    status: 'pending',
-    totalAmount: 1484670, // 989835 + 494835
-    createdAt: new Date('2024-04-18'),
+    status: 'completed',
+    totalAmount: 100000,
+    createdAt: new Date('2024-04-01'),
+    responseDeadline: new Date('2024-04-08T23:59:00'),
+    shippingDeadline: new Date('2024-04-15T23:59:00'),
+    estimatedArrival: new Date('2024-04-24T23:59:00'),
+    actualArrival: new Date('2024-04-22T14:30:00'),
+    receiptNumber: 'TRK987654321',
+    trackingHistory: mockTrackingEvents,
     shippingAddress: {
-      street: '789 Sustainable Blvd',
-      city: 'Seattle',
-      state: 'WA',
-      zipCode: '98101',
-      country: 'USA',
-    },
-  },
+      street: 'Jl. Bersama No. 45',
+      city: 'Jakarta',
+      state: 'DKI Jakarta',
+      zipCode: '12345',
+      country: 'Indonesia',
+    }
+  }
 ];
 
 export const mockSalesData: SalesData[] = [

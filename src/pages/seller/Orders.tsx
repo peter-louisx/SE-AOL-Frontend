@@ -1,150 +1,298 @@
 import React, { useState } from 'react';
 import { useAppContext } from '../../context/AppContext';
-import { Search, PackageCheck, Clock, Truck, CheckCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Clock, FileText, Truck, CheckCircle, Search, Eye, FileCheck } from 'lucide-react';
+import { format } from 'date-fns';
+import OrderInvoice from '../../components/seller/OrderInvoice';
+import OrderTrackingModal from '../../components/seller/OrderTrackingModal';
+import SendOrderModal from '../../components/seller/SendOrderModal';
+import { Order } from '../../types';
 
 const SOrders: React.FC = () => {
-  const { orders, updateOrderStatus } = useAppContext();
+  const {
+    orders,
+    acceptOrder,
+    sendOrder,
+    completeOrder,
+  } = useAppContext();
+
+  const [activeTab, setActiveTab] = useState<'new' | 'in_progress' | 'shipped' | 'completed'>('new');
   const [searchTerm, setSearchTerm] = useState('');
-  const [filterStatus, setFilterStatus] = useState('all');
-  
+  const [showTrackingModal, setShowTrackingModal] = useState(false);
+  const [showSendModal, setShowSendModal] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState<string | null>(null);
+
   const filteredOrders = orders.filter(order => {
-    const matchesSearch = 
-      order.id.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    const matchesSearch =
+      order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
       order.customerName.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    const matchesStatus = filterStatus === 'all' || order.status === filterStatus;
-    
+    const matchesStatus = order.status === activeTab;
     return matchesSearch && matchesStatus;
   });
-  
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'pending':
-        return <Clock size={16} className="text-yellow-500 mr-1" />;
-      case 'processing':
-        return <PackageCheck size={16} className="text-blue-500 mr-1" />;
-      case 'shipped':
-        return <Truck size={16} className="text-indigo-500 mr-1" />;
-      case 'delivered':
-        return <CheckCircle size={16} className="text-green-500 mr-1" />;
-      default:
-        return null;
-    }
+
+  const handleTrack = (orderId: string) => {
+    setSelectedOrder(orderId);
+    setShowTrackingModal(true);
   };
-  
-  const getStatusClass = (status: string) => {
-    switch (status) {
-      case 'pending':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'processing':
-        return 'bg-blue-100 text-blue-800';
-      case 'shipped':
-        return 'bg-indigo-100 text-indigo-800';
-      case 'delivered':
-        return 'bg-green-100 text-green-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
+
+  const handleSend = (orderId: string) => {
+    console.log("Opening SendOrderModal for order:", orderId); // Debug log
+    setSelectedOrder(orderId);
+    setShowSendModal(true);
   };
-  
-  const handleStatusChange = (id: string, status: string) => {
-    updateOrderStatus(id, status);
+
+  const handleSendConfirm = (orderId: string, receiptNumber: string) => {
+    sendOrder(orderId, receiptNumber);
+    setShowSendModal(false);
   };
-  
+
+  const renderOrderCard = (order: Order) => (
+    <div
+      key={order.id}
+      className="bg-white rounded-lg shadow p-6 mb-4"
+    >
+      <div className="flex justify-between items-start mb-4">
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${
+              order.status === 'new' ? 'bg-blue-100 text-blue-800' :
+              order.status === 'in_progress' ? 'bg-yellow-100 text-yellow-800' :
+              order.status === 'shipped' ? 'bg-purple-100 text-purple-800' :
+              'bg-green-100 text-green-800'
+            }`}>
+              {order.status === 'new' ? 'New' :
+               order.status === 'in_progress' ? 'In Progress' :
+               order.status === 'shipped' ? 'Shipped' :
+               'Completed'}
+            </span>
+            <span className="text-sm text-gray-600">{order.id}</span>
+          </div>
+          <h3 className="font-medium">{order.customerName}</h3>
+        </div>
+
+        {(order.status === 'new' || order.status === 'in_progress') && (
+          <div className="flex items-center text-yellow-600">
+            <Clock size={16} className="mr-1" />
+            <span className="text-sm">
+              {order.status === 'new' 
+                ? `Response by: ${format(new Date(order.responseDeadline), "dd MMM, HH:mm")}`
+                : `Ship by: ${format(new Date(order.shippingDeadline!), "dd MMM, HH:mm")}`
+              }
+            </span>
+          </div>
+        )}
+
+        {order.status === 'shipped' && order.estimatedArrival && (
+          <div className="flex items-center text-purple-600">
+            <Truck size={16} className="mr-1" />
+            <span className="text-sm">
+              Estimated: {format(new Date(order.estimatedArrival), "dd MMM, HH:mm")}
+            </span>
+          </div>
+        )}
+
+        {order.status === 'completed' && order.actualArrival && (
+          <div className="flex items-center text-green-600">
+            <CheckCircle size={16} className="mr-1" />
+            <span className="text-sm">
+              Delivered: {format(new Date(order.actualArrival), "dd MMM, HH:mm")}
+            </span>
+          </div>
+        )}
+      </div>
+
+      <div className="text-sm text-gray-600 mb-6">
+        <p>Order Date: {format(new Date(order.createdAt), "dd MMM yyyy")}</p>
+        <p>Total: {new Intl.NumberFormat('id-ID', {
+          style: 'currency',
+          currency: 'IDR',
+        }).format(order.totalAmount)}</p>
+        <p>Items: {order.products.map(p => `${p.quantity}x ${p.name}`).join(', ')}</p>
+        {order.receiptNumber && (
+          <p>Receipt Number: {order.receiptNumber}</p>
+        )}
+      </div>
+
+      <div className="flex justify-end gap-2">
+        {order.status === 'new' && (
+          <>
+            <Link
+              to={`/orders/${order.id}`}
+              className="flex items-center gap-1 text-[#3B5249] hover:text-[#2A3C33] px-3 py-1"
+            >
+              <Eye size={18} />
+              <span>View Detail</span>
+            </Link>
+            <button
+              onClick={() => acceptOrder(order.id)}
+              className="bg-[#40513B] cursor-pointer text-white px-4 py-2 rounded hover:bg-[#2A3C33] transition-colors"
+            >
+              Accept
+            </button>
+          </>
+        )}
+
+        {order.status === 'in_progress' && (
+          <>
+            <Link
+              to={`/orders/${order.id}`}
+              className="flex items-center gap-1 text-[#40513B] hover:text-[#2A3C33] px-3 py-1"
+            >
+              <Eye size={18} />
+              <span>View Detail</span>
+            </Link>
+            <button
+              onClick={() => {}}
+              className="flex items-center gap-1 text-[#40513B] hover:text-[#2A3C33] px-3 py-1"
+            >
+              <FileText size={18} />
+              <OrderInvoice order={order} />
+            </button>
+            <button
+              onClick={() => handleSend(order.id)}
+              className="bg-[#40513B] text-white px-4 py-1 rounded hover:bg-[#2A3C33] transition-colors"
+            >
+              Send
+            </button>
+          </>
+        )}
+
+        {order.status === 'shipped' && (
+          <>
+            <Link
+              to={`/orders/${order.id}`}
+              className="flex items-center gap-1 text-[#40513B] hover:text-[#2A3C33] px-3 py-1"
+            >
+              <Eye size={18} />
+              <span>View Detail</span>
+            </Link>
+            <button
+              onClick={() => {}}
+              className="flex items-center gap-1 text-[#40513B] hover:text-[#2A3C33] px-3 py-1"
+            >
+              <FileText size={18} />
+              <OrderInvoice order={order} />
+            </button>
+            <button
+              onClick={() => handleTrack(order.id)}
+              className="flex items-center gap-1 text-[#40513B] hover:text-[#2A3C33] px-3 py-1"
+            >
+              <Truck size={18} />
+              <span>Track</span>
+            </button>
+            <button
+              onClick={() => completeOrder(order.id)}
+              className="bg-[#40513B] text-white px-4 py-1 rounded hover:bg-[#2A3C33] transition-colors"
+            >
+              Mark as Delivered
+            </button>
+          </>
+        )}
+
+        {order.status === 'completed' && (
+          <Link
+            to={`/orders/${order.id}`}
+            className="flex items-center gap-1 text-[#40513B] hover:text-[#2A3C33] px-3 py-1"
+          >
+            <Eye size={18} />
+            <span>View Detail</span>
+          </Link>
+        )}
+      </div>
+    </div>
+  );
+
   return (
     <div className="max-w-6xl mx-auto">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-        <h1 className="text-2xl font-bold text-gray-800">Orders</h1>
+        <h1 className="text-2xl font-bold text-gray-800">My Orders</h1>
         
-        <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
-          <div className="relative flex-grow">
-            <input
-              type="text"
-              placeholder="Search orders..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#3B5249] focus:border-transparent"
-            />
-            <Search className="absolute left-3 top-2.5 text-gray-400" size={18} />
-          </div>
-          
-          <select
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-            className="bg-white border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3B5249] focus:border-transparent appearance-none cursor-pointer pr-8 relative"
-          >
-            <option value="all">All Status</option>
-            <option value="pending">Pending</option>
-            <option value="processing">Processing</option>
-            <option value="shipped">Shipped</option>
-            <option value="delivered">Delivered</option>
-          </select>
+        <div className="relative w-full md:w-64">
+          <input
+            type="text"
+            placeholder="Search orders..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#3B5249] focus:border-transparent"
+          />
+          <Search className="absolute left-3 top-2.5 text-gray-400" size={18} />
         </div>
       </div>
-      
-      {filteredOrders.length === 0 ? (
-        <div className="text-center py-12 bg-white rounded-lg shadow">
-          <p className="text-gray-500">No orders found.</p>
+
+      <div className="mb-6">
+        <div className="flex space-x-2">
+          <button
+            onClick={() => setActiveTab('new')}
+            className={`px-4 py-2 rounded-lg cursor-pointer ${
+              activeTab === 'new'
+                ? 'bg-[#40513B] text-white'
+                : 'bg-white text-gray-600 hover:bg-gray-50'
+            }`}
+          >
+            New
+          </button>
+          <button
+            onClick={() => setActiveTab('in_progress')}
+            className={`px-4 py-2 rounded-lg cursor-pointer ${
+              activeTab === 'in_progress'
+                ? 'bg-[#40513B] text-white'
+                : 'bg-white text-gray-600 hover:bg-gray-50'
+            }`}
+          >
+            In Progress
+          </button>
+          <button
+            onClick={() => setActiveTab('shipped')}
+            className={`px-4 py-2 rounded-lg cursor-pointer ${
+              activeTab === 'shipped'
+                ? 'bg-[#40513B] text-white'
+                : 'bg-white text-gray-600 hover:bg-gray-50'
+            }`}
+          >
+            Shipped
+          </button>
+          <button
+            onClick={() => setActiveTab('completed')}
+            className={`px-4 py-2 rounded-lg cursor-pointer ${
+              activeTab === 'completed'
+                ? 'bg-[#40513B] text-white'
+                : 'bg-white text-gray-600 hover:bg-gray-50'
+            }`}
+          >
+            Completed
+          </button>
         </div>
-      ) : (
-        <div className="bg-white rounded-lg shadow overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-50 border-b">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Items</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {filteredOrders.map((order) => (
-                  <tr key={order.id} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {order.id}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {order.customerName}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {new Date(order.createdAt).toLocaleDateString()}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {order.products.length}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
-                      Rp{order.totalAmount.toLocaleString('id-ID')}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusClass(order.status)}`}>
-                        {getStatusIcon(order.status)}
-                        {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <div className="relative inline-block text-left">
-                        <select 
-                          value={order.status}
-                          onChange={(e) => handleStatusChange(order.id, e.target.value)}
-                          className="bg-white border border-gray-300 text-sm rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-[#3B5249]"
-                        >
-                          <option value="pending">Pending</option>
-                          <option value="processing">Processing</option>
-                          <option value="shipped">Shipped</option>
-                          <option value="delivered">Delivered</option>
-                        </select>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+      </div>
+
+      <div className="space-y-4">
+        {filteredOrders.length === 0 ? (
+          <div className="text-center py-12 bg-white rounded-lg shadow">
+            <p className="text-gray-500">No orders found in this category.</p>
           </div>
-        </div>
+        ) : (
+          filteredOrders.map(order => renderOrderCard(order))
+        )}
+      </div>
+
+      {showTrackingModal && selectedOrder && (
+        <OrderTrackingModal
+          trackingEvents={orders.find(o => o.id === selectedOrder)?.trackingHistory || []}
+          onClose={() => {
+            setShowTrackingModal(false);
+            setSelectedOrder(null);
+          }}
+        />
+      )}
+
+      {showSendModal && selectedOrder && (
+        <SendOrderModal
+          orderId={selectedOrder}
+          onClose={() => {
+            setShowSendModal(false);
+            setSelectedOrder(null);
+          }}
+          onSend={handleSendConfirm}
+        />
       )}
     </div>
   );

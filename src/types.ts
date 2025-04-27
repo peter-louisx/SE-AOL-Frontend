@@ -16,12 +16,25 @@ export interface Product {
     customerId: string;
     customerName: string;
     products: OrderProduct[];
-    status: string;
+    status: 'new' | 'in_progress' | 'shipped' | 'completed' | 'cancelled';
     totalAmount: number;
     createdAt: Date;
+    responseDeadline: Date;
+    shippingDeadline?: Date;
+    estimatedArrival?: Date;
+    actualArrival?: Date;
     shippingAddress: Address;
+    receiptNumber?: string;
+    trackingHistory?: TrackingEvent[];
   }
   
+  export interface TrackingEvent {
+    status: string;
+    location: string;
+    timestamp: Date;
+    description: string;
+  }
+
   export interface OrderProduct {
     id: string;
     productId: string;
