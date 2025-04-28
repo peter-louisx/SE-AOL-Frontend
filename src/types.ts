@@ -67,3 +67,15 @@ export interface Product {
     "Cruelty-Free",
     "Zero Waste Packaging"
   ];
+
+  export interface SellerProfile {
+    id: string;
+    name: string;
+    email: string;
+    phone: string;
+    address: string;
+    bankAccount: string;
+    bankName: string;
+    image: string;
+    balance: number;
+  }

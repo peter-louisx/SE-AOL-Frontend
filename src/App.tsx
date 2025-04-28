@@ -17,6 +17,8 @@ import SDashboard from './pages/seller/Dashboard';
 import SProducts from './pages/seller/Products';
 import SOrders from './pages/seller/Orders';
 import SOrderDetail from './pages/seller/OrderDetail';
+import SAccount from './pages/seller/Account';
+import SWithdrawal from './pages/seller/Withdrawal'
 import { AppProvider } from './context/AppContext';
 
 // Blog
@@ -57,6 +59,8 @@ function App() {
             <Route path="products" element={<SProducts />} />
             <Route path="orders" element={<SOrders />} />
             <Route path="orders/:id" element={<SOrderDetail />} />
+            <Route path="account" element={<SAccount />} />
+            <Route path="withdrawal" element={<SWithdrawal />} />
           </Route>
         </Routes>
       </Router>

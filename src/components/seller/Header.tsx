@@ -1,8 +1,11 @@
 import React from 'react';
 import { Menu, Store } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { useAppContext } from '../../context/AppContext';
 
 const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const { sellerProfile } = useAppContext();
 
   return (
     <header className="bg-white border-b border-gray-200 shadow-sm">
@@ -16,35 +19,37 @@ const Header: React.FC = () => {
           </button>
         </div>
         
-        <div className="ml-auto flex items-center">
-          <div className="flex items-center bg-gray-100 rounded py-4 px-6">
-            <Store size={18} className="text-[#3B5249] mr-2" />
-            <span className="text-sm font-medium">Gacor Store</span>
-          </div>
+        <div className="ml-auto">
+          <Link to="/account">
+            <div className="flex items-center bg-gray-100 rounded-full py-4 px-6 hover:bg-gray-200 transition-colors">
+              <Store size={18} className="text-[#3B5249] mr-2" />
+              <span className="text-sm font-medium">{sellerProfile.name}</span>
+            </div>
+          </Link>
         </div>
       </div>
       
       {isMobileMenuOpen && (
         <div className="md:hidden bg-[#3B5249] text-white">
           <div className="px-2 pt-2 pb-3 space-y-1">
-            <a
-              href="/"
+            <Link
+              to="/"
               className="block px-3 py-2 rounded-md text-base font-medium hover:bg-[#2A3C33]"
             >
               Dashboard
-            </a>
-            <a
-              href="/products"
+            </Link>
+            <Link
+              to="/products"
               className="block px-3 py-2 rounded-md text-base font-medium hover:bg-[#2A3C33]"
             >
               Products
-            </a>
-            <a
-              href="/orders"
+            </Link>
+            <Link
+              to="/orders"
               className="block px-3 py-2 rounded-md text-base font-medium hover:bg-[#2A3C33]"
             >
               Orders
-            </a>
+            </Link>
           </div>
         </div>
       )}

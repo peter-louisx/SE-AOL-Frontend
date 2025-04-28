@@ -1,11 +1,12 @@
 import React, { createContext, useContext, ReactNode, useState, useEffect } from 'react';
-import { Product, Order } from '../types';
+import { Product, Order, SellerProfile } from '../types';
 import { mockProducts, mockOrders } from '../data/mockData';
 import { addMinutes } from 'date-fns';
 
 interface AppContextType {
   products: Product[];
   orders: Order[];
+  sellerProfile: SellerProfile;
   addProduct: (product: Product) => void;
   updateProduct: (product: Product) => void;
   deleteProduct: (id: string) => void;
@@ -15,6 +16,8 @@ interface AppContextType {
   sendOrder: (orderId: string, receiptNumber: string) => void;
   completeOrder: (orderId: string) => void;
   cancelOrder: (orderId: string) => void;
+  updateSellerProfile: (profile: SellerProfile) => void;
+  withdrawFunds: (amount: number) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -31,9 +34,22 @@ interface AppProviderProps {
   children: ReactNode;
 }
 
+const mockSellerProfile: SellerProfile = {
+  id: '1',
+  name: 'Gacor Shop',
+  email: 'viscabarca@gmail.com',
+  phone: '+62 123 456 789',
+  address: 'Jalan Kemang Atas Yang Penting Berdua, RT.001/RW.001, Kecamatan Lucu, Kota Malang, Argentina 12345',
+  bankAccount: '8575123456',
+  bankName: 'BCA',
+  image: 'https://images.pexels.com/photos/1435752/pexels-photo-1435752.jpeg',
+  balance: 42995878,
+};
+
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [products, setProducts] = useState<Product[]>(mockProducts);
   const [orders, setOrders] = useState<Order[]>(mockOrders);
+  const [sellerProfile, setSellerProfile] = useState<SellerProfile>(mockSellerProfile);
 
   // Auto-cancel orders that exceed response deadline
   // useEffect(() => {
@@ -133,9 +149,23 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     updateOrderStatus(orderId, 'cancelled');
   };
 
+  const updateSellerProfile = (profile: SellerProfile) => {
+    setSellerProfile(profile);
+  };
+
+  const withdrawFunds = (amount: number) => {
+    if (amount <= sellerProfile.balance) {
+      setSellerProfile(prev => ({
+        ...prev,
+        balance: prev.balance - amount
+      }));
+    }
+  };
+
   const value = {
     products,
     orders,
+    sellerProfile,
     addProduct,
     updateProduct,
     deleteProduct,
@@ -145,6 +175,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     sendOrder,
     completeOrder,
     cancelOrder,
+    updateSellerProfile,
+    withdrawFunds
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

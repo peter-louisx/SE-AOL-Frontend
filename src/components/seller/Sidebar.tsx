@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Recycle, Package, ShoppingBag, LayoutDashboard } from 'lucide-react';
+import { Recycle, Package, ShoppingBag, LayoutDashboard, User, Wallet } from 'lucide-react';
 
 const Sidebar: React.FC = () => {
   return (
@@ -45,6 +45,32 @@ const Sidebar: React.FC = () => {
         >
           <ShoppingBag className="mr-3" size={20} />
           Orders
+        </NavLink>
+
+        <div className="border-t border-[#2A3C33] my-4"></div>
+
+        <NavLink
+          to="/account"
+          className={({ isActive }) =>
+            `flex items-center px-6 py-3 text-lg transition-colors ${
+              isActive ? 'bg-[#2A3C33] border-l-4 border-green-300' : 'hover:bg-[#2A3C33]'
+            }`
+          }
+        >
+          <User className="mr-3" size={20} />
+          My Account
+        </NavLink>
+
+        <NavLink
+          to="/withdrawal"
+          className={({ isActive }) =>
+            `flex items-center px-6 py-3 text-lg transition-colors ${
+              isActive ? 'bg-[#2A3C33] border-l-4 border-green-300' : 'hover:bg-[#2A3C33]'
+            }`
+          }
+        >
+          <Wallet className="mr-3" size={20} />
+          Withdrawal
         </NavLink>
       </nav>
       
