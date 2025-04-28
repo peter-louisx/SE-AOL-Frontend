@@ -13,7 +13,7 @@ const OrderTrackingModal: React.FC<OrderTrackingModalProps> = ({
   onClose,
 }) => {
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl m-4">
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
@@ -33,7 +33,7 @@ const OrderTrackingModal: React.FC<OrderTrackingModalProps> = ({
                 className={`flex items-start ${
                   index !== trackingEvents.length - 1
                     ? 'border-l-2 border-green-500 pb-6 ml-[11px]'
-                    : ''
+                    : 'ml-[11px]'
                 }`}
               >
                 <div
@@ -48,14 +48,15 @@ const OrderTrackingModal: React.FC<OrderTrackingModalProps> = ({
                 <div className="ml-4">
                   <div className="flex items-center mb-1">
                     <span className="font-medium text-gray-900">{event.status}</span>
-                    <span className="mx-2">•</span>
+                  </div>
+                  <div className="flex items-center text-sm text-gray-500 mb-1">
                     <Clock className="w-4 h-4 text-gray-400 mr-1" />
                     <span className="text-sm text-gray-500">
                       {format(new Date(event.timestamp), 'PPp')}
                     </span>
                   </div>
                   <div className="flex items-center text-sm text-gray-500">
-                    <MapPin className="w-4 h-4 mr-1" />
+                    <MapPin className="w-4 h-4 mr-1 text-gray-400" />
                     {event.location}
                   </div>
                   <p className="mt-1 text-sm text-gray-600">{event.description}</p>

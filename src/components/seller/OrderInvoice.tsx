@@ -2,10 +2,12 @@ import React from 'react';
 import { Page, Text, View, Document, StyleSheet, PDFDownloadLink } from '@react-pdf/renderer';
 import { Order } from '../../types';
 import { format } from 'date-fns';
+import { Printer } from 'lucide-react';
 
 const styles = StyleSheet.create({
   page: {
     padding: 30,
+    fontSize: 12
   },
   header: {
     marginBottom: 20,
@@ -26,30 +28,82 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginBottom: 8,
   },
+  orderSummary: {
+    marginBottom: 40,
+  },
+  summaryTitle: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginBottom: 12,
+    color: '#333',
+  },
   table: {
-    width: 'auto',
-    marginBottom: 20,
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: '#000',
+    width: '100%',
+  },
+  tableHeader: {
+    flexDirection: 'row',
+    backgroundColor: '#f4f4f4',
+    padding: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+    marginBottom: 8,
   },
   tableRow: {
     flexDirection: 'row',
+    padding: 8,
     borderBottomWidth: 1,
-    borderBottomColor: '#000',
+    borderBottomColor: '#eee',
   },
-  tableHeader: {
-    backgroundColor: '#f0f0f0',
-    padding: 5,
+  columnItem: {
+    flex: 3,
   },
-  tableCell: {
-    padding: 5,
+  columnQuantity: {
+    flex: 1,
+    textAlign: 'center',
   },
-  total: {
-    marginTop: 20,
+  columnPrice: {
+    flex: 2,
     textAlign: 'right',
+  },
+  columnAmount: {
+    flex: 2,
+    textAlign: 'right',
+  },
+  totals: {
+    marginTop: 20,
+    borderTopWidth: 1,
+    borderTopColor: '#eee',
+    paddingTop: 12,
+  },
+  totalRow: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginBottom: 8,
+  },
+  totalLabel: {
+    width: 100,
+    textAlign: 'right',
+    marginRight: 20,
+  },
+  totalValue: {
+    width: 100,
+    textAlign: 'right',
+  },
+  footer: {
+    position: 'absolute',
+    bottom: 40,
+    left: 40,
+    right: 40,
+    textAlign: 'center',
+    color: '#666',
+  },
+  thankYou: {
+    marginBottom: 8,
     fontSize: 14,
-    fontWeight: 'bold',
+    color: '#666',
+  },
+  copyright: {
+    fontSize: 10,
   },
 });
 
@@ -81,42 +135,52 @@ const OrderInvoice: React.FC<OrderInvoiceProps> = ({ order }) => {
           </Text>
         </View>
 
-        <View style={styles.table}>
-          <View style={[styles.tableRow, styles.tableHeader]}>
-            <Text style={{ flex: 2 }}>Product</Text>
-            <Text style={{ flex: 1 }}>Quantity</Text>
-            <Text style={{ flex: 1 }}>Price</Text>
-            <Text style={{ flex: 1 }}>Total</Text>
+        <View style={styles.orderSummary}>
+          <Text style={styles.summaryTitle}>Order Summary</Text>
+          <View style={styles.table}>
+            <View style={styles.tableHeader}>
+              <Text style={styles.columnItem}>ITEM</Text>
+              <Text style={styles.columnQuantity}>QUANTITY</Text>
+              <Text style={styles.columnPrice}>UNIT PRICE</Text>
+              <Text style={styles.columnAmount}>AMOUNT</Text>
+            </View>
+            {order.products.map((product, index) => (
+              <View key={index} style={styles.tableRow}>
+                <Text style={styles.columnItem}>{product.name}</Text>
+                <Text style={styles.columnQuantity}>{product.quantity}</Text>
+                <Text style={styles.columnPrice}>
+                  Rp{product.price.toLocaleString('id-ID')}
+                </Text>
+                <Text style={styles.columnAmount}>
+                  Rp{(product.price * product.quantity).toLocaleString('id-ID')}
+                </Text>
+              </View>
+            ))}
           </View>
 
-          {order.products.map((product, index) => (
-            <View key={index} style={styles.tableRow}>
-              <Text style={[styles.tableCell, { flex: 2 }]}>{product.name}</Text>
-              <Text style={[styles.tableCell, { flex: 1 }]}>{product.quantity}</Text>
-              <Text style={[styles.tableCell, { flex: 1 }]}>
-                {new Intl.NumberFormat('id-ID', {
-                  style: 'currency',
-                  currency: 'IDR',
-                }).format(product.price)}
-              </Text>
-              <Text style={[styles.tableCell, { flex: 1 }]}>
-                {new Intl.NumberFormat('id-ID', {
-                  style: 'currency',
-                  currency: 'IDR',
-                }).format(product.price * product.quantity)}
+          <View style={styles.totals}>
+            <View style={styles.totalRow}>
+              <Text style={styles.totalLabel}>Subtotal:</Text>
+              <Text style={styles.totalValue}>
+                Rp{order.totalAmount.toLocaleString('id-ID')}
               </Text>
             </View>
-          ))}
+            <View style={styles.totalRow}>
+              <Text style={styles.totalLabel}>Shipping:</Text>
+              <Text style={styles.totalValue}>Rp0</Text>
+            </View>
+            <View style={styles.totalRow}>
+              <Text style={[styles.totalLabel, { fontWeight: 'bold' }]}>Total:</Text>
+              <Text style={[styles.totalValue, { fontWeight: 'bold' }]}>
+                Rp{order.totalAmount.toLocaleString('id-ID')}
+              </Text>
+            </View>
+          </View>
         </View>
 
-        <View style={styles.total}>
-          <Text>
-            Total:{' '}
-            {new Intl.NumberFormat('id-ID', {
-              style: 'currency',
-              currency: 'IDR',
-            }).format(order.totalAmount)}
-          </Text>
+        <View style={styles.footer}>
+          <Text style={styles.thankYou}>Thank you for supporting sustainable products!</Text>
+          <Text style={styles.copyright}>© 2025 Trashure. All Rights Reserved.</Text>
         </View>
       </Page>
     </Document>
@@ -129,7 +193,12 @@ const OrderInvoice: React.FC<OrderInvoiceProps> = ({ order }) => {
       className="inline-flex items-center px-3 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
     >
       {({ loading }) =>
-        loading ? 'Generating invoice...' : 'Download Invoice'
+        loading ? ('Generating invoice...') : (
+          <span className="flex items-center gap-2">
+            <Printer size={20} className="text-gray-700" />
+            Download Invoice
+          </span>
+        )
       }
     </PDFDownloadLink>
   );

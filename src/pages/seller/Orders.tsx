@@ -31,14 +31,13 @@ const SOrders: React.FC = () => {
   });
 
   const handleTrack = (orderId: string) => {
-    setSelectedOrder(orderId);
     setShowTrackingModal(true);
+    setSelectedOrder(orderId);
   };
 
   const handleSend = (orderId: string) => {
-    console.log("Opening SendOrderModal for order:", orderId); // Debug log
-    setSelectedOrder(orderId);
     setShowSendModal(true);
+    setSelectedOrder(orderId);
   };
 
   const handleSendConfirm = (orderId: string, receiptNumber: string) => {
@@ -141,16 +140,12 @@ const SOrders: React.FC = () => {
               <Eye size={18} />
               <span>View Detail</span>
             </Link>
-            <button
-              onClick={() => {}}
-              className="flex items-center gap-1 text-[#40513B] hover:text-[#2A3C33] px-3 py-1"
-            >
-              <FileText size={18} />
+            <div className="flex items-center gap-1 text-[#3B5249] hover:text-[#2A3C33] px-3 py-1 cursor-pointer">
               <OrderInvoice order={order} />
-            </button>
+            </div>
             <button
               onClick={() => handleSend(order.id)}
-              className="bg-[#40513B] text-white px-4 py-1 rounded hover:bg-[#2A3C33] transition-colors"
+              className="bg-[#40513B] text-white px-4 py-1 rounded hover:bg-[#2A3C33] transition-colors cursor-pointer"
             >
               Send
             </button>
@@ -167,22 +162,15 @@ const SOrders: React.FC = () => {
               <span>View Detail</span>
             </Link>
             <button
-              onClick={() => {}}
-              className="flex items-center gap-1 text-[#40513B] hover:text-[#2A3C33] px-3 py-1"
-            >
-              <FileText size={18} />
-              <OrderInvoice order={order} />
-            </button>
-            <button
               onClick={() => handleTrack(order.id)}
-              className="flex items-center gap-1 text-[#40513B] hover:text-[#2A3C33] px-3 py-1"
+              className="flex items-center gap-1 text-[#40513B] hover:text-[#2A3C33] px-3 py-1 cursor-pointer"
             >
               <Truck size={18} />
               <span>Track</span>
             </button>
             <button
               onClick={() => completeOrder(order.id)}
-              className="bg-[#40513B] text-white px-4 py-1 rounded hover:bg-[#2A3C33] transition-colors"
+              className="bg-[#40513B] text-white px-4 py-1 rounded hover:bg-[#2A3C33] transition-colors cursor-pointer"
             >
               Mark as Delivered
             </button>

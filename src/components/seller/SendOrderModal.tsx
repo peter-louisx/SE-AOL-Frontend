@@ -12,7 +12,6 @@ const SendOrderModal: React.FC<SendOrderModalProps> = ({
   onClose,
   onSend,
 }) => {
-  console.log("SendOrderModal rendered with orderId:", orderId); // Debug log
   const [receiptNumber, setReceiptNumber] = useState('');
   const [error, setError] = useState('');
 
@@ -22,13 +21,8 @@ const SendOrderModal: React.FC<SendOrderModalProps> = ({
       setError('Receipt number is required');
       return;
     }
-    try {
-      onSend(orderId, receiptNumber); // Call the parent function
-      onClose(); // Close the modal
-    } catch (err) {
-      console.error('Error sending order:', err);
-      setError('Failed to send order. Please try again.');
-    }
+    onSend(orderId, receiptNumber);
+    onClose();
   };
 
   return (
