@@ -21,7 +21,7 @@ const Header: React.FC = () => {
         
         <div className="ml-auto">
           <Link to="/account">
-            <div className="flex items-center bg-gray-100 rounded-full py-4 px-6 hover:bg-gray-200 transition-colors">
+            <div className="flex items-center bg-gray-100 rounded py-4 px-6 hover:bg-gray-200 transition-colors">
               <Store size={18} className="text-[#3B5249] mr-2" />
               <span className="text-sm font-medium">{sellerProfile.name}</span>
             </div>

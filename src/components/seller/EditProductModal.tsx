@@ -235,7 +235,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
               </button>
               <button
                 type="submit"
-                className="bg-[#40513B] hover:bg-[#609966] cursor-pointer text-white px-6 py-2 rounded-lg transition-colors"
+                className="bg-[#609966] hover:bg-[#40513B] cursor-pointer text-white px-6 py-2 rounded-lg transition-colors"
               >
                 Save Changes
               </button>

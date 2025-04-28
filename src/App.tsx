@@ -26,47 +26,47 @@ import Blog from "./pages/Blog";
 import BlogDetail from './pages/BlogDetail';
 
 // buyer
-// function App() {
-//   return (
-//     <Router>
-//       <Header />
-//       <ScrollToTop />
-//       <Routes>
-//         <Route path="/" element={<Landing />} />
-
-//         {/* Protected Routes */}
-//         <Route path="/dashboard" element={<Dashboard />} />
-//         <Route path="/profile" element={<Profile />} />
-//         <Route path="/products" element={<ProductListing />} />
-//         <Route path="/product/:id" element={<Product />} />
-//         <Route path="/brand/:id" element={<BrandDetail />} />
-//         <Route path="/green-game" element={<GreenGame />} />
-        
-//       </Routes>
-//       <Footer />
-//     </Router>
-//   );
-// }
-
-// seller
 function App() {
   return (
-    <AppProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<SDashboard />} />
-            <Route path="products" element={<SProducts />} />
-            <Route path="orders" element={<SOrders />} />
-            <Route path="orders/:id" element={<SOrderDetail />} />
-            <Route path="account" element={<SAccount />} />
-            <Route path="withdrawal" element={<SWithdrawal />} />
-          </Route>
-        </Routes>
-      </Router>
-    </AppProvider>
+    <Router>
+      <Header />
+      <ScrollToTop />
+      <Routes>
+        <Route path="/" element={<Landing />} />
+
+        {/* Protected Routes */}
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/products" element={<ProductListing />} />
+        <Route path="/product/:id" element={<Product />} />
+        <Route path="/brand/:id" element={<BrandDetail />} />
+        <Route path="/green-game" element={<GreenGame />} />
+        
+      </Routes>
+      <Footer />
+    </Router>
   );
 }
+
+// seller
+// function App() {
+//   return (
+//     <AppProvider>
+//       <Router>
+//         <Routes>
+//           <Route path="/" element={<Layout />}>
+//             <Route index element={<SDashboard />} />
+//             <Route path="products" element={<SProducts />} />
+//             <Route path="orders" element={<SOrders />} />
+//             <Route path="orders/:id" element={<SOrderDetail />} />
+//             <Route path="account" element={<SAccount />} />
+//             <Route path="withdrawal" element={<SWithdrawal />} />
+//           </Route>
+//         </Routes>
+//       </Router>
+//     </AppProvider>
+//   );
+// }
 
 // Blog
 // function App() {

@@ -107,7 +107,7 @@ const SProducts: React.FC = () => {
 
           <button
             onClick={() => setIsAddModalOpen(true)}
-            className="cursor-pointer flex items-center justify-center gap-2 bg-[#40513B] hover:bg-[#609966] text-white px-4 py-2 rounded-lg transition-colors"
+            className="cursor-pointer flex items-center justify-center gap-2 bg-[#609966] hover:bg-[#40513B] text-white px-4 py-2 rounded-lg transition-colors"
           >
             <Plus size={18} />
             <span>Add Product</span>

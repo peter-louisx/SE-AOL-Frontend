@@ -124,7 +124,7 @@ const SOrders: React.FC = () => {
             </Link>
             <button
               onClick={() => acceptOrder(order.id)}
-              className="bg-[#40513B] cursor-pointer text-white px-4 py-2 rounded hover:bg-[#2A3C33] transition-colors"
+              className="bg-[#609966] cursor-pointer text-white px-4 py-2 rounded hover:bg-[#40513B] transition-colors"
             >
               Accept
             </button>
@@ -135,7 +135,7 @@ const SOrders: React.FC = () => {
           <>
             <Link
               to={`/orders/${order.id}`}
-              className="flex items-center gap-1 text-[#40513B] hover:text-[#2A3C33] px-3 py-1"
+              className="flex items-center gap-1 text-[#3B5249] hover:text-[#2A3C33] px-3 py-1"
             >
               <Eye size={18} />
               <span>View Detail</span>
@@ -145,7 +145,7 @@ const SOrders: React.FC = () => {
             </div>
             <button
               onClick={() => handleSend(order.id)}
-              className="bg-[#40513B] text-white px-4 py-1 rounded hover:bg-[#2A3C33] transition-colors cursor-pointer"
+              className="bg-[#609966] text-white px-4 py-1 rounded hover:bg-[#40513B] transition-colors cursor-pointer"
             >
               Send
             </button>
@@ -156,21 +156,21 @@ const SOrders: React.FC = () => {
           <>
             <Link
               to={`/orders/${order.id}`}
-              className="flex items-center gap-1 text-[#40513B] hover:text-[#2A3C33] px-3 py-1"
+              className="flex items-center gap-1 text-[#3B5249] hover:text-[#2A3C33] px-3 py-1"
             >
               <Eye size={18} />
               <span>View Detail</span>
             </Link>
             <button
               onClick={() => handleTrack(order.id)}
-              className="flex items-center gap-1 text-[#40513B] hover:text-[#2A3C33] px-3 py-1 cursor-pointer"
+              className="flex items-center gap-1 text-[#3B5249] hover:text-[#2A3C33] px-3 py-1 cursor-pointer"
             >
               <Truck size={18} />
               <span>Track</span>
             </button>
             <button
               onClick={() => completeOrder(order.id)}
-              className="bg-[#40513B] text-white px-4 py-1 rounded hover:bg-[#2A3C33] transition-colors cursor-pointer"
+              className="bg-[#609966] text-white px-4 py-1 rounded hover:bg-[#40513B] transition-colors cursor-pointer"
             >
               Mark as Delivered
             </button>
@@ -213,7 +213,7 @@ const SOrders: React.FC = () => {
             onClick={() => setActiveTab('new')}
             className={`px-4 py-2 rounded-lg cursor-pointer ${
               activeTab === 'new'
-                ? 'bg-[#40513B] text-white'
+                ? 'bg-[#609966] text-white'
                 : 'bg-white text-gray-600 hover:bg-gray-50'
             }`}
           >
@@ -223,7 +223,7 @@ const SOrders: React.FC = () => {
             onClick={() => setActiveTab('in_progress')}
             className={`px-4 py-2 rounded-lg cursor-pointer ${
               activeTab === 'in_progress'
-                ? 'bg-[#40513B] text-white'
+                ? 'bg-[#609966] text-white'
                 : 'bg-white text-gray-600 hover:bg-gray-50'
             }`}
           >
@@ -233,7 +233,7 @@ const SOrders: React.FC = () => {
             onClick={() => setActiveTab('shipped')}
             className={`px-4 py-2 rounded-lg cursor-pointer ${
               activeTab === 'shipped'
-                ? 'bg-[#40513B] text-white'
+                ? 'bg-[#609966] text-white'
                 : 'bg-white text-gray-600 hover:bg-gray-50'
             }`}
           >
@@ -243,7 +243,7 @@ const SOrders: React.FC = () => {
             onClick={() => setActiveTab('completed')}
             className={`px-4 py-2 rounded-lg cursor-pointer ${
               activeTab === 'completed'
-                ? 'bg-[#40513B] text-white'
+                ? 'bg-[#609966] text-white'
                 : 'bg-white text-gray-600 hover:bg-gray-50'
             }`}
           >
