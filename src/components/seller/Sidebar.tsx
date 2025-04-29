@@ -1,6 +1,13 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { Recycle, Package, ShoppingBag, LayoutDashboard, User, Wallet } from 'lucide-react';
+import React from "react";
+import { NavLink } from "react-router-dom";
+import {
+  Recycle,
+  Package,
+  ShoppingBag,
+  LayoutDashboard,
+  User,
+  Wallet,
+} from "lucide-react";
 
 const Sidebar: React.FC = () => {
   return (
@@ -9,37 +16,43 @@ const Sidebar: React.FC = () => {
         <Recycle size={28} className="text-green-300" />
         <span className="text-xl font-bold tracking-wider">TRASHURE</span>
       </div>
-      
+
       <nav className="flex-1 pt-8">
         <NavLink
-          to="/"
+          to="/seller/dashboard"
           className={({ isActive }) =>
             `flex items-center px-6 py-3 text-lg transition-colors ${
-              isActive ? 'bg-[#609966] border-l-4 border-[#EDF1D6]' : 'hover:bg-[#609966]'
+              isActive
+                ? "bg-[#609966] border-l-4 border-[#EDF1D6]"
+                : "hover:bg-[#609966]"
             }`
           }
         >
           <LayoutDashboard className="mr-3" size={20} />
           Dashboard
         </NavLink>
-        
+
         <NavLink
-          to="/products"
+          to="/seller/products"
           className={({ isActive }) =>
             `flex items-center px-6 py-3 text-lg transition-colors ${
-              isActive ? 'bg-[#609966] border-l-4 border-[#EDF1D6]' : 'hover:bg-[#609966]'
+              isActive
+                ? "bg-[#609966] border-l-4 border-[#EDF1D6]"
+                : "hover:bg-[#609966]"
             }`
           }
         >
           <Package className="mr-3" size={20} />
           Products
         </NavLink>
-        
+
         <NavLink
-          to="/orders"
+          to="/seller/orders"
           className={({ isActive }) =>
             `flex items-center px-6 py-3 text-lg transition-colors ${
-              isActive ? 'bg-[#609966] border-l-4 border-[#EDF1D6]' : 'hover:bg-[#609966]'
+              isActive
+                ? "bg-[#609966] border-l-4 border-[#EDF1D6]"
+                : "hover:bg-[#609966]"
             }`
           }
         >
@@ -50,10 +63,12 @@ const Sidebar: React.FC = () => {
         <div className="border-t border-[#2A3C33] my-4"></div>
 
         <NavLink
-          to="/account"
+          to="/seller/account"
           className={({ isActive }) =>
             `flex items-center px-6 py-3 text-lg transition-colors ${
-              isActive ? 'bg-[#2A3C33] border-l-4 border-green-300' : 'hover:bg-[#2A3C33]'
+              isActive
+                ? "bg-[#2A3C33] border-l-4 border-green-300"
+                : "hover:bg-[#2A3C33]"
             }`
           }
         >
@@ -62,10 +77,12 @@ const Sidebar: React.FC = () => {
         </NavLink>
 
         <NavLink
-          to="/withdrawal"
+          to="/seller/withdrawal"
           className={({ isActive }) =>
             `flex items-center px-6 py-3 text-lg transition-colors ${
-              isActive ? 'bg-[#2A3C33] border-l-4 border-green-300' : 'hover:bg-[#2A3C33]'
+              isActive
+                ? "bg-[#2A3C33] border-l-4 border-green-300"
+                : "hover:bg-[#2A3C33]"
             }`
           }
         >
@@ -73,14 +90,15 @@ const Sidebar: React.FC = () => {
           Withdrawal
         </NavLink>
       </nav>
-      
+
       <div className="p-4 mt-auto">
         <div className="flex items-center gap-2">
           <Recycle size={24} className="text-green-300" />
           <span className="text-lg font-semibold">Trashure</span>
         </div>
         <p className="text-xs mt-2 text-gray-300">
-          A sustainable e-commerce platform connecting eco-conscious buyers with high-quality, upcycled, and ethically sourced products.
+          A sustainable e-commerce platform connecting eco-conscious buyers with
+          high-quality, upcycled, and ethically sourced products.
         </p>
       </div>
     </aside>

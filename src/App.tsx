@@ -43,7 +43,7 @@ function App() {
         </Route>
 
         <Route path="/seller" element={<SellerLayout />}>
-          <Route path="/seller" element={<SDashboard />} />
+          <Route path="/seller/dashboard" element={<SDashboard />} />
           <Route path="/seller/products" element={<SProducts />} />
           <Route path="/seller/orders" element={<SOrders />} />
           <Route path="/seller/orders/:id" element={<SOrderDetail />} />

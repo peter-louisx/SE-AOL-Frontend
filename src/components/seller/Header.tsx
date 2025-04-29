@@ -1,7 +1,7 @@
-import React from 'react';
-import { Menu, Store } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { useAppContext } from '../../context/AppContext';
+import React from "react";
+import { Menu, Store } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useAppContext } from "../../context/AppContext";
 
 const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
@@ -18,9 +18,9 @@ const Header: React.FC = () => {
             <Menu size={24} />
           </button>
         </div>
-        
+
         <div className="ml-auto">
-          <Link to="/account">
+          <Link to="/seller/account">
             <div className="flex items-center bg-gray-100 rounded py-4 px-6 hover:bg-gray-200 transition-colors">
               <Store size={18} className="text-[#3B5249] mr-2" />
               <span className="text-sm font-medium">{sellerProfile.name}</span>
@@ -28,24 +28,24 @@ const Header: React.FC = () => {
           </Link>
         </div>
       </div>
-      
+
       {isMobileMenuOpen && (
         <div className="md:hidden bg-[#3B5249] text-white">
           <div className="px-2 pt-2 pb-3 space-y-1">
             <Link
-              to="/"
+              to="/seller/dashboard"
               className="block px-3 py-2 rounded-md text-base font-medium hover:bg-[#2A3C33]"
             >
               Dashboard
             </Link>
             <Link
-              to="/products"
+              to="/seller/products"
               className="block px-3 py-2 rounded-md text-base font-medium hover:bg-[#2A3C33]"
             >
               Products
             </Link>
             <Link
-              to="/orders"
+              to="/seller/orders"
               className="block px-3 py-2 rounded-md text-base font-medium hover:bg-[#2A3C33]"
             >
               Orders
