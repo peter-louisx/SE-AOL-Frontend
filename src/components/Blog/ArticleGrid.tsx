@@ -39,7 +39,7 @@ const ArticleGrid: React.FC<ArticleGridProps> = ({ articles, categories }) => {
                 onClick={() => setSelectedCategory(category.id)}
                 className={`px-4 py-2 rounded-full text-sm transition-colors ${
                   selectedCategory === category.id
-                    ? 'bg-green-700 text-white'
+                    ? 'bg-[#609966] text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
