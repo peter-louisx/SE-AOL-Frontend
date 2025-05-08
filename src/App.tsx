@@ -9,6 +9,7 @@ import BrandDetail from "./pages/BrandDetail";
 import ScrollToTop from "./components/ScrollToTop";
 import GreenGame from "./components/GreenGame";
 import BuyerLayout from "./components/BuyerLayout";
+import About from "./pages/About"
 
 // seller's
 import SellerLayout from "./components/seller/Layout";
@@ -30,17 +31,18 @@ function App() {
     <Router>
       <ScrollToTop />
       <Routes>
-        <Route element={<BuyerLayout />}>
-          <Route path="/" element={<Landing />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/products" element={<ProductListing />} />
-          <Route path="/product/:id" element={<Product />} />
-          <Route path="/brand/:id" element={<BrandDetail />} />
-          <Route path="/green-game" element={<GreenGame />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:id" element={<BlogDetail />} />
-        </Route>
+      <Route element={<BuyerLayout />}>
+            <Route path="/" element={<Landing />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/products" element={<ProductListing />} />
+            <Route path="/product/:id" element={<Product />} />
+            <Route path="/brand/:id" element={<BrandDetail />} />
+            <Route path="/green-game" element={<GreenGame />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:id" element={<BlogDetail />} />
+            <Route path="/about" element={<About />} />
+          </Route>
 
         <Route path="/seller" element={<SellerLayout />}>
           <Route path="/seller/dashboard" element={<SDashboard />} />
@@ -55,7 +57,7 @@ function App() {
   );
 }
 
-// seller
+{/* // seller
 // function App() {
 //   return (
 //     <AppProvider>
@@ -73,6 +75,6 @@ function App() {
 //       </Router>
 //     </AppProvider>
 //   );
-// }
+// } */}
 
 export default App;

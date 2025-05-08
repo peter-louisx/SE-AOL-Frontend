@@ -147,7 +147,7 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="/about"
                   className="text-sm hover:text-green-200 transition-colors"
                 >
                   Sustainability
