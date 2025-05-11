@@ -10,7 +10,7 @@ export default function About() {
       >
         <div className="absolute inset-0 bg-opacity-40">
           <div className="max-w-4xl mx-auto h-full flex items-center px-4">
-            <div className="text-white">
+            <div className="text-left drop-shadow" style={{ color: "#EDF1D6" }}>
               <h1 className="text-5xl font-bold mb-4">ABOUT TRASHURE</h1>
               <p className="text-2xl font-light">
                 One Purpose. One Dream.<br />

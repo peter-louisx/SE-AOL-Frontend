@@ -10,6 +10,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import GreenGame from "./components/GreenGame";
 import BuyerLayout from "./components/BuyerLayout";
 import About from "./pages/About"
+import Contact from "./pages/Contact"
 
 // seller's
 import SellerLayout from "./components/seller/Layout";
@@ -42,6 +43,7 @@ function App() {
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:id" element={<BlogDetail />} />
             <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
           </Route>
 
         <Route path="/seller" element={<SellerLayout />}>
