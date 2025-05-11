@@ -139,7 +139,7 @@ const Footer: React.FC = () => {
             <ul className="space-y-2">
               <li>
                 <a
-                  href="#"
+                  href="/about"
                   className="text-sm hover:text-green-200 transition-colors"
                 >
                   Our Story
@@ -147,7 +147,7 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <a
-                  href="/about"
+                  href="#"
                   className="text-sm hover:text-green-200 transition-colors"
                 >
                   Sustainability

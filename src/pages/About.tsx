@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function About() {
   return (
     <div className="min-h-screen bg-gray-50">
@@ -10,7 +8,7 @@ export default function About() {
           backgroundImage: 'url("https://images.pexels.com/photos/6963098/pexels-photo-6963098.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")'
         }}
       >
-        <div className="absolute inset-0 bg-black bg-opacity-40">
+        <div className="absolute inset-0 bg-opacity-40">
           <div className="max-w-4xl mx-auto h-full flex items-center px-4">
             <div className="text-white">
               <h1 className="text-5xl font-bold mb-4">ABOUT TRASHURE</h1>
@@ -43,7 +41,7 @@ export default function About() {
       {/* Why Choose Section */}
       <div className="bg-[#f4f6e8] py-16">
         <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">WHY CHOOSE TRASHURE?</h2>
+          <h2 className="text-3xl font-bold text-center mb-12 text-gray-700">WHY CHOOSE TRASHURE?</h2>
           
           <div className="grid md:grid-cols-3 gap-8">
             <div className="bg-white rounded-lg overflow-hidden shadow-md">
@@ -53,7 +51,7 @@ export default function About() {
                 className="w-full h-48 object-cover"
               />
               <div className="p-6 text-center">
-                <h3 className="text-xl font-semibold mb-2">SUSTAINABLE SHOPPING</h3>
+                <h3 className="text-xl font-semibold mb-2 text-gray-700">SUSTAINABLE SHOPPING</h3>
                 <p className="text-gray-600">Every purchase contributes to reducing waste and promoting sustainability.</p>
               </div>
             </div>
@@ -65,7 +63,7 @@ export default function About() {
                 className="w-full h-48 object-cover"
               />
               <div className="p-6 text-center">
-                <h3 className="text-xl font-semibold mb-2">HANDCRAFTED & UNIQUE</h3>
+                <h3 className="text-xl font-semibold mb-2 text-gray-700">HANDCRAFTED & UNIQUE</h3>
                 <p className="text-gray-600">Each item is carefully crafted with attention to detail and quality.</p>
               </div>
             </div>
@@ -77,7 +75,7 @@ export default function About() {
                 className="w-full h-48 object-cover"
               />
               <div className="p-6 text-center">
-                <h3 className="text-xl font-semibold mb-2">SUPPORTING GREEN BUSINESSES</h3>
+                <h3 className="text-xl font-semibold mb-2 text-gray-700">SUPPORTING GREEN BUSINESSES</h3>
                 <p className="text-gray-600">We partner with eco-conscious artisans and sustainable businesses.</p>
               </div>
             </div>
