@@ -1,12 +1,14 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { articles, trendingArticles } from '../data/articles';
 import Header from '../components/Blog/Header';
 import Footer from '../components/Blog/Footer';
 import TrendingArticles from '../components/Blog/TrendingArticles';
+import { ArrowLeft } from 'lucide-react';
 
 const BlogDetail: React.FC = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
     const article = articles.find(a => a.id === Number(id));
   
     if (!article) {
@@ -17,6 +19,14 @@ const BlogDetail: React.FC = () => {
       <div className="min-h-screen bg-gray-50 flex flex-col">
         {/* <Header /> */}
         <main className="flex-grow container mx-auto px-4 py-8">
+        <button
+          onClick={() => navigate('/Blog')}
+          className="cursor-pointer flex items-center text-green-700 hover:text-green-800 transition-colors mb-6 group"
+          >
+          <ArrowLeft className="w-5 h-5 mr-2 transform group-hover:-translate-x-1 transition-transform" />
+          Back to Blog
+        </button>
+          
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <article className="lg:col-span-2">
               <img

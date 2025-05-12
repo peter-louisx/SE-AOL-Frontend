@@ -243,4 +243,20 @@ export const trendingArticles: TrendingArticle[] = [
     title: 'Make your own natural cleaning products',
     imageUrl: 'https://images.pexels.com/photos/4239037/pexels-photo-4239037.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
   },
+  {
+    id: 5,
+    title: 'Upcycled art projects for kids',
+    imageUrl: 'https://images.pexels.com/photos/5087991/pexels-photo-5087991.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  },
+  {
+    id: 6,
+    title: 'Guide to starting a community garden',
+    imageUrl: 'https://images.pexels.com/photos/4505169/pexels-photo-4505169.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  },
+  {
+    id: 7,
+    title: 'Turn old clothes into reusable bags',
+    imageUrl: 'https://images.pexels.com/photos/6195328/pexels-photo-6195328.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  },
 ];
+
