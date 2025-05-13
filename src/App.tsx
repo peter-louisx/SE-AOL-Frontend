@@ -12,6 +12,7 @@ import BuyerLayout from "./components/BuyerLayout";
 import About from "./pages/About"
 import Contact from "./pages/Contact"
 import Login from "./pages/Login"
+import Register from "./pages/Register";
 
 // seller's
 import SellerLayout from "./components/seller/Layout";
@@ -46,6 +47,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
           </Route>
 
         <Route path="/seller" element={<SellerLayout />}>
