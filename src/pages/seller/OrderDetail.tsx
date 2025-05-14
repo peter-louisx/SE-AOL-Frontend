@@ -16,7 +16,7 @@ const SOrderDetail: React.FC = () => {
         <div className="text-center py-12">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Order not found</h2>
           <Link
-            to="/orders"
+            to="/seller/orders"
             className="text-[#3B5249] hover:text-[#2A3C33] flex items-center justify-center gap-2"
           >
             <ArrowLeft size={20} />
@@ -31,7 +31,7 @@ const SOrderDetail: React.FC = () => {
     <div className="max-w-6xl mx-auto">
       <div className="mb-6 flex items-center gap-4">
         <Link
-          to="/orders"
+          to="/seller/orders"
           className="text-[#3B5249] hover:text-[#2A3C33]"
         >
           <ArrowLeft size={24} />

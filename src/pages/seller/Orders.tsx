@@ -116,7 +116,7 @@ const SOrders: React.FC = () => {
         {order.status === 'new' && (
           <>
             <Link
-              to={`/orders/${order.id}`}
+              to={`/seller/orders/${order.id}`}
               className="flex items-center gap-1 text-[#3B5249] hover:text-[#2A3C33] px-3 py-1"
             >
               <Eye size={18} />
@@ -134,7 +134,7 @@ const SOrders: React.FC = () => {
         {order.status === 'in_progress' && (
           <>
             <Link
-              to={`/orders/${order.id}`}
+              to={`/seller/orders/${order.id}`}
               className="flex items-center gap-1 text-[#3B5249] hover:text-[#2A3C33] px-3 py-1"
             >
               <Eye size={18} />
@@ -155,7 +155,7 @@ const SOrders: React.FC = () => {
         {order.status === 'shipped' && (
           <>
             <Link
-              to={`/orders/${order.id}`}
+              to={`/seller/orders/${order.id}`}
               className="flex items-center gap-1 text-[#3B5249] hover:text-[#2A3C33] px-3 py-1"
             >
               <Eye size={18} />
@@ -179,7 +179,7 @@ const SOrders: React.FC = () => {
 
         {order.status === 'completed' && (
           <Link
-            to={`/orders/${order.id}`}
+            to={`/seller/orders/${order.id}`}
             className="flex items-center gap-1 text-[#40513B] hover:text-[#2A3C33] px-3 py-1"
           >
             <Eye size={18} />
