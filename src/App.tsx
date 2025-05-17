@@ -14,6 +14,7 @@ import Contact from "./pages/Contact"
 import Login from "./pages/Login"
 import Register from "./pages/Register";
 import CustomerAccount from "./pages/CustomerAcount";
+import Order from "./pages/Order";
 
 // seller's
 import SellerLayout from "./components/seller/Layout";
@@ -50,6 +51,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/account" element={<CustomerAccount />} />
+            <Route path="/order" element={<Order />} />
           </Route>
 
         <Route path="/seller" element={<SellerLayout />}>

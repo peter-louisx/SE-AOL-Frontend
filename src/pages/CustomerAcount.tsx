@@ -21,14 +21,18 @@ export default function CustomerAccount() {
               </div>
               
               <nav className="space-y-2">
+                <a href="/account">
                 <button className="w-full flex items-center gap-3 px-4 py-2 text-white bg-[#9DC08B] bg-opacity-10 rounded-lg">
                   <User className="w-5 h-5" />
                   <span>My Account</span>
                 </button>
+                </a>
+                <a href="/order">
                 <button className="w-full flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-50 rounded-lg">
                   <ShoppingBag className="w-5 h-5" />
                   <span>My Orders</span>
                 </button>
+                </a>
                 <button className="w-full flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-50 rounded-lg">
                   <Ticket className="w-5 h-5" />
                   <span>My Vouchers</span>
