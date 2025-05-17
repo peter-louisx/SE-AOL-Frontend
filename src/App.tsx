@@ -15,6 +15,7 @@ import Login from "./pages/Login"
 import Register from "./pages/Register";
 import CustomerAccount from "./pages/CustomerAcount";
 import Order from "./pages/Order";
+import Voucher from "./pages/Voucher";
 
 // seller's
 import SellerLayout from "./components/seller/Layout";
@@ -52,6 +53,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/account" element={<CustomerAccount />} />
             <Route path="/order" element={<Order />} />
+            <Route path="/voucher" element={<Voucher />} />
           </Route>
 
         <Route path="/seller" element={<SellerLayout />}>

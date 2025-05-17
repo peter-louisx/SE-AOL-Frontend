@@ -22,21 +22,23 @@ export default function Order() {
               
               <nav className="space-y-2">
                 <a href="/account">
-                <button className="w-full flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-50 rounded-lg">
+                <button className="w-full flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">
                   <User className="w-5 h-5" />
                   <span>My Account</span>
                 </button>
                 </a>
                 <a href="/order">
-                <button className="w-full flex items-center gap-3 px-4 py-2 text-white bg-[#9DC08B] bg-opacity-10 rounded-lg">
+                <button className="w-full flex items-center gap-3 px-4 py-2 text-white bg-[#9DC08B] bg-opacity-10 rounded-lg cursor-pointer">
                   <ShoppingBag className="w-5 h-5" />
                   <span>My Orders</span>
                 </button>
                 </a>
-                <button className="w-full flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-50 rounded-lg">
+                <a href="/voucher">
+                <button className="w-full flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">
                   <Ticket className="w-5 h-5" />
                   <span>My Vouchers</span>
                 </button>
+                </a>
               </nav>
             </div>
           </div>
@@ -51,16 +53,16 @@ export default function Order() {
                 <button className="px-6 py-2 bg-[#9DC08B] text-white rounded-full">
                   All
                 </button>
-                <button className="px-6 py-2 border border-[#9DC08B] text-[#9DC08B] rounded-full hover:bg-[#9DC08B] hover:bg-opacity-5">
+                <button className="px-6 py-2 border border-[#9DC08B] text-[#9DC08B] rounded-full hover:bg-[#9DC08B] hover:bg-opacity-5 hover:text-white">
                   On Going
                 </button>
-                <button className="px-6 py-2 border border-[#9DC08B] text-[#9DC08B] rounded-full hover:bg-[#9DC08B] hover:bg-opacity-5">
+                <button className="px-6 py-2 border border-[#9DC08B] text-[#9DC08B] rounded-full hover:bg-[#9DC08B] hover:bg-opacity-5 hover:text-white">
                   Completed
                 </button>
-                <button className="px-6 py-2 border border-[#9DC08B] text-[#9DC08B] rounded-full hover:bg-[#9DC08B] hover:bg-opacity-5">
+                <button className="px-6 py-2 border border-[#9DC08B] text-[#9DC08B] rounded-full hover:bg-[#9DC08B] hover:bg-opacity-5 hover:text-white">
                   Returned
                 </button>
-                <button className="px-6 py-2 border border-[#9DC08B] text-[#9DC08B] rounded-full hover:bg-[#9DC08B] hover:bg-opacity-5">
+                <button className="px-6 py-2 border border-[#9DC08B] text-[#9DC08B] rounded-full hover:bg-[#9DC08B] hover:bg-opacity-5 hover:text-white">
                   Cancelled
                 </button>
               </div>
