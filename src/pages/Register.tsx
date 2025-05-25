@@ -1,46 +1,96 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { Store, User } from 'lucide-react';
+
+// Configure Axios base URL (include `/api` in URL)
+axios.defaults.baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+
+interface FormData {
+  name: string;
+  storeName?: string;
+  phone_number: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+}
 
 export default function Register() {
   const [userType, setUserType] = useState<'buyer' | 'seller'>('buyer');
-  const [formData, setFormData] = useState({
-    fullName: '',
+  const [formData, setFormData] = useState<FormData>({
+    name: '',
     storeName: '',
-    phoneNumber: '',
+    phone_number: '',
     email: '',
     password: '',
-    confirmPassword: '',
+    password_confirmation: '',
   });
+  const [errors, setErrors] = useState<Record<string, string[]>>({});
+  const [submitting, setSubmitting] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Registration attempt:', { userType, ...formData });
+    setSubmitting(true);
+    setErrors({});
+
+    const endpoint = userType === 'seller' ? '/seller-register' : '/customer-register';
+
+    const payload: any = {
+      name: formData.name,
+      phone_number: formData.phone_number,
+      email: formData.email,
+      password: formData.password,
+      password_confirmation: formData.password_confirmation,
+      ...(userType === 'seller' && { store_name: formData.storeName }),
+    };
+
+    try {
+      const response = await axios.post(endpoint, payload);
+
+      // ✅ Save token (if returned) and redirect to home
+      const token = response.data.token;
+      if (token) {
+        localStorage.setItem('token', token);
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      }
+
+      // Redirect to home after successful registration
+      window.location.href = '/';
+    } catch (err: any) {
+      if (err.response) {
+        if (err.response.status === 422) {
+          setErrors(err.response.data.errors);
+        } else if (err.response.status === 404) {
+          alert(`Endpoint not found: ${endpoint}`);
+        } else {
+          alert(`Error ${err.response.status}: ${err.response.data.message || 'Unexpected error'}`);
+        }
+      } else {
+        alert('Network or CORS error');
+      }
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-        {/* Illustration Side */}
         <div className="hidden md:block">
           <img
-            src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Frelprod.relianceanimation.in%2Fdist%2Fimages%2Flogin_illustration1.png&f=1&nofb=1&ipt=e22be1d21714585a8ddb994e5c64a392dc80177244bffc71975c9e2a3e53441a"
+            src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Frelprod.relianceanimation.in%2Fdist%2Fimages%2Flogin_illustration1.png&f=1&nofb=1"
             alt="Eco-friendly illustration"
             className="w-full h-auto rounded-lg"
           />
         </div>
 
-        {/* Registration Form Side */}
         <div className="w-full max-w-md mx-auto">
           <h1 className="text-3xl font-bold mb-8 text-black text-center">Register</h1>
 
-          {/* User Type Toggle */}
           <div className="flex gap-4 mb-6">
             <button
               type="button"
@@ -67,21 +117,22 @@ export default function Register() {
               <span>Seller</span>
             </button>
           </div>
-          
+
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
                 Full Name
               </label>
               <input
-                id="fullName"
-                name="fullName"
+                id="name"
+                name="name"
                 type="text"
-                value={formData.fullName}
+                value={formData.name}
                 onChange={handleInputChange}
                 className="w-full px-4 py-2 rounded-lg bg-[#9DC08B] bg-opacity-30 border border-[#9DC08B] focus:outline-none focus:ring-2 focus:ring-[#9DC08B]"
                 required
               />
+              {errors.name && <p className="text-red-500 text-sm">{errors.name.join(' ')}</p>}
             </div>
 
             {userType === 'seller' && (
@@ -98,22 +149,24 @@ export default function Register() {
                   className="w-full px-4 py-2 rounded-lg bg-[#9DC08B] bg-opacity-30 border border-[#9DC08B] focus:outline-none focus:ring-2 focus:ring-[#9DC08B]"
                   required
                 />
+                {errors.store_name && <p className="text-red-500 text-sm">{errors.store_name.join(' ')}</p>}
               </div>
             )}
 
             <div>
-              <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="phone_number" className="block text-sm font-medium text-gray-700 mb-1">
                 Phone Number
               </label>
               <input
-                id="phoneNumber"
-                name="phoneNumber"
+                id="phone_number"
+                name="phone_number"
                 type="tel"
-                value={formData.phoneNumber}
+                value={formData.phone_number}
                 onChange={handleInputChange}
                 className="w-full px-4 py-2 rounded-lg bg-[#9DC08B] bg-opacity-30 border border-[#9DC08B] focus:outline-none focus:ring-2 focus:ring-[#9DC08B]"
                 required
               />
+              {errors.phone_number && <p className="text-red-500 text-sm">{errors.phone_number.join(' ')}</p>}
             </div>
 
             <div>
@@ -129,6 +182,7 @@ export default function Register() {
                 className="w-full px-4 py-2 rounded-lg bg-[#9DC08B] bg-opacity-30 border border-[#9DC08B] focus:outline-none focus:ring-2 focus:ring-[#9DC08B]"
                 required
               />
+              {errors.email && <p className="text-red-500 text-sm">{errors.email.join(' ')}</p>}
             </div>
 
             <div>
@@ -144,28 +198,31 @@ export default function Register() {
                 className="w-full px-4 py-2 rounded-lg bg-[#9DC08B] bg-opacity-30 border border-[#9DC08B] focus:outline-none focus:ring-2 focus:ring-[#9DC08B]"
                 required
               />
+              {errors.password && <p className="text-red-500 text-sm">{errors.password.join(' ')}</p>}
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="password_confirmation" className="block text-sm font-medium text-gray-700 mb-1">
                 Confirm Password
               </label>
               <input
-                id="confirmPassword"
-                name="confirmPassword"
+                id="password_confirmation"
+                name="password_confirmation"
                 type="password"
-                value={formData.confirmPassword}
+                value={formData.password_confirmation}
                 onChange={handleInputChange}
                 className="w-full px-4 py-2 rounded-lg bg-[#9DC08B] bg-opacity-30 border border-[#9DC08B] focus:outline-none focus:ring-2 focus:ring-[#9DC08B]"
                 required
               />
+              {errors.password_confirmation && <p className="text-red-500 text-sm">{errors.password_confirmation.join(' ')}</p>}
             </div>
 
             <button
               type="submit"
-              className="w-45 bg-[#609966] text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors mx-auto block"
+              disabled={submitting}
+              className="w-45 bg-[#609966] text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors mx-auto block disabled:opacity-50"
             >
-              Submit
+              {submitting ? 'Submitting...' : 'Submit'}
             </button>
 
             <p className="text-center text-sm text-gray-600">
