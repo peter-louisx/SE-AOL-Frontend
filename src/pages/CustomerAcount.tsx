@@ -18,14 +18,15 @@ export default function CustomerAccount() {
       }
 
       const userRes = await fetch('http://localhost:8000/api/user', {
+        method: 'GET',
         headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: 'application/json',
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json',
         },
       });
 
       if (!userRes.ok) {
-        localStorage.removeItem('auth_token'); // remove token if invalid
+        localStorage.removeItem('auth_token');
         navigate('/login');
         return;
       }
@@ -38,9 +39,15 @@ export default function CustomerAccount() {
         phone_number: userData.phone_number || '',
       });
 
-      // Fetch addresses
-      const addressRes = await fetch('http://localhost:8000/api/customer/addresses', {
-        headers: { Authorization: `Bearer ${token}` },
+      // Fetch addresses (POST method per API)
+      const addressRes = await fetch('http://localhost:8000/api/show-customer-address', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({}),
       });
       if (addressRes.ok) {
         const addressData = await addressRes.json();
@@ -59,7 +66,10 @@ export default function CustomerAccount() {
     const token = localStorage.getItem('auth_token');
     await fetch('http://localhost:8000/api/logout', {
       method: 'POST',
-      headers: { Authorization: `Bearer ${token}` },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+      },
     });
     localStorage.removeItem('auth_token');
     navigate('/login');
@@ -73,10 +83,11 @@ export default function CustomerAccount() {
     e.preventDefault();
     const token = localStorage.getItem('auth_token');
     try {
-      const res = await fetch('http://localhost:8000/api/customer/edit-profile', {
+      const res = await fetch('http://localhost:8000/api/edit-customer-profile', {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`,
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(profileForm),
@@ -98,9 +109,12 @@ export default function CustomerAccount() {
     const formData = new FormData();
     formData.append('profile', profileImage);
 
-    const res = await fetch('http://localhost:8000/api/customer/profile-picture', {
+    const res = await fetch('http://localhost:8000/api/customer-profile-picture', {
       method: 'POST',
-      headers: { Authorization: `Bearer ${token}` },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+      },
       body: formData,
     });
 
@@ -115,9 +129,13 @@ export default function CustomerAccount() {
     const confirmDelete = window.confirm('Are you sure you want to delete this address?');
     if (!confirmDelete) return;
 
-    const res = await fetch(`http://localhost:8000/api/customer/address/${id}`, {
-      method: 'DELETE',
-      headers: { Authorization: `Bearer ${token}` },
+    // Use POST per API route
+    const res = await fetch(`http://localhost:8000/api/delete-customer-address/${id}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Accept': 'application/json',
+      },
     });
     if (res.ok) {
       fetchUser();
@@ -132,13 +150,14 @@ export default function CustomerAccount() {
     if (!label || !address) return alert('Label and Address required');
     const token = localStorage.getItem('auth_token');
 
-    const res = await fetch('http://localhost:8000/api/customer/address', {
+    const res = await fetch('http://localhost:8000/api/add-customer-address', {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ label, address }),
+      Authorization: `Bearer ${token}`,
+      'Accept': 'application/json',          
+      'Content-Type': 'application/json',    
+    },
+      body: JSON.stringify({ label, address })
     });
     if (res.ok) {
       fetchUser();
@@ -162,7 +181,7 @@ export default function CustomerAccount() {
             <div className="bg-white rounded-lg p-6 shadow-sm">
               <div className="flex items-center gap-3 mb-8">
                 <img
-                  src={user?.profile || "https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg"}
+                  src={user?.profile ? `http://localhost:8000/storage/public/${user.profile}`:"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
                   alt="Profile"
                   className="w-12 h-12 rounded-full object-cover"
                 />
@@ -290,7 +309,7 @@ export default function CustomerAccount() {
           <div className="md:col-span-3">
             <div className="bg-white rounded-lg p-6 shadow-sm text-center">
               <img
-                src={user?.profile || "https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg"}
+                src={user?.profile ? `http://localhost:8000/storage/public/${user.profile}`:"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
                 alt="Profile"
                 className="w-48 h-48 rounded-full object-cover mx-auto mb-4"
               />
