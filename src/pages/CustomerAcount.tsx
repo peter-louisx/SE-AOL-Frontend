@@ -153,10 +153,10 @@ export default function CustomerAccount() {
     const res = await fetch('http://localhost:8000/api/add-customer-address', {
       method: 'POST',
       headers: {
-      Authorization: `Bearer ${token}`,
-      'Accept': 'application/json',          
-      'Content-Type': 'application/json',    
-    },
+        Authorization: `Bearer ${token}`,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({ label, address })
     });
     if (res.ok) {
@@ -165,6 +165,33 @@ export default function CustomerAccount() {
       alert('Failed to add address');
     }
   };
+
+  const handleEditAddress = async (id: number, currentLabel: string, currentAddress: string) => {
+    const label = prompt('New label:', currentLabel);
+    const address = prompt('New address:', currentAddress);
+    if (!label || !address) return alert('Both label and address are required.');
+
+    const token = localStorage.getItem('auth_token');
+
+    const res = await fetch(`http://localhost:8000/api/edit-customer-address/${id}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ label, address }),
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      alert(data.message || 'Address updated');
+      fetchUser();
+    } else {
+      alert(data.error || 'Failed to update address');
+    }
+  };
+
 
   useEffect(() => {
     fetchUser();
@@ -268,7 +295,7 @@ export default function CustomerAccount() {
                   addresses.map((address) => (
                     <div key={address.id} className="border border-gray-200 rounded-lg p-4">
                       <div className="flex items-center gap-2 mb-2">
-                        <span className="px-3 py-1 bg-[#9DC08B] bg-opacity-10 text-[#9DC08B] rounded-md text-sm">
+                        <span className="px-3 py-1 bg-[#9DC08B] bg-opacity-10 text-white rounded-md text-sm">
                           {address.label}
                         </span>
                         <span className="text-gray-700">{user.name} | {user.phone_number}</span>
@@ -278,7 +305,7 @@ export default function CustomerAccount() {
                       </p>
                       <div className="flex items-center gap-2">
                         {/* Edit button placeholder - add edit functionality if you want */}
-                        <button className="text-gray-600 hover:text-[#9DC08B]">
+                        <button onClick={() => handleEditAddress(address.id, address.label, address.address)} className="text-gray-600 hover:text-[#9DC08B]">
                           <PenSquare className="w-4 h-4" />
                         </button>
                         <button
@@ -296,7 +323,7 @@ export default function CustomerAccount() {
                 )}
                 <button
                   onClick={handleAddAddress}
-                  className="w-full border-2 border-dashed border-[#9DC08B] text-[#9DC08B] py-3 rounded-lg hover:bg-[#9DC08B] hover:bg-opacity-5 transition-colors"
+                  className="w-full border-2 border-dashed border-[#9DC08B] text-[#9DC08B] py-3 rounded-lg hover:bg-[#9DC08B] hover:text-white hover:bg-opacity-5 transition-colors"
                   type="button"
                 >
                   + Add New Address
