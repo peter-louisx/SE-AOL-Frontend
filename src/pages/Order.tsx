@@ -1,130 +1,231 @@
-import { User, ShoppingBag, Ticket, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import {
+  User as UserIcon,
+  ShoppingBag,
+  Ticket,
+  ChevronLeft,
+  ChevronRight,
+} from 'lucide-react';
+
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  image_url: string;
+}
+
+interface Order {
+  id: number;
+  order_status: string;
+  order_date: string;
+  order_code?: string;
+  total_pay: number;
+  product: Product;
+}
+
+const STATUS_OPTIONS = ['All', 'On Going', 'Completed', 'Returned', 'Cancelled'] as const;
+type StatusFilter = typeof STATUS_OPTIONS[number];
 
 export default function Order() {
+  const [user, setUser] = useState<{ name: string; profile?: string } | null>(null);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [filter, setFilter] = useState<StatusFilter>('All');
+  const [page, setPage] = useState(1);
+  const PAGE_SIZE = 5;
+  const navigate = useNavigate();
+
+  // Fetch current user
+  useEffect(() => {
+    const token = localStorage.getItem('auth_token');
+    if (!token) return navigate('/login');
+
+    fetch('http://localhost:8000/api/user', {
+      headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' },
+    })
+      .then(res => {
+        if (!res.ok) throw new Error();
+        return res.json();
+      })
+      .then(data => setUser({ name: data.name, profile: data.profile }))
+      .catch(() => {
+        localStorage.removeItem('auth_token');
+        navigate('/login');
+      });
+  }, [navigate]);
+
+  // Fetch orders
+  useEffect(() => {
+    const token = localStorage.getItem('auth_token');
+    if (!token) return;
+    fetch('http://localhost:8000/api/orders', {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then(res => res.json())
+      .then((data: Order[]) => setOrders(data))
+      .catch(console.error);
+  }, []);
+
+  if (!user) return <div>Loading profile...</div>;
+
+  // Filter & paginate
+  const filtered = orders.filter(o =>
+    filter === 'All' ? true : o.order_status === filter
+  );
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-          {/* Sidebar */}
-          <div className="md:col-span-3">
-            <div className="bg-white rounded-lg p-6 shadow-sm">
-              <div className="flex items-center gap-3 mb-8">
-                <img
-                  src="https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg"
-                  alt="Profile"
-                  className="w-12 h-12 rounded-full object-cover"
-                />
-                <div>
-                  <h2 className="font-semibold text-gray-900">Goat Messi</h2>
-                  <p className="text-sm text-gray-500">Premium Member</p>
-                </div>
-              </div>
-              
-              <nav className="space-y-2">
-                <a href="/account">
-                <button className="w-full flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">
-                  <User className="w-5 h-5" />
-                  <span>My Account</span>
-                </button>
-                </a>
-                <a href="/order">
-                <button className="w-full flex items-center gap-3 px-4 py-2 text-white bg-[#9DC08B] bg-opacity-10 rounded-lg cursor-pointer">
-                  <ShoppingBag className="w-5 h-5" />
-                  <span>My Orders</span>
-                </button>
-                </a>
-                <a href="/voucher">
-                <button className="w-full flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">
-                  <Ticket className="w-5 h-5" />
-                  <span>My Vouchers</span>
-                </button>
-                </a>
-              </nav>
+      <div className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-12 gap-8">
+        {/* Sidebar */}
+        <aside className="md:col-span-3 bg-white rounded-lg p-6 shadow-sm">
+          <div className="flex items-center gap-3 mb-8">
+            <img
+              src={
+                user.profile
+                  ? `http://localhost:8000/storage/public/${user.profile}`
+                  : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
+              }
+              alt="Profile"
+              className="w-12 h-12 rounded-full object-cover"
+            />
+            <div>
+              <h2 className="font-semibold text-gray-900">{user.name}</h2>
+              <p className="text-sm text-gray-500">Premium Member</p>
             </div>
           </div>
+          <nav className="space-y-2">
+            <button
+              onClick={() => navigate('/account')}
+              className="w-full flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-50 rounded-lg"
+            >
+              <UserIcon className="w-5 h-5" /> My Account
+            </button>
+            <button
+              disabled
+              className="w-full flex items-center gap-3 px-4 py-2 text-white bg-[#9DC08B] bg-opacity-10 rounded-lg"
+            >
+              <ShoppingBag className="w-5 h-5" /> My Orders
+            </button>
+            <button
+              onClick={() => navigate('/voucher')}
+              className="w-full flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-50 rounded-lg"
+            >
+              <Ticket className="w-5 h-5" /> My Vouchers
+            </button>
+          </nav>
+        </aside>
 
-          {/* Main Content */}
-          <div className="md:col-span-9">
-            <div className="bg-white rounded-lg p-6 shadow-sm">
-              <h2 className="text-xl font-semibold mb-6 text-black">My Orders</h2>
-              
-              {/* Order Status Filters */}
-              <div className="flex flex-wrap gap-3 mb-6">
-                <button className="px-6 py-2 bg-[#9DC08B] text-white rounded-full">
-                  All
-                </button>
-                <button className="px-6 py-2 border border-[#9DC08B] text-[#9DC08B] rounded-full hover:bg-[#9DC08B] hover:bg-opacity-5 hover:text-white">
-                  On Going
-                </button>
-                <button className="px-6 py-2 border border-[#9DC08B] text-[#9DC08B] rounded-full hover:bg-[#9DC08B] hover:bg-opacity-5 hover:text-white">
-                  Completed
-                </button>
-                <button className="px-6 py-2 border border-[#9DC08B] text-[#9DC08B] rounded-full hover:bg-[#9DC08B] hover:bg-opacity-5 hover:text-white">
-                  Returned
-                </button>
-                <button className="px-6 py-2 border border-[#9DC08B] text-[#9DC08B] rounded-full hover:bg-[#9DC08B] hover:bg-opacity-5 hover:text-white">
-                  Cancelled
-                </button>
-              </div>
+        {/* Orders List */}
+        <section className="md:col-span-9 space-y-6">
+          <div className="bg-white rounded-lg p-6 shadow-sm">
+            <h2 className="text-xl font-semibold mb-6 text-black">My Orders</h2>
 
-              {/* Orders List */}
-              <div className="space-y-6">
-                {[...Array(4)].map((_, index) => (
-                  <div key={index} className="border border-gray-200 rounded-lg p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center gap-4">
-                        <span className={`px-4 py-1 rounded-full text-sm ${
-                          index === 0 ? 'bg-yellow-400 text-white' : 'bg-[#9DC08B] text-white'
-                        }`}>
-                          {index === 0 ? 'On Going' : 'Completed'}
-                        </span>
-                        <span className="text-gray-500">23 February 2025</span>
-                      </div>
-                      <span className="text-gray-500">ORD/23022025/123456789</span>
+            {/* Status Filters */}
+            <div className="flex flex-wrap gap-3 mb-6">
+              {STATUS_OPTIONS.map(status => (
+                <button
+                  key={status}
+                  onClick={() => { setFilter(status); setPage(1); }}
+                  className={`px-6 py-2 rounded-full ${
+                    filter === status
+                      ? 'bg-[#9DC08B] text-white'
+                      : 'border border-[#9DC08B] text-[#9DC08B] hover:bg-[#9DC08B] hover:bg-opacity-5 hover:text-white'
+                  }`}
+                >
+                  {status}
+                </button>
+              ))}
+            </div>
+
+            {/* Orders */}
+            {paginated.length === 0 ? (
+              <p className="text-gray-500">No orders to display.</p>
+            ) : (
+              paginated.map(order => (
+                <div key={order.id} className="border border-gray-200 rounded-lg p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-4">
+                      <span
+                        className={`px-4 py-1 rounded-full text-sm ${
+                          order.order_status === 'On Going'
+                            ? 'bg-yellow-400 text-white'
+                            : 'bg-[#9DC08B] text-white'
+                        }`}
+                      >
+                        {order.order_status}
+                      </span>
+                      <span className="text-gray-500">
+                        {new Date(order.order_date).toLocaleDateString()}
+                      </span>
                     </div>
+                    <span className="text-gray-500">
+                      {order.order_code ?? `ORD/${order.id}`}
+                    </span>
+                  </div>
 
-                    <div className="flex items-center gap-6">
-                      <img
-                        src="https://images.pexels.com/photos/14011035/pexels-photo-14011035.jpeg"
-                        alt="Bamboo Bowl and Spoon"
-                        className="w-24 h-24 object-cover rounded-lg"
-                      />
-                      <div className="flex-1">
-                        <h3 className="font-semibold mb-2 text-black">Bamboo Bowl and Spoon</h3>
-                        <p className="text-gray-500">Quantity: 2</p>
-                        <p className="text-gray-500">Price: Rp50.000</p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-gray-500 mb-2">Total:</p>
-                        <p className="font-semibold text-black">Rp200.000</p>
-                        {index === 0 && (
-                          <button className="mt-2 px-4 py-1 border border-[#9DC08B] text-[#9DC08B] rounded-lg hover:bg-[#9DC08B] hover:bg-opacity-5">
-                            Check Status
-                          </button>
-                        )}
-                      </div>
+                  <div className="flex items-center gap-6">
+                    <img
+                      src={order.product.image_url}
+                      alt={order.product.name}
+                      className="w-24 h-24 object-cover rounded-lg"
+                    />
+                    <div className="flex-1">
+                      <h3 className="font-semibold mb-2 text-black">
+                        {order.product.name}
+                      </h3>
+                      <p className="text-gray-500">Quantity: 1</p>
+                      <p className="text-gray-500">Price: Rp{order.product.price}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-gray-500 mb-2">Total:</p>
+                      <p className="font-semibold text-black">
+                        Rp{order.total_pay}
+                      </p>
+                      {order.order_status === 'On Going' && (
+                        <button className="mt-2 px-4 py-1 border border-[#9DC08B] text-[#9DC08B] rounded-lg hover:bg-[#9DC08B] hover:bg-opacity-5">
+                          Check Status
+                        </button>
+                      )}
                     </div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))
+            )}
 
-              {/* Pagination */}
+            {/* Pagination */}
+            {totalPages > 1 && (
               <div className="flex items-center justify-center gap-2 mt-8 text-black">
-                <button className="p-2 rounded-lg border border-gray-200 hover:bg-gray-50">
+                <button
+                  onClick={() => setPage(p => Math.max(p - 1, 1))}
+                  disabled={page === 1}
+                  className="p-2 rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-50"
+                >
                   <ChevronLeft className="w-5 h-5" />
                 </button>
-                <button className="w-8 h-8 rounded-lg bg-[#9DC08B] text-white">1</button>
-                <button className="w-8 h-8 rounded-lg hover:bg-gray-50">2</button>
-                <button className="w-8 h-8 rounded-lg hover:bg-gray-50">3</button>
-                <button className="w-8 h-8 rounded-lg hover:bg-gray-50">4</button>
-                <button className="w-8 h-8 rounded-lg hover:bg-gray-50">5</button>
-                <button className="p-2 rounded-lg border border-gray-200 hover:bg-gray-50">
+                {Array.from({ length: totalPages }, (_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setPage(i + 1)}
+                    className={`w-8 h-8 rounded-lg ${
+                      page === i + 1 ? 'bg-[#9DC08B] text-white' : 'hover:bg-gray-50'
+                    }`}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+                <button
+                  onClick={() => setPage(p => Math.min(p + 1, totalPages))}
+                  disabled={page === totalPages}
+                  className="p-2 rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-50"
+                >
                   <ChevronRight className="w-5 h-5" />
                 </button>
               </div>
-            </div>
+            )}
           </div>
-        </div>
+        </section>
       </div>
     </div>
   );
