@@ -3,7 +3,6 @@ import api from "./api";
 
 const axios = Axios.create({
   baseURL: api.BASE_URL_API,
-  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",

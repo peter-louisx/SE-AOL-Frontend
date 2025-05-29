@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Search, ShoppingBag, User, Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+  const { isAuthenticated } = useAuth();
 
   return (
     <header className="bg-[#4B6F44] text-white   top-0 sticky z-50 w-full">
@@ -59,13 +62,15 @@ const Header: React.FC = () => {
               <User size={20} />
               <span className="text-sm">Account</span>
             </Link>
-            <Link
-              to="/cart"
-              className="flex items-center space-x-1 hover:text-green-200 transition-colors"
-            >
-              <ShoppingBag size={20} />
-              <span className="text-sm">Cart (0)</span>
-            </Link>
+            {isAuthenticated && (
+              <Link
+                to="/cart"
+                className="flex items-center space-x-1 hover:text-green-200 transition-colors"
+              >
+                <ShoppingBag size={20} />
+                <span className="text-sm">Cart (0)</span>
+              </Link>
+            )}
           </nav>
 
           {/* Mobile menu button */}
@@ -75,6 +80,7 @@ const Header: React.FC = () => {
         </div>
 
         {/* Search on mobile */}
+
         <div className="mt-3 md:hidden">
           <div className="relative">
             <input
@@ -118,13 +124,15 @@ const Header: React.FC = () => {
               <User size={20} />
               <span>Account</span>
             </Link>
-            <Link
-              to="/cart"
-              className="text-white py-2 hover:bg-[#4B6F44] px-2 rounded transition-colors flex items-center space-x-2"
-            >
-              <ShoppingBag size={20} />
-              <span>Cart (0)</span>
-            </Link>
+            {isAuthenticated && (
+              <Link
+                to="/cart"
+                className="text-white py-2 hover:bg-[#4B6F44] px-2 rounded transition-colors flex items-center space-x-2"
+              >
+                <ShoppingBag size={20} />
+                <span>Cart (0)</span>
+              </Link>
+            )}
           </div>
         </nav>
       )}

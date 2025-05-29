@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { Store, User } from 'lucide-react';
+import React, { useState } from "react";
+import axios from "../api/axios";
+import { Store, User } from "lucide-react";
+import { toast } from "react-toastify";
 
 // Configure Axios base URL (include `/api` in URL)
-axios.defaults.baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+axios.defaults.baseURL =
+  import.meta.env.VITE_API_URL || "http://localhost:8000/api";
 
 interface FormData {
   name: string;
@@ -15,21 +17,21 @@ interface FormData {
 }
 
 export default function Register() {
-  const [userType, setUserType] = useState<'buyer' | 'seller'>('buyer');
+  const [userType, setUserType] = useState<"buyer" | "seller">("buyer");
   const [formData, setFormData] = useState<FormData>({
-    name: '',
-    storeName: '',
-    phone_number: '',
-    email: '',
-    password: '',
-    password_confirmation: '',
+    name: "",
+    storeName: "",
+    phone_number: "",
+    email: "",
+    password: "",
+    password_confirmation: "",
   });
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const [submitting, setSubmitting] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -37,41 +39,26 @@ export default function Register() {
     setSubmitting(true);
     setErrors({});
 
-    const endpoint = userType === 'seller' ? '/seller-register' : '/customer-register';
+    const endpoint =
+      userType === "seller" ? "/seller-register" : "/customer-register";
 
-    const payload: any = {
+    const payload = {
       name: formData.name,
       phone_number: formData.phone_number,
       email: formData.email,
       password: formData.password,
       password_confirmation: formData.password_confirmation,
-      ...(userType === 'seller' && { store_name: formData.storeName }),
+      ...(userType === "seller" && { store_name: formData.storeName }),
     };
 
     try {
-      const response = await axios.post(endpoint, payload);
-
-      // ✅ Save token (if returned) and redirect to home
-      const token = response.data.token;
-      if (token) {
-        localStorage.setItem('token', token);
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      }
-
-      // Redirect to home after successful registration
-      window.location.href = '/';
-    } catch (err: any) {
-      if (err.response) {
-        if (err.response.status === 422) {
-          setErrors(err.response.data.errors);
-        } else if (err.response.status === 404) {
-          alert(`Endpoint not found: ${endpoint}`);
-        } else {
-          alert(`Error ${err.response.status}: ${err.response.data.message || 'Unexpected error'}`);
-        }
-      } else {
-        alert('Network or CORS error');
-      }
+      await axios.post(endpoint, payload).then(() => {
+        window.location.href = "/login";
+      });
+    } catch (err) {
+      toast.error(
+        "Registration failed. Please check your input and try again."
+      );
     } finally {
       setSubmitting(false);
     }
@@ -89,16 +76,18 @@ export default function Register() {
         </div>
 
         <div className="w-full max-w-md mx-auto">
-          <h1 className="text-3xl font-bold mb-8 text-black text-center">Register</h1>
+          <h1 className="text-3xl font-bold mb-8 text-black text-center">
+            Register
+          </h1>
 
           <div className="flex gap-4 mb-6">
             <button
               type="button"
-              onClick={() => setUserType('buyer')}
+              onClick={() => setUserType("buyer")}
               className={`flex-1 py-3 px-4 rounded-lg flex items-center justify-center gap-2 border transition-colors ${
-                userType === 'buyer'
-                  ? 'bg-[#609966] text-white border-[#9DC08B]'
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                userType === "buyer"
+                  ? "bg-[#609966] text-white border-[#9DC08B]"
+                  : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
               }`}
             >
               <User className="w-5 h-5" />
@@ -106,11 +95,11 @@ export default function Register() {
             </button>
             <button
               type="button"
-              onClick={() => setUserType('seller')}
+              onClick={() => setUserType("seller")}
               className={`flex-1 py-3 px-4 rounded-lg flex items-center justify-center gap-2 border transition-colors ${
-                userType === 'seller'
-                  ? 'bg-[#609966] text-white border-[#9DC08B]'
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                userType === "seller"
+                  ? "bg-[#609966] text-white border-[#9DC08B]"
+                  : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
               }`}
             >
               <Store className="w-5 h-5" />
@@ -120,7 +109,10 @@ export default function Register() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Full Name
               </label>
               <input
@@ -132,12 +124,17 @@ export default function Register() {
                 className="w-full px-4 py-2 rounded-lg bg-[#9DC08B] bg-opacity-30 border border-[#9DC08B] focus:outline-none focus:ring-2 focus:ring-[#9DC08B]"
                 required
               />
-              {errors.name && <p className="text-red-500 text-sm">{errors.name.join(' ')}</p>}
+              {errors.name && (
+                <p className="text-red-500 text-sm">{errors.name.join(" ")}</p>
+              )}
             </div>
 
-            {userType === 'seller' && (
+            {userType === "seller" && (
               <div>
-                <label htmlFor="storeName" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="storeName"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Store Name
                 </label>
                 <input
@@ -149,12 +146,19 @@ export default function Register() {
                   className="w-full px-4 py-2 rounded-lg bg-[#9DC08B] bg-opacity-30 border border-[#9DC08B] focus:outline-none focus:ring-2 focus:ring-[#9DC08B]"
                   required
                 />
-                {errors.store_name && <p className="text-red-500 text-sm">{errors.store_name.join(' ')}</p>}
+                {errors.store_name && (
+                  <p className="text-red-500 text-sm">
+                    {errors.store_name.join(" ")}
+                  </p>
+                )}
               </div>
             )}
 
             <div>
-              <label htmlFor="phone_number" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="phone_number"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Phone Number
               </label>
               <input
@@ -166,11 +170,18 @@ export default function Register() {
                 className="w-full px-4 py-2 rounded-lg bg-[#9DC08B] bg-opacity-30 border border-[#9DC08B] focus:outline-none focus:ring-2 focus:ring-[#9DC08B]"
                 required
               />
-              {errors.phone_number && <p className="text-red-500 text-sm">{errors.phone_number.join(' ')}</p>}
+              {errors.phone_number && (
+                <p className="text-red-500 text-sm">
+                  {errors.phone_number.join(" ")}
+                </p>
+              )}
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Email
               </label>
               <input
@@ -182,11 +193,16 @@ export default function Register() {
                 className="w-full px-4 py-2 rounded-lg bg-[#9DC08B] bg-opacity-30 border border-[#9DC08B] focus:outline-none focus:ring-2 focus:ring-[#9DC08B]"
                 required
               />
-              {errors.email && <p className="text-red-500 text-sm">{errors.email.join(' ')}</p>}
+              {errors.email && (
+                <p className="text-red-500 text-sm">{errors.email.join(" ")}</p>
+              )}
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Password
               </label>
               <input
@@ -198,11 +214,18 @@ export default function Register() {
                 className="w-full px-4 py-2 rounded-lg bg-[#9DC08B] bg-opacity-30 border border-[#9DC08B] focus:outline-none focus:ring-2 focus:ring-[#9DC08B]"
                 required
               />
-              {errors.password && <p className="text-red-500 text-sm">{errors.password.join(' ')}</p>}
+              {errors.password && (
+                <p className="text-red-500 text-sm">
+                  {errors.password.join(" ")}
+                </p>
+              )}
             </div>
 
             <div>
-              <label htmlFor="password_confirmation" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="password_confirmation"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Confirm Password
               </label>
               <input
@@ -214,7 +237,11 @@ export default function Register() {
                 className="w-full px-4 py-2 rounded-lg bg-[#9DC08B] bg-opacity-30 border border-[#9DC08B] focus:outline-none focus:ring-2 focus:ring-[#9DC08B]"
                 required
               />
-              {errors.password_confirmation && <p className="text-red-500 text-sm">{errors.password_confirmation.join(' ')}</p>}
+              {errors.password_confirmation && (
+                <p className="text-red-500 text-sm">
+                  {errors.password_confirmation.join(" ")}
+                </p>
+              )}
             </div>
 
             <button
@@ -222,11 +249,11 @@ export default function Register() {
               disabled={submitting}
               className="w-45 bg-[#609966] text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors mx-auto block disabled:opacity-50"
             >
-              {submitting ? 'Submitting...' : 'Submit'}
+              {submitting ? "Submitting..." : "Submit"}
             </button>
 
             <p className="text-center text-sm text-gray-600">
-              Already have an account?{' '}
+              Already have an account?{" "}
               <a href="/login" className="text-[#9DC08B] hover:underline">
                 Login
               </a>
