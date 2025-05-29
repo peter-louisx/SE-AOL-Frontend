@@ -35,7 +35,9 @@ export default function Login() {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
       // Redirect to dashboard or home
+      //refresh the page to apply new auth token
       navigate("/");
+      window.location.reload();
     } catch (error) {
       toast.error("Login failed. Please check your credentials.");
     } finally {
