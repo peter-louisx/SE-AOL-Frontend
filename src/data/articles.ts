@@ -135,7 +135,7 @@ export const articles: Article[] = [
     title: 'How to start a zero-waste lifestyle',
     excerpt: 'Begin your journey toward a more sustainable future with these practical tips for reducing waste in your everyday life.',
     category: 'sustainability',
-    imageUrl: 'https://images.pexels.com/photos/5217322/pexels-photo-5217322.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    imageUrl: 'https://shopequo.com/cdn/shop/articles/zero-waste-lifestyle-12.jpg?v=1679972503&width=1600',
     date: 'June 8, 2025',
     author: 'Olivia Brown',
     readingTime: '7 min read',
@@ -1167,36 +1167,18 @@ export const articles: Article[] = [
   }
 ];
 
-export const trendingArticles: TrendingArticle[] = [
-  {
-    id: 2,
-    title: 'Creative ways to reuse plastic bottles',
-    imageUrl: 'https://images.pexels.com/photos/1072824/pexels-photo-1072824.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-  },
-  {
-    id: 3,
-    title: 'How to start a zero-waste lifestyle',
-    imageUrl: 'https://images.pexels.com/photos/5217322/pexels-photo-5217322.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-  },
-  {
-    id: 4,
-    title: 'Make your own natural cleaning products',
-    imageUrl: 'https://images.pexels.com/photos/4239037/pexels-photo-4239037.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-  },
-  {
-    id: 5,
-    title: 'Upcycled art projects for kids',
-    imageUrl: 'https://scontent.fcgk33-1.fna.fbcdn.net/v/t39.30808-6/307376073_431568012398087_6102930550469637679_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeHTMu1OXICi-_TJRjSxW1phh2vadDByRPqHa9p0MHJE-ljiYYRdXqfqKQcgMR-lXxbzZm5zKwTjPnn5p1Y9Qf0c&_nc_ohc=vpis7VIRQvUQ7kNvwHJSgAa&_nc_oc=AdlH127jg96eInVCDmBdYu22cakijXsTqZjVvguF43n4J15lZ3-06O6UN5NbuIV7Pujg2etBcWkbC85S19tI_v-T&_nc_zt=23&_nc_ht=scontent.fcgk33-1.fna&_nc_gid=pkgHi7MtPy73FUtqgnUijA&oh=00_AfIOpPssu9Hf4uB3H7o1Ub_cDLVj0axFX_00ZUVBQnqOvw&oe=683F4186',
-  },
-  {
-    id: 6,
-    title: 'Guide to starting a community garden',
-    imageUrl: 'https://images.pexels.com/photos/4505169/pexels-photo-4505169.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-  },
-  {
-    id: 7,
-    title: 'Turn old clothes into reusable bags',
-    imageUrl: 'https://images.pexels.com/photos/6195328/pexels-photo-6195328.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-  },
-];
+const sortedArticlesByDate = [...articles].sort((a, b) => {
+  const dateA = new Date(a.date).getTime();
+  const dateB = new Date(b.date).getTime();
+  return dateB - dateA;
+});
 
+const NUMBER_OF_TRENDING_ARTICLES = 5;
+
+const latestArticles = sortedArticlesByDate.slice(0, NUMBER_OF_TRENDING_ARTICLES);
+
+export const trendingArticles: TrendingArticle[] = latestArticles.map(article => ({
+  id: article.id,
+  title: article.title,
+  imageUrl: article.imageUrl,
+}));
