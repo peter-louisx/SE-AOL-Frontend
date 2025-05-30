@@ -11,12 +11,12 @@ const Header: React.FC = () => {
   const { isAuthenticated } = useAuth();
 
   return (
-    <header className="bg-[#4B6F44] text-white   top-0 sticky z-50 w-full">
+    <header className="bg-[#4B6F44] text-white   top-0 sticky z-50 w-full ">
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-1">
-            <span className="text-2xl font-bold tracking-wide">
+            <span className="text-2xl font-bold tracking-wide text-white">
               🌳 TreeStore
             </span>
           </Link>

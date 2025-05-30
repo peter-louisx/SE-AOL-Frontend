@@ -32,6 +32,7 @@ import Blog from "./pages/Blog";
 import BlogDetail from "./pages/BlogDetail";
 
 import { AuthProvider } from "./context/AuthContext";
+import CartPage from "./pages/Cart";
 
 // buyer
 function App() {
@@ -63,6 +64,7 @@ function App() {
           <Route path="/account" element={<CustomerAccount />} />
           <Route path="/order" element={<Order />} />
           <Route path="/voucher" element={<Voucher />} />
+          <Route path="/cart" element={<CartPage />} />
         </Route>
 
         <Route
