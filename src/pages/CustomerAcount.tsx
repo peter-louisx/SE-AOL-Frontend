@@ -75,7 +75,6 @@ export default function CustomerAccount() {
       .post("http://localhost:8000/api/logout")
       .then(() => {
         localStorage.removeItem("auth_token");
-        axios.defaults.headers.common["Authorization"] = "";
         navigate("/login");
       })
       .catch((error) => {

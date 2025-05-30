@@ -3,79 +3,142 @@ import { useParams } from "react-router-dom";
 import { Star, Truck, Shield, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import axios from "../api/axios";
+import { toast } from "react-toastify";
 
-// interface Review {
-//   id: number;
-//   user: string;
-//   rating: number;
-//   comment: string;
-//   date: string;
-// }
+type Review = {
+  id: number;
+  user: string;
+  rating: number;
+  comment: string;
+  date: string;
+};
+
+type Product = {
+  id: number;
+  name: string;
+  price: number;
+  sold?: number;
+  stock?: number;
+  description: string;
+  rating: number;
+  totalReviews: number;
+  product_url?: string;
+  features: string[];
+  images: string[];
+  reviews: Review[];
+};
+
+const dummyProduct: Product = {
+  id: 1,
+  name: "Coconut Bowl and Spoon",
+  price: 50000,
+  rating: 4.8,
+  totalReviews: 128,
+  description:
+    "Eco-friendly Coconut Bowl and Wooden Spoon combo. Perfect for your healthy and sustainable eating. Made from 100% natural coconuts and sustainable wood. Each piece is unique and handcrafted.",
+  features: [
+    "Made from real coconut shells",
+    "Handcrafted by artisans",
+    "Food-safe coating",
+    "Includes matching wooden spoon",
+    "Perfect size for smoothie bowls and salads",
+  ],
+  images: [
+    "https://images.pexels.com/photos/5825560/pexels-photo-5825560.jpeg",
+    "https://images.pexels.com/photos/5825578/pexels-photo-5825578.jpeg",
+    "https://images.pexels.com/photos/5825536/pexels-photo-5825536.jpeg",
+  ],
+  reviews: [
+    {
+      id: 1,
+      user: "Sarah M.",
+      rating: 5,
+      comment:
+        "Really nice coconut bowls! Perfect for smoothie bowls and soup! Love it. Plus I feel good knowing it uses family leftovers!",
+      date: "2024-03-15",
+    },
+    {
+      id: 2,
+      user: "John D.",
+      rating: 5,
+      comment:
+        "Great eco-friendly bowls! Perfect for smoothie bowls and soup! Love it. Plus I feel good knowing it uses family leftovers!",
+      date: "2024-03-14",
+    },
+    {
+      id: 3,
+      user: "Emma W.",
+      rating: 4,
+      comment:
+        "Beautiful bowls, just slightly smaller than expected but still perfect for most meals.",
+      date: "2024-03-13",
+    },
+  ],
+};
 
 const Product: React.FC = () => {
   const { id } = useParams();
   const [quantity, setQuantity] = useState(1);
-  // const [product, setProduct] = useState(null);
+  const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
+  const [selectedImage, setSelectedImage] = useState<string>(
+    dummyProduct.images[0]
+  );
 
-  // Mock product data
-  const product = {
-    id: parseInt(id || "1"),
-    name: "Coconut Bowl and Spoon",
-    price: 50000,
-    rating: 4.8,
-    totalReviews: 128,
-    description:
-      "Eco-friendly Coconut Bowl and Wooden Spoon combo. Perfect for your healthy and sustainable eating. Made from 100% natural coconuts and sustainable wood. Each piece is unique and handcrafted.",
-    features: [
-      "Made from real coconut shells",
-      "Handcrafted by artisans",
-      "Food-safe coating",
-      "Includes matching wooden spoon",
-      "Perfect size for smoothie bowls and salads",
-    ],
-    images: [
-      "https://images.pexels.com/photos/5825560/pexels-photo-5825560.jpeg",
-      "https://images.pexels.com/photos/5825578/pexels-photo-5825578.jpeg",
-      "https://images.pexels.com/photos/5825536/pexels-photo-5825536.jpeg",
-    ],
-    reviews: [
-      {
-        id: 1,
-        user: "Sarah M.",
-        rating: 5,
-        comment:
-          "Really nice coconut bowls! Perfect for smoothie bowls and soup! Love it. Plus I feel good knowing it uses family leftovers!",
-        date: "2024-03-15",
-      },
-      {
-        id: 2,
-        user: "John D.",
-        rating: 5,
-        comment:
-          "Great eco-friendly bowls! Perfect for smoothie bowls and soup! Love it. Plus I feel good knowing it uses family leftovers!",
-        date: "2024-03-14",
-      },
-      {
-        id: 3,
-        user: "Emma W.",
-        rating: 4,
-        comment:
-          "Beautiful bowls, just slightly smaller than expected but still perfect for most meals.",
-        date: "2024-03-13",
-      },
-    ],
+  const addToCart = async () => {
+    await axios
+      .post("/store-cart", {
+        product_id: product?.id,
+        quantity: quantity,
+      })
+      .catch(() => {
+        toast.error("Failed to add product to cart. Please try again later.");
+      });
   };
 
   useEffect(() => {
-    axios.get(`/products/${id}`).then((response) => {
-      // setProduct(response.data);
-      console.log(response.data);
-      setLoading(false);
-    });
-  }, []);
+    setLoading(true);
+    axios
+      .get(`/products/${id}`)
+      .then((response) => {
+        // If your API doesn't return all fields, fill with dummy data
+        const data = response.data;
+        setProduct({
+          id: data.id ?? dummyProduct.id,
+          name: data.name ?? dummyProduct.name,
+          price: data.price ?? dummyProduct.price,
+          rating: data.rating ?? dummyProduct.rating,
+          totalReviews: data.totalReviews ?? dummyProduct.totalReviews,
+          description: data.description ?? dummyProduct.description,
+          features: data.features ?? dummyProduct.features,
+          images: data.images ?? dummyProduct.images,
+          reviews: data.reviews ?? dummyProduct.reviews,
+        });
 
-  const [selectedImage, setSelectedImage] = useState(product.images[0]);
+        if (data.product_url) {
+          setSelectedImage([data.product_url, ...dummyProduct.images][0]);
+        } else {
+          setSelectedImage(data.images[0] || dummyProduct.images[0]);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching product data:", error);
+        setProduct(dummyProduct);
+        setSelectedImage(dummyProduct.images[0]);
+      })
+      .finally(() => setLoading(false));
+  }, [id]);
+
+  if (loading || !product) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-green-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="text-gray-700 text-lg">Loading product...</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -183,7 +246,10 @@ const Product: React.FC = () => {
                     +
                   </button>
                 </div>
-                <button className="flex-1 bg-green-600 text-white py-2 px-6 rounded-md hover:bg-green-700 transition-colors">
+                <button
+                  className="flex-1 bg-green-600 text-white py-2 px-6 rounded-md hover:bg-green-700 transition-colors"
+                  onClick={addToCart}
+                >
                   Add to Cart
                 </button>
               </div>

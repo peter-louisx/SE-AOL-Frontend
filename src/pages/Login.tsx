@@ -32,10 +32,6 @@ export default function Login() {
 
       // Save token for subsequent requests
       localStorage.setItem("auth_token", token);
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
-      // Redirect to dashboard or home
-      //refresh the page to apply new auth token
       navigate("/");
       window.location.reload();
     } catch (error) {
