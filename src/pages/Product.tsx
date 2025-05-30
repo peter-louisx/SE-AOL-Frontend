@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Star, Truck, Shield, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
+import axios from "../api/axios";
 
 // interface Review {
 //   id: number;
@@ -14,6 +15,8 @@ import { Link } from "react-router-dom";
 const Product: React.FC = () => {
   const { id } = useParams();
   const [quantity, setQuantity] = useState(1);
+  // const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   // Mock product data
   const product = {
@@ -63,6 +66,14 @@ const Product: React.FC = () => {
       },
     ],
   };
+
+  useEffect(() => {
+    axios.get(`/products/${id}`).then((response) => {
+      // setProduct(response.data);
+      console.log(response.data);
+      setLoading(false);
+    });
+  }, []);
 
   const [selectedImage, setSelectedImage] = useState(product.images[0]);
 
