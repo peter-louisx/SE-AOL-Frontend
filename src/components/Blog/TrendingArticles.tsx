@@ -15,7 +15,7 @@ const TrendingArticles: React.FC<TrendingArticlesProps> = ({ articles }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-green-50 p-6 rounded-lg">
+    <div className="bg-[#DCE8B0]  p-6 rounded-xl">
       <h3 className="text-xl font-semibold mb-4 text-black">Trending Articles</h3>
       <div className="space-y-4">
         {articles.map(article => (
