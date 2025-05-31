@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useCart } from "../context/CartContext";
+import { toast } from "react-toastify";
 
 const CartSummary: React.FC = () => {
   const { getTotalPrice, selectedItems } = useCart();
@@ -10,7 +11,7 @@ const CartSummary: React.FC = () => {
 
   const handleCheckout = () => {
     if (!hasSelectedItems) return;
-    alert("Proceeding to checkout with selected items!");
+    toast.success("Checkout successful!");
   };
 
   return (

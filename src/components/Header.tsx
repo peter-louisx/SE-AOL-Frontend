@@ -68,7 +68,7 @@ const Header: React.FC = () => {
                 className="flex items-center space-x-1 hover:text-green-200 transition-colors"
               >
                 <ShoppingBag size={20} />
-                <span className="text-sm">Cart (0)</span>
+                <span className="text-sm">Cart</span>
               </Link>
             )}
           </nav>
@@ -130,7 +130,7 @@ const Header: React.FC = () => {
                 className="text-white py-2 hover:bg-[#4B6F44] px-2 rounded transition-colors flex items-center space-x-2"
               >
                 <ShoppingBag size={20} />
-                <span>Cart (0)</span>
+                <span>Cart</span>
               </Link>
             )}
           </div>

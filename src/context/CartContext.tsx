@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import axios from "../api/axios";
 
 export type CartItem = {
   id: string;
@@ -10,53 +11,6 @@ export type CartItem = {
   quantity: number;
   image: string;
 };
-
-const initialCartItems: CartItem[] = [
-  {
-    id: "1",
-    name: "Bamboo Bowl and Spoon",
-    description: "Eco-friendly bamboo bowl and spoon set",
-    brand: "Bambu Home",
-    price: 50000,
-    currency: "Rp",
-    quantity: 1,
-    image:
-      "https://images.pexels.com/photos/6270663/pexels-photo-6270663.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  },
-  {
-    id: "2",
-    name: "Bamboo Bowl and Spoon",
-    description: "Eco-friendly bamboo bowl and spoon set",
-    brand: "Bambu Home",
-    price: 50000,
-    currency: "Rp",
-    quantity: 1,
-    image:
-      "https://images.pexels.com/photos/6270663/pexels-photo-6270663.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  },
-  {
-    id: "3",
-    name: "Bamboo Bowl and Spoon",
-    description: "Eco-friendly bamboo bowl and spoon set",
-    brand: "Bambu Home",
-    price: 50000,
-    currency: "Rp",
-    quantity: 1,
-    image:
-      "https://images.pexels.com/photos/6270663/pexels-photo-6270663.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  },
-  {
-    id: "4",
-    name: "Bamboo Bowl and Spoon",
-    description: "Eco-friendly bamboo bowl and spoon set",
-    brand: "Bambu Home",
-    price: 50000,
-    currency: "Rp",
-    quantity: 1,
-    image:
-      "https://images.pexels.com/photos/6270663/pexels-photo-6270663.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  },
-];
 
 interface CartContextType {
   cartItems: CartItem[];
@@ -76,7 +30,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [cartItems, setCartItems] = useState<CartItem[]>(initialCartItems);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
   // Update selected items when cart items change
@@ -85,6 +39,19 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
       prev.filter((id) => cartItems.some((item) => item.id === id))
     );
   }, [cartItems]);
+
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      try {
+        const response = await axios.get("/carts");
+        setCartItems(response.data);
+      } catch (error) {
+        console.error("Failed to fetch cart items:", error);
+      }
+    };
+
+    fetchCartItems();
+  }, []);
 
   const selectItem = (id: string) => {
     if (selectedItems.includes(id)) {

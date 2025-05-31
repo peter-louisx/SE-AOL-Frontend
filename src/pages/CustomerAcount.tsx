@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { PenSquare, Trash2, User, ShoppingBag, Ticket } from "lucide-react";
+import {
+  PenSquare,
+  Trash2,
+  User,
+  ShoppingBag,
+  Ticket,
+  Loader2Icon,
+} from "lucide-react";
 import axios from "../api/axios";
 
 export default function CustomerAccount() {
@@ -12,9 +19,11 @@ export default function CustomerAccount() {
   });
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const [addresses, setAddresses] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(true); // Loading state
   const navigate = useNavigate();
 
   const fetchUser = async () => {
+    setLoading(true); // Start loading
     try {
       const token = localStorage.getItem("auth_token");
       if (!token) {
@@ -67,6 +76,8 @@ export default function CustomerAccount() {
       console.error("Fetch error:", error);
       localStorage.removeItem("auth_token");
       navigate("/login");
+    } finally {
+      setLoading(false); // End loading
     }
   };
 
@@ -222,16 +233,183 @@ export default function CustomerAccount() {
     fetchUser();
   }, []);
 
-  if (!user) return <div>Loading...</div>;
-
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-          {/* Sidebar */}
-          <div className="md:col-span-3">
-            <div className="bg-white rounded-lg p-6 shadow-sm">
-              <div className="flex items-center gap-3 mb-8">
+        {loading ? (
+          <div className="flex justify-center items-center min-h-[60vh]">
+            <div className="text-lg text-gray-600 animate-pulse">
+              Loading account...
+              <Loader2Icon className="inline-block animate-spin ml-2" />
+            </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+            {/* Sidebar */}
+            <div className="md:col-span-3">
+              <div className="bg-white rounded-lg p-6 shadow-sm">
+                <div className="flex items-center gap-3 mb-8">
+                  <img
+                    src={
+                      user?.profile
+                        ? `http://localhost:8000/storage/public/${user.profile}`
+                        : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                    }
+                    alt="Profile"
+                    className="w-12 h-12 rounded-full object-cover"
+                  />
+                  <div>
+                    <h2 className="font-semibold text-gray-900">
+                      {user?.name || "Guest"}
+                    </h2>
+                    <p className="text-sm text-gray-500">
+                      {user?.customer ? "Premium Member" : "Visitor"}
+                    </p>
+                  </div>
+                </div>
+                <nav className="space-y-2">
+                  <a href="/account">
+                    <button className="w-full flex items-center gap-3 px-4 py-2 text-white bg-[#9DC08B] bg-opacity-10 rounded-lg cursor-pointer">
+                      <User className="w-5 h-5" />
+                      <span>My Account</span>
+                    </button>
+                  </a>
+                  <a href="/order">
+                    <button className="w-full flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">
+                      <ShoppingBag className="w-5 h-5" />
+                      <span>My Orders</span>
+                    </button>
+                  </a>
+                  <a href="/voucher">
+                    <button className="w-full flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">
+                      <Ticket className="w-5 h-5" />
+                      <span>My Vouchers</span>
+                    </button>
+                  </a>
+                  <button
+                    onClick={handleLogout}
+                    className="w-full flex items-center gap-3 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg cursor-pointer"
+                  >
+                    <Trash2 className="w-5 h-5" />
+                    <span>Log Out</span>
+                  </button>
+                </nav>
+              </div>
+            </div>
+
+            {/* Profile & Addresses */}
+            <div className="md:col-span-6">
+              <div className="bg-white rounded-lg p-6 shadow-sm mb-6">
+                <h3 className="text-xl font-semibold mb-6 text-black">
+                  Personal Profile
+                </h3>
+                <form className="space-y-4" onSubmit={handleProfileSubmit}>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      value={profileForm.name}
+                      onChange={handleProfileChange}
+                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#9DC08B] focus:border-transparent text-black"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={profileForm.email}
+                      onChange={handleProfileChange}
+                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#9DC08B] focus:border-transparent text-black"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Phone Number
+                    </label>
+                    <input
+                      type="tel"
+                      name="phone_number"
+                      value={profileForm.phone_number}
+                      onChange={handleProfileChange}
+                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#9DC08B] focus:border-transparent text-black"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="bg-[#9DC08B] text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors"
+                  >
+                    Save
+                  </button>
+                </form>
+              </div>
+
+              <div className="bg-white rounded-lg p-6 shadow-sm">
+                <h3 className="text-xl font-semibold mb-6 text-black">
+                  Address
+                </h3>
+                <div className="space-y-4">
+                  {addresses.length > 0 ? (
+                    addresses.map((address) => (
+                      <div
+                        key={address.id}
+                        className="border border-gray-200 rounded-lg p-4"
+                      >
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="px-3 py-1 bg-[#9DC08B] bg-opacity-10 text-white rounded-md text-sm">
+                            {address.label}
+                          </span>
+                          <span className="text-gray-700">
+                            {user.name} | {user.phone_number}
+                          </span>
+                        </div>
+                        <p className="text-gray-600 mb-3">{address.address}</p>
+                        <div className="flex items-center gap-2">
+                          {/* Edit button placeholder - add edit functionality if you want */}
+                          <button
+                            onClick={() =>
+                              handleEditAddress(
+                                address.id,
+                                address.label,
+                                address.address
+                              )
+                            }
+                            className="text-gray-600 hover:text-[#9DC08B]"
+                          >
+                            <PenSquare className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => handleAddressDelete(address.id)}
+                            className="text-gray-600 hover:text-red-500"
+                            type="button"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-gray-500">No address available.</p>
+                  )}
+                  <button
+                    onClick={handleAddAddress}
+                    className="w-full border-2 border-dashed border-[#9DC08B] text-[#9DC08B] py-3 rounded-lg hover:bg-[#9DC08B] hover:text-white hover:bg-opacity-5 transition-colors"
+                    type="button"
+                  >
+                    + Add New Address
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Profile Picture */}
+            <div className="md:col-span-3">
+              <div className="bg-white rounded-lg p-6 shadow-sm text-center">
                 <img
                   src={
                     user?.profile
@@ -239,195 +417,37 @@ export default function CustomerAccount() {
                       : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
                   }
                   alt="Profile"
-                  className="w-12 h-12 rounded-full object-cover"
+                  className="w-48 h-48 rounded-full object-cover mx-auto mb-4"
                 />
-                <div>
-                  <h2 className="font-semibold text-gray-900">
-                    {user?.name || "Guest"}
-                  </h2>
-                  <p className="text-sm text-gray-500">
-                    {user?.customer ? "Premium Member" : "Visitor"}
-                  </p>
-                </div>
-              </div>
-              <nav className="space-y-2">
-                <a href="/account">
-                  <button className="w-full flex items-center gap-3 px-4 py-2 text-white bg-[#9DC08B] bg-opacity-10 rounded-lg cursor-pointer">
-                    <User className="w-5 h-5" />
-                    <span>My Account</span>
-                  </button>
-                </a>
-                <a href="/order">
-                  <button className="w-full flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">
-                    <ShoppingBag className="w-5 h-5" />
-                    <span>My Orders</span>
-                  </button>
-                </a>
-                <a href="/voucher">
-                  <button className="w-full flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">
-                    <Ticket className="w-5 h-5" />
-                    <span>My Vouchers</span>
-                  </button>
-                </a>
-                <button
-                  onClick={handleLogout}
-                  className="w-full flex items-center gap-3 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg cursor-pointer"
+                <input
+                  type="file"
+                  accept="image/*"
+                  id="profileImageInput"
+                  onChange={(e) =>
+                    setProfileImage(e.target.files ? e.target.files[0] : null)
+                  }
+                  className="hidden"
+                />
+                <label
+                  htmlFor="profileImageInput"
+                  className="w-full border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
                 >
-                  <Trash2 className="w-5 h-5" />
-                  <span>Log Out</span>
-                </button>
-              </nav>
-            </div>
-          </div>
-
-          {/* Profile & Addresses */}
-          <div className="md:col-span-6">
-            <div className="bg-white rounded-lg p-6 shadow-sm mb-6">
-              <h3 className="text-xl font-semibold mb-6 text-black">
-                Personal Profile
-              </h3>
-              <form className="space-y-4" onSubmit={handleProfileSubmit}>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={profileForm.name}
-                    onChange={handleProfileChange}
-                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#9DC08B] focus:border-transparent text-black"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={profileForm.email}
-                    onChange={handleProfileChange}
-                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#9DC08B] focus:border-transparent text-black"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Phone Number
-                  </label>
-                  <input
-                    type="tel"
-                    name="phone_number"
-                    value={profileForm.phone_number}
-                    onChange={handleProfileChange}
-                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#9DC08B] focus:border-transparent text-black"
-                  />
-                </div>
+                  Choose Image
+                </label>
                 <button
-                  type="submit"
-                  className="bg-[#9DC08B] text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors"
-                >
-                  Save
-                </button>
-              </form>
-            </div>
-
-            <div className="bg-white rounded-lg p-6 shadow-sm">
-              <h3 className="text-xl font-semibold mb-6 text-black">Address</h3>
-              <div className="space-y-4">
-                {addresses.length > 0 ? (
-                  addresses.map((address) => (
-                    <div
-                      key={address.id}
-                      className="border border-gray-200 rounded-lg p-4"
-                    >
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="px-3 py-1 bg-[#9DC08B] bg-opacity-10 text-white rounded-md text-sm">
-                          {address.label}
-                        </span>
-                        <span className="text-gray-700">
-                          {user.name} | {user.phone_number}
-                        </span>
-                      </div>
-                      <p className="text-gray-600 mb-3">{address.address}</p>
-                      <div className="flex items-center gap-2">
-                        {/* Edit button placeholder - add edit functionality if you want */}
-                        <button
-                          onClick={() =>
-                            handleEditAddress(
-                              address.id,
-                              address.label,
-                              address.address
-                            )
-                          }
-                          className="text-gray-600 hover:text-[#9DC08B]"
-                        >
-                          <PenSquare className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() => handleAddressDelete(address.id)}
-                          className="text-gray-600 hover:text-red-500"
-                          type="button"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-gray-500">No address available.</p>
-                )}
-                <button
-                  onClick={handleAddAddress}
-                  className="w-full border-2 border-dashed border-[#9DC08B] text-[#9DC08B] py-3 rounded-lg hover:bg-[#9DC08B] hover:text-white hover:bg-opacity-5 transition-colors"
+                  onClick={handleProfilePictureUpload}
+                  className="mt-2 w-full bg-[#9DC08B] text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-colors"
                   type="button"
                 >
-                  + Add New Address
+                  Upload
                 </button>
+                <p className="text-sm text-gray-500 mt-2">
+                  Max. 10 MB (*.JPG, *.PNG)
+                </p>
               </div>
             </div>
           </div>
-
-          {/* Profile Picture */}
-          <div className="md:col-span-3">
-            <div className="bg-white rounded-lg p-6 shadow-sm text-center">
-              <img
-                src={
-                  user?.profile
-                    ? `http://localhost:8000/storage/public/${user.profile}`
-                    : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-                }
-                alt="Profile"
-                className="w-48 h-48 rounded-full object-cover mx-auto mb-4"
-              />
-              <input
-                type="file"
-                accept="image/*"
-                id="profileImageInput"
-                onChange={(e) =>
-                  setProfileImage(e.target.files ? e.target.files[0] : null)
-                }
-                className="hidden"
-              />
-              <label
-                htmlFor="profileImageInput"
-                className="w-full border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
-              >
-                Choose Image
-              </label>
-              <button
-                onClick={handleProfilePictureUpload}
-                className="mt-2 w-full bg-[#9DC08B] text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-colors"
-                type="button"
-              >
-                Upload
-              </button>
-              <p className="text-sm text-gray-500 mt-2">
-                Max. 10 MB (*.JPG, *.PNG)
-              </p>
-            </div>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );
