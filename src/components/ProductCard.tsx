@@ -7,8 +7,8 @@ export interface Product {
   name: string;
   price: number;
   originalPrice?: number;
-  image: string;
-  rating: number;
+  product_url: string;
+  rating: string;
   reviews: number;
   inStock: boolean;
   discount?: number;
@@ -19,12 +19,16 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  //turn product.rating from string to number
+  const rating = parseFloat(product.rating);
+  const inStock = true;
+
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
       <Link to={`/product/${product.id}`} className="block">
         <div className="relative">
           <img
-            src={product.image}
+            src={product.product_url}
             alt={product.name}
             className="w-full h-48 object-cover"
           />
@@ -59,9 +63,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               {[...Array(5)].map((_, i) => (
                 <span
                   key={i}
-                  className={
-                    i < product.rating ? "text-yellow-400" : "text-gray-300"
-                  }
+                  className={i < rating ? "text-yellow-400" : "text-gray-300"}
                 >
                   ★
                 </span>
@@ -85,10 +87,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             </div>
             <span
               className={`text-xs font-medium ${
-                product.inStock ? "text-green-600" : "text-red-500"
+                inStock ? "text-green-600" : "text-red-500"
               }`}
             >
-              {product.inStock ? "In Stock" : "Out of Stock"}
+              {inStock ? "In Stock" : "Out of Stock"}
             </span>
           </div>
         </Link>
