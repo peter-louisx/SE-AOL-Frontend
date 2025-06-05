@@ -98,11 +98,7 @@ const Sidebar: React.FC = () => {
         <NavLink
           to="/seller/withdrawal"
           className={({ isActive }) =>
-            `flex items-center px-6 py-3 text-lg transition-colors ${
-              isActive
-                ? "bg-[#2A3C33] border-l-4 border-green-300"
-                : "hover:bg-[#2A3C33]"
-            }`
+            `flex items-center px-6 py-3 text-lg transition-colors ${"hover:bg-[#2A3C33]"}`
           }
           onClick={async () => {
             await axios
