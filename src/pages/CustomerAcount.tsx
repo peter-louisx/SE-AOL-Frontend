@@ -9,6 +9,7 @@ import {
   Loader2Icon,
 } from "lucide-react";
 import axios from "../api/axios";
+import { toast } from "react-toastify";
 
 export default function CustomerAccount() {
   const [user, setUser] = useState<any>(null);
@@ -83,10 +84,16 @@ export default function CustomerAccount() {
 
   const handleLogout = async () => {
     await axios
-      .post("http://localhost:8000/api/logout")
+      .post("/logout")
       .then(() => {
         localStorage.removeItem("auth_token");
-        navigate("/login");
+        localStorage.removeItem("role");
+        toast.success("Logged out successfully");
+        //time out for 0.5 seconds
+        setTimeout(() => {
+          navigate("/login");
+          window.location.reload();
+        }, 500);
       })
       .catch((error) => {
         console.error("Logout error:", error);

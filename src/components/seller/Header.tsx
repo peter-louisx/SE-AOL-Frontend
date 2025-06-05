@@ -19,7 +19,7 @@ const Header: React.FC = () => {
           </button>
         </div>
 
-        <div className="ml-auto">
+        <div className="ml-auto text-black">
           <Link to="/seller/account">
             <div className="flex items-center bg-gray-100 rounded py-4 px-6 hover:bg-gray-200 transition-colors">
               <Store size={18} className="text-[#3B5249] mr-2" />

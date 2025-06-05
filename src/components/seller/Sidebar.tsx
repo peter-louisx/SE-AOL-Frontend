@@ -7,9 +7,14 @@ import {
   LayoutDashboard,
   User,
   Wallet,
+  LogOut,
 } from "lucide-react";
+import axios from "../../api/axios";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Sidebar: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <aside className="w-64 bg-[#40513B] text-white hidden md:flex flex-col h-screen">
       <div className="p-4 flex items-center gap-2">
@@ -88,6 +93,37 @@ const Sidebar: React.FC = () => {
         >
           <Wallet className="mr-3" size={20} />
           Withdrawal
+        </NavLink>
+
+        <NavLink
+          to="/seller/withdrawal"
+          className={({ isActive }) =>
+            `flex items-center px-6 py-3 text-lg transition-colors ${
+              isActive
+                ? "bg-[#2A3C33] border-l-4 border-green-300"
+                : "hover:bg-[#2A3C33]"
+            }`
+          }
+          onClick={async () => {
+            await axios
+              .post("/logout")
+              .then(() => {
+                localStorage.removeItem("auth_token");
+                localStorage.removeItem("role");
+                toast.success("Logged out successfully");
+                //time out for 0.5 seconds
+                setTimeout(() => {
+                  navigate("/login");
+                  window.location.reload();
+                }, 500);
+              })
+              .catch((error) => {
+                console.error("Logout error:", error);
+              });
+          }}
+        >
+          <LogOut className="mr-3" size={20} />
+          Logout
         </NavLink>
       </nav>
 

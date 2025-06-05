@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Store, ChevronRight } from 'lucide-react';
-import { useAppContext } from '../../context/AppContext';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Store, ChevronRight } from "lucide-react";
+import { useAppContext } from "../../context/AppContext";
 
 const SAccount: React.FC = () => {
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ const SAccount: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,12 +44,15 @@ const SAccount: React.FC = () => {
         )}
       </div>
 
-      <div className="bg-white rounded-lg shadow p-6">
+      <div className="bg-white rounded-lg shadow p-6 text-black">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="flex items-start gap-8">
             <div className="flex-1 space-y-4">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Store Name
                 </label>
                 <input
@@ -64,7 +67,10 @@ const SAccount: React.FC = () => {
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Email
                 </label>
                 <input
@@ -79,7 +85,10 @@ const SAccount: React.FC = () => {
               </div>
 
               <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="phone"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Phone Number
                 </label>
                 <input
@@ -94,7 +103,10 @@ const SAccount: React.FC = () => {
               </div>
 
               <div>
-                <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="address"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Address
                 </label>
                 <input
@@ -109,7 +121,10 @@ const SAccount: React.FC = () => {
               </div>
 
               <div>
-                <label htmlFor="bankAccount" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="bankAccount"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Bank Account
                 </label>
                 <div className="flex gap-2">
@@ -117,7 +132,12 @@ const SAccount: React.FC = () => {
                     id="bankName"
                     name="bankName"
                     value={formData.bankName}
-                    onChange={(e) => setFormData(prev => ({ ...prev, bankName: e.target.value }))}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        bankName: e.target.value,
+                      }))
+                    }
                     disabled={!isEditing}
                     className="w-24 rounded-lg border border-gray-300 px-2 py-2 focus:ring-2 focus:ring-[#3B5249] focus:border-transparent disabled:bg-gray-100"
                   >
@@ -158,7 +178,9 @@ const SAccount: React.FC = () => {
                     onChange={handleImageChange}
                     className="cursor-pointer text-center block w-full text-xs text-gray-500 file:cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-[#609966] file:text-white hover:file:bg-[#40513B]"
                   />
-                  <p className="mt-1 text-xs text-gray-500 text-center">Max. 10 MB (*.JPG, *.PNG)</p>
+                  <p className="mt-1 text-xs text-gray-500 text-center">
+                    Max. 10 MB (*.JPG, *.PNG)
+                  </p>
                 </div>
               )}
             </div>
