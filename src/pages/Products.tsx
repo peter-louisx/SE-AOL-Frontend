@@ -1,33 +1,31 @@
-import React, { useState } from "react";
-import { Filter, ChevronDown, ChevronUp } from "lucide-react";
-
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  image: string;
-  category: string;
-  sustainability: string[];
-  brand: string;
-}
+import React, { useEffect, useState } from "react";
+import { Filter, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
+import ProductCard, { Product } from "../components/ProductCard";
+import axios from "../api/axios";
 
 const ProductListing: React.FC = () => {
   const [isCategoryOpen, setIsCategoryOpen] = useState(true);
   const [isSustainabilityOpen, setIsSustainabilityOpen] = useState(true);
   const [isBrandOpen, setIsBrandOpen] = useState(true);
 
-  const products: Product[] = Array(9)
-    .fill(null)
-    .map((_, index) => ({
-      id: index + 1,
-      name: "Coconut Bowl and Spoon",
-      price: 50000,
-      image:
-        "https://images.pexels.com/photos/5825560/pexels-photo-5825560.jpeg",
-      category: "Home & Living",
-      sustainability: ["Plastic-Free", "Biodegradable"],
-      brand: "EcoVibe Collective",
-    }));
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get("/products");
+        setProducts(response.data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -49,7 +47,6 @@ const ProductListing: React.FC = () => {
                   className="flex items-center justify-between w-full font-medium mb-2 text-black"
                   onClick={() => setIsCategoryOpen(!isCategoryOpen)}
                 >
-                  Category
                   {isCategoryOpen ? (
                     <ChevronUp size={18} />
                   ) : (
@@ -164,39 +161,20 @@ const ProductListing: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {products.map((product) => (
-                <div
-                  key={product.id}
-                  className="bg-white rounded-lg shadow-md overflow-hidden"
-                >
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-48 object-cover"
-                  />
-                  <div className="p-4">
-                    <div className="flex flex-wrap gap-1 mb-2">
-                      {product.sustainability.map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    <h3 className="font-medium mb-1 text-black">
-                      {product.name}
-                    </h3>
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-lg font-bold">
-                        Rp{product.price.toLocaleString()}
-                      </span>
-                      <span className="text-sm text-gray-500">/ 120 sold</span>
-                    </div>
-                  </div>
+              {loading ? (
+                <div className="col-span-3 text-center text-gray-500 py-12">
+                  Loading products...{" "}
+                  <Loader2 className="inline-block animate-spin" />
                 </div>
-              ))}
+              ) : products.length > 0 ? (
+                products.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))
+              ) : (
+                <div className="col-span-3 text-center text-gray-500">
+                  No products found.
+                </div>
+              )}
             </div>
 
             {/* Pagination */}
