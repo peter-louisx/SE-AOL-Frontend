@@ -29,10 +29,20 @@ export default function Login() {
     try {
       const response = await axios.post("/login", { email, password });
       const token = response.data.token;
+      const role = response.data.role;
 
       // Save token for subsequent requests
       localStorage.setItem("auth_token", token);
       navigate("/");
+
+      if (role == "seller") {
+        localStorage.setItem("role", "seller");
+        navigate("/seller/dashboard");
+      } else {
+        localStorage.setItem("role", "customer");
+        navigate("/");
+      }
+
       window.location.reload();
     } catch (error) {
       toast.error("Login failed. Please check your credentials.");
