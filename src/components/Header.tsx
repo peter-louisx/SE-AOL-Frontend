@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Search, ShoppingBag, User, Menu, X } from "lucide-react";
+import { Search, ShoppingBag, User, Menu, X, Recycle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
@@ -54,6 +54,13 @@ const Header: React.FC = () => {
               className="text-sm hover:text-green-200 transition-colors"
             >
               Green Game
+            </Link>
+            <Link
+              to="/upcycle"
+              className="text-sm hover:text-green-200 transition-colors flex items-center"
+            >
+              <Recycle size={20} className="mr-1" />
+              <span>Upcycle</span>
             </Link>
             <Link
               to="/account"
