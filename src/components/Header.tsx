@@ -44,12 +44,6 @@ const Header: React.FC = () => {
               Categories
             </Link>
             <Link
-              to="/products"
-              className="text-sm hover:text-green-200 transition-colors"
-            >
-              Deals
-            </Link>
-            <Link
               to="/green-game"
               className="text-sm hover:text-green-200 transition-colors"
             >
@@ -111,12 +105,6 @@ const Header: React.FC = () => {
               className="text-white py-2 hover:bg-[#4B6F44] px-2 rounded transition-colors"
             >
               Categories
-            </Link>
-            <Link
-              to="/products"
-              className="text-white py-2 hover:bg-[#4B6F44] px-2 rounded transition-colors"
-            >
-              Deals
             </Link>
             <Link
               to="/green-game"

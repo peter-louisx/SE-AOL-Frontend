@@ -80,28 +80,6 @@ const GreenGame: React.FC = () => {
               <h2 className="text-sm text-gray-600 mb-1">My GreenPoints</h2>
               <div className="text-4xl font-bold text-[#2d4a29]">6,789</div>
             </div>
-            <div className="flex gap-4">
-              {[1, 2, 3].map((bag) => (
-                <div
-                  key={bag}
-                  className={`w-16 h-16 rounded-lg ${
-                    bag === 1
-                      ? "bg-green-100"
-                      : bag === 2
-                      ? "bg-blue-100"
-                      : "bg-amber-100"
-                  } flex items-center justify-center`}
-                >
-                  <img
-                    src={`https://via.placeholder.com/40x40/${
-                      bag === 1 ? "4B6F44" : bag === 2 ? "4B6F88" : "8B6F44"
-                    }/FFFFFF`}
-                    alt={`Achievement ${bag}`}
-                    className="w-10 h-10"
-                  />
-                </div>
-              ))}
-            </div>
           </div>
         </div>
 
