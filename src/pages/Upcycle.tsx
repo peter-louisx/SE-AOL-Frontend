@@ -240,7 +240,7 @@ const Upcycle: React.FC = () => {
                     </label>
                     <input
                       type="date"
-                      className="w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
+                      className="w-full p-2 border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                       value={formData.preferredDate}
                       onChange={(e) =>
                         setFormData({
