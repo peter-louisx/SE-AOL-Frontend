@@ -31,7 +31,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
         </div>
         <div className="p-5 flex flex-col flex-grow">
           <div className="mb-1">
-            <span className="text-xs font-medium bg-green-100 text-green-800 px-2 py-1 rounded-full">
+            <span className="text-xs font-medium bg-[#EDF1D6] text-[#40513B] px-2 py-1 rounded-full">
               {article.category}
             </span>
             <span className="text-xs text-gray-500 ml-2">{article.date}</span>
@@ -40,7 +40,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
           <p className="text-gray-600 text-sm flex-grow">{article.excerpt}</p>
           <button 
             onClick={() => navigate(`/blog/${article.id}`)}
-            className="mt-4 text-green-700 font-medium text-sm hover:text-green-800 transition-colors flex items-center cursor-pointer"
+            className="mt-4 text-[green-700] font-medium text-sm hover:text-green-800 transition-colors flex items-center cursor-pointer"
             >
             Read More
             </button>

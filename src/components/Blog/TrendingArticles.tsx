@@ -15,7 +15,7 @@ const TrendingArticles: React.FC<TrendingArticlesProps> = ({ articles }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-[#DCE8B0] p-6 rounded-xl shadow-md">
+    <div className="bg-[#EDF1D6] p-6 rounded-xl shadow-md">
       <h3 className="text-xl font-semibold mb-4 text-gray-900">
         Trending Articles
       </h3>
@@ -23,7 +23,7 @@ const TrendingArticles: React.FC<TrendingArticlesProps> = ({ articles }) => {
         {articles.map(article => (
           <div
             key={article.id}
-            className="flex items-center space-x-3 cursor-pointer hover:bg-green-50 p-2 rounded-lg transition-colors duration-150 ease-in-out" // Ganti hover bg dan tambahkan transisi
+            className="flex items-center space-x-3 cursor-pointer hover:bg-[#9DC08B] p-2 rounded-lg transition-colors duration-150 ease-in-out" // Ganti hover bg dan tambahkan transisi
             onClick={() => navigate(`/blog/${article.id}`)}
           >
             <img

@@ -21,7 +21,7 @@ const BlogDetail: React.FC = () => {
         <main className="flex-grow container mx-auto px-4 py-8">
         <button
           onClick={() => navigate('/Blog')}
-          className="cursor-pointer flex items-center text-green-700 hover:text-green-800 transition-colors mb-6 group"
+          className="cursor-pointer flex items-center text-[#40513B] hover:text-green-800 transition-colors mb-6 group"
           >
           <ArrowLeft className="w-5 h-5 mr-2 transform group-hover:-translate-x-1 transition-transform" />
           Back to Blog
@@ -37,7 +37,7 @@ const BlogDetail: React.FC = () => {
               
               <div className="bg-white p-6 md:p-8 rounded-lg shadow-md">
                 <div className="mb-4">
-                  <span className="text-sm font-medium bg-green-100 text-green-800 px-3 py-1 rounded-full">
+                  <span className="text-sm font-medium bg-[#EDF1D6] text-[#40513B] px-3 py-1 rounded-full">
                     {article.category}
                   </span>
                   <span className="text-sm text-gray-500 ml-3">{article.date}</span>

@@ -211,7 +211,7 @@ const Upcycle: React.FC = () => {
                       onChange={(e) =>
                         setFormData({ ...formData, photos: e.target.files })
                       }
-                      className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold p-2 file:bg-[#eaf4e2] file:text-[#609966] hover:file:bg-[#d2e3c8]"
+                      className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold p-2 file:bg-[#EDF1D6] file:text-[#40513B] hover:file:bg-[#d2e3c8] cursor-pointer hover:file:cursor-pointer"
                     />
                   </div>
 
