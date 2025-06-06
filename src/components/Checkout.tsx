@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import { ArrowLeft, MapPin, Edit3 } from "lucide-react";
 import { useCart } from "../context/CartContext";
+import { toast } from "react-toastify";
 
-const Checkout: React.FC = () => {
+type CheckoutProps = {
+  onSuccess: () => void;
+};
+
+const Checkout: React.FC<CheckoutProps> = ({ onSuccess }) => {
   const { cartItems, selectedItems, getTotalPrice } = useCart();
   const [selectedPayment, setSelectedPayment] = useState("bri");
   const [selectedDelivery, setSelectedDelivery] = useState("economy");
@@ -69,7 +74,11 @@ const Checkout: React.FC = () => {
   ];
 
   const handlePayNow = () => {
-    alert("Payment processing...");
+    //set timeout to simulate payment processing
+    toast.success("Payment successful!");
+    setTimeout(() => {
+      onSuccess();
+    }, 2000);
   };
 
   return (
@@ -164,7 +173,7 @@ const Checkout: React.FC = () => {
                 Delivery
               </h2>
 
-              <div className="space-y-3">
+              <div className="space-y-3 flex flex-col gap-2">
                 {deliveryOptions.map((option) => (
                   <label key={option.id} className="cursor-pointer">
                     <input
@@ -173,7 +182,7 @@ const Checkout: React.FC = () => {
                       value={option.id}
                       checked={selectedDelivery === option.id}
                       onChange={(e) => setSelectedDelivery(e.target.value)}
-                      className="sr-only"
+                      className="sr-only "
                     />
                     <div
                       className={`flex items-center justify-between p-3 border-2 rounded-lg transition-all ${

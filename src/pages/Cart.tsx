@@ -2,12 +2,9 @@ import React, { useState } from "react";
 import CartHeader from "../components/CartHeader";
 import CartItem from "../components/CartItem";
 import CartSummary from "../components/CartSummary";
-import {
-  useCart,
-  CartItem as CartItemType,
-  CartProvider,
-} from "../context/CartContext";
+import { useCart, CartProvider } from "../context/CartContext";
 import Checkout from "../components/Checkout";
+import CheckoutSuccess from "../components/CheckoutSuccess";
 
 interface CartPageProps {
   onCheckout: () => void;
@@ -62,14 +59,18 @@ const Cart: React.FC<CartPageProps> = ({ onCheckout }) => {
 };
 
 const CartPage: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState<"cart" | "checkout">("cart");
+  const [currentPage, setCurrentPage] = useState<
+    "cart" | "checkout" | "success"
+  >("cart");
   return (
     <CartProvider>
-      {currentPage === "cart" ? (
+      {currentPage === "cart" && (
         <Cart onCheckout={() => setCurrentPage("checkout")} />
-      ) : (
-        <Checkout />
       )}
+      {currentPage === "checkout" && (
+        <Checkout onSuccess={() => setCurrentPage("success")} />
+      )}
+      {currentPage === "success" && <CheckoutSuccess />}
     </CartProvider>
   );
 };
