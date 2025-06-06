@@ -144,7 +144,7 @@ const Upcycle: React.FC = () => {
 
         {/* Request Modal */}
         {selectedVendor && (
-          <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center p-4 z-50 text-black">
+          <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50 text-black">
             <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-[#e0eedd]">
               <div className="p-8">
                 <div className="flex justify-between items-center mb-8">

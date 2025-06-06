@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Filter, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
+import { Filter, ChevronDown, ChevronUp } from "lucide-react";
 import ProductCard, { Product } from "../components/ProductCard";
 import axios from "../api/axios";
 
@@ -163,9 +163,18 @@ const ProductListing: React.FC = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {loading ? (
-                <div className="col-span-3 text-center text-gray-500 py-12">
-                  Loading products...{" "}
-                  <Loader2 className="inline-block animate-spin" />
+                <div className="col-span-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {[...Array(6)].map((_, idx) => (
+                    <div
+                      key={idx}
+                      className="bg-white rounded-lg shadow p-4 animate-pulse flex flex-col gap-4"
+                    >
+                      <div className="h-40 bg-gray-200 rounded w-full" />
+                      <div className="h-4 bg-gray-200 rounded w-3/4" />
+                      <div className="h-4 bg-gray-200 rounded w-1/2" />
+                      <div className="h-6 bg-gray-200 rounded w-1/3 mt-2" />
+                    </div>
+                  ))}
                 </div>
               ) : products.length > 0 ? (
                 products.map((product) => (

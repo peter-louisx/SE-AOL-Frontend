@@ -62,6 +62,11 @@ const CartPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<
     "cart" | "checkout" | "success"
   >("cart");
+
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentPage]);
+
   return (
     <CartProvider>
       {currentPage === "cart" && (
