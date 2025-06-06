@@ -84,39 +84,39 @@ const Upcycle: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-[#eaf4e2] via-[#f3f7f2] to-[#d2e3c8] py-12">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold text-[#2d4a29] mb-4">
-            Custom Upcycling Service
+        <div className="text-center mb-16">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-[#2d4a29] mb-4 tracking-tight">
+            Upcycle Hub
           </h1>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-gray-700 max-w-2xl mx-auto text-lg">
             Give your unused items a second life! Connect with our trusted
             upcycling vendors who will transform your waste into beautiful,
             functional pieces.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {vendors.map((vendor) => (
             <div
               key={vendor.id}
-              className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transform hover:scale-105 transition-transform duration-300"
+              className="bg-white rounded-3xl shadow-xl overflow-hidden cursor-pointer hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-[#e0eedd]"
               onClick={() => setSelectedVendor(vendor)}
             >
               <img
                 src={vendor.image}
                 alt={vendor.name}
-                className="w-full h-48 object-cover"
+                className="w-full h-56 object-cover"
               />
-              <div className="p-6">
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">
+              <div className="p-7">
+                <h3 className="text-2xl font-bold text-[#40513B] mb-2">
                   {vendor.name}
                 </h3>
                 <div className="flex items-center mb-2">
                   <div className="flex items-center text-yellow-400 mr-2">
-                    <Star className="fill-current" size={16} />
-                    <span className="ml-1">{vendor.rating}</span>
+                    <Star className="fill-current" size={18} />
+                    <span className="ml-1 font-semibold">{vendor.rating}</span>
                   </div>
                   <span className="text-gray-500 text-sm">
                     ({vendor.reviews} reviews)
@@ -130,13 +130,13 @@ const Upcycle: React.FC = () => {
                   {vendor.specialties.map((specialty, index) => (
                     <span
                       key={index}
-                      className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full"
+                      className="bg-[#EDF1D6] text-[#40513B] text-xs px-3 py-1 rounded-full font-semibold"
                     >
                       {specialty}
                     </span>
                   ))}
                 </div>
-                <p className="text-gray-600 text-sm">{vendor.description}</p>
+                <p className="text-gray-600 text-base">{vendor.description}</p>
               </div>
             </div>
           ))}
@@ -144,28 +144,28 @@ const Upcycle: React.FC = () => {
 
         {/* Request Modal */}
         {selectedVendor && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 text-black">
-            <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-              <div className="p-6">
-                <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-2xl font-bold text-gray-800">
+          <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center p-4 z-50 text-black">
+            <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-[#e0eedd]">
+              <div className="p-8">
+                <div className="flex justify-between items-center mb-8">
+                  <h2 className="text-2xl md:text-3xl font-bold text-[#40513B]">
                     Request Upcycling Service
                   </h2>
                   <button
                     onClick={() => setSelectedVendor(null)}
-                    className="text-gray-500 hover:text-gray-700"
+                    className="text-gray-400 hover:text-[#609966] transition-colors"
                   >
-                    <X size={24} />
+                    <X size={28} />
                   </button>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-7">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-semibold text-[#40513B] mb-2">
                       Item Type
                     </label>
                     <select
-                      className="w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 p-2"
+                      className="w-full border-[#b7d3b0] rounded-lg shadow-sm focus:ring-[#609966] focus:border-[#609966] p-3"
                       value={formData.itemType}
                       onChange={(e) =>
                         setFormData({ ...formData, itemType: e.target.value })
@@ -182,11 +182,11 @@ const Upcycle: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-semibold text-[#40513B] mb-2">
                       Description
                     </label>
                     <textarea
-                      className="w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 p-2"
+                      className="w-full border-[#b7d3b0] rounded-lg shadow-sm focus:ring-[#609966] focus:border-[#609966] p-3"
                       rows={4}
                       value={formData.description}
                       onChange={(e) =>
@@ -201,7 +201,7 @@ const Upcycle: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-semibold text-[#40513B] mb-2">
                       Photos
                     </label>
                     <input
@@ -211,17 +211,17 @@ const Upcycle: React.FC = () => {
                       onChange={(e) =>
                         setFormData({ ...formData, photos: e.target.files })
                       }
-                      className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold p-2 file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
+                      className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold p-2 file:bg-[#eaf4e2] file:text-[#609966] hover:file:bg-[#d2e3c8]"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-semibold text-[#40513B] mb-2">
                       Pickup Address
                     </label>
                     <input
                       type="text"
-                      className="w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 p-2"
+                      className="w-full border-[#b7d3b0] rounded-lg shadow-sm focus:ring-[#609966] focus:border-[#609966] p-3"
                       value={formData.pickupAddress}
                       onChange={(e) =>
                         setFormData({
@@ -235,12 +235,12 @@ const Upcycle: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-semibold text-[#40513B] mb-2">
                       Preferred Pickup Date
                     </label>
                     <input
                       type="date"
-                      className="w-full p-2 border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
+                      className="w-full p-3 border-[#b7d3b0] rounded-lg shadow-sm focus:ring-[#609966] focus:border-[#609966]"
                       value={formData.preferredDate}
                       onChange={(e) =>
                         setFormData({
@@ -255,7 +255,7 @@ const Upcycle: React.FC = () => {
 
                   <button
                     type="submit"
-                    className="w-full bg-green-600 text-white py-3 px-6 rounded-md hover:bg-green-700 transition-colors duration-300"
+                    className="w-full bg-[#609966] text-white py-3 px-6 rounded-lg font-semibold text-lg hover:bg-[#40513B] transition-colors duration-300 shadow"
                   >
                     Submit Request
                   </button>

@@ -71,86 +71,167 @@ const GreenGame: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#f3f7f2]">
-      <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen">
+      <div className="container mx-auto px-8 py-8">
         {/* Points Overview */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-sm text-gray-600 mb-1">My GreenPoints</h2>
-              <div className="text-4xl font-bold text-[#2d4a29]">6,789</div>
+        <div
+          className="rounded-4xl shadow-md p-0 mb-8 flex items-stretch"
+          style={{
+            background: "linear-gradient(90deg, #EDF1D6 0%, #E4ECD7 100%)",
+            minHeight: 220,
+          }}
+        >
+          <div className="flex flex-col justify-center px-12 py-10 w-full md:w-1/2">
+            <h2 className="text-xl md:text-2xl text-[#40513B] mb-2 font-medium">
+              My GreenPoints
+            </h2>
+            <div className="text-6xl md:text-7xl font-extrabold text-[#40513B] mb-6 tracking-tight">
+              6.789
             </div>
+          </div>
+          <div className="hidden md:flex items-center justify-center w-1/2 bg-transparent">
+            <img
+              src="./src/assets/image.png"
+              className="object-contain h-full max-h-120"
+              style={{ marginRight: "2rem" }}
+            />
           </div>
         </div>
 
         {/* Leaderboard */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <h2 className="text-xl font-bold text-[#2d4a29] mb-4">
-            This Month's Top Eco-Warriors
-          </h2>
+        <div className="bg-white rounded-4xl mb-8 mt-20">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+            <h2 className="text-2xl font-bold text-black mb-2 md:mb-0">
+              This Month's Top Eco-Warriors
+            </h2>
+            <span className="text-base text-gray-700 text-right">
+              You’re currently ranked{" "}
+              <span className="font-bold">5th</span> out of 196.890 warriors.
+            </span>
+          </div>
           <div className="overflow-x-auto">
-            <table className="w-full text-black text-left">
-              <thead>
-                <tr className="text-left border-b border-gray-200">
-                  <th className="pb-3 text-gray-600">Rank</th>
-                  <th className="pb-3 text-gray-600">Username</th>
-                  <th className="pb-3 text-gray-600 text-right">GreenPoints</th>
-                </tr>
-              </thead>
-              <tbody>
-                {leaderboard.map((user) => (
-                  <tr
-                    key={user.rank}
-                    className="border-b last:border-0 border-gray-200"
-                  >
-                    <td className="py-3 font-medium">{user.rank}</td>
-                    <td className="py-3">{user.username}</td>
-                    <td className="py-3 text-right">
-                      {user.points.toLocaleString()}
-                    </td>
+            <div
+              className="rounded-3xl"
+              style={{
+                border: "3px solid #b7d3b0",
+                borderRadius: "24px",
+                overflow: "hidden",
+              }}
+            >
+              <table className="w-full text-black text-left">
+                <thead>
+                  <tr>
+                    <th
+                      className="py-3 px-6 text-[#444] font-bold bg-white border-b border-[#b7d3b0]"
+                      style={{
+                        borderRight: "1px solid #b7d3b0",
+                      }}
+                    >
+                      Rank
+                    </th>
+                    <th
+                      className="py-3 px-6 text-[#444] font-bold bg-white border-b border-[#b7d3b0]"
+                      style={{
+                        borderRight: "1px solid #b7d3b0",
+                      }}
+                    >
+                      Username
+                    </th>
+                    <th className="py-3 px-6 text-[#444] font-bold text-right bg-white border-b border-[#b7d3b0]">
+                      GreenPoints
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {leaderboard.map((user, idx) => (
+                    <tr
+                      key={user.rank}
+                      style={{
+                        borderBottom:
+                          idx === leaderboard.length - 1
+                            ? "none"
+                            : "1px solid #b7d3b0",
+                        background: "#fff",
+                      }}
+                    >
+                      <td
+                        className="py-3 px-6 font-medium"
+                        style={{
+                          color:
+                            user.rank === 1
+                              ? "#F4B400"
+                              : user.rank === 2
+                              ? "#888"
+                              : user.rank === 3
+                              ? "#A0521D"
+                              : "#444",
+                          fontWeight: user.rank <= 3 ? 700 : 400,
+                          borderRight: "1px solid #b7d3b0",
+                        }}
+                      >
+                        {user.rank}
+                      </td>
+                      <td
+                        className="py-3 px-6"
+                        style={{
+                          borderRight: "1px solid #b7d3b0",
+                        }}
+                      >
+                        {user.username}
+                      </td>
+                      <td className="py-3 px-6 text-right">
+                        {user.points.toLocaleString()}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div className="text-gray-600 text-sm mt-4">
+            Note: The top 3 warriors each month will receive exclusive Trashure
+            merchandise.
           </div>
         </div>
 
         {/* Rewards */}
-        <h2 className="text-xl font-bold text-[#2d4a29] mb-4">
-          Redeem Your GreenPoints
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          {rewards.map((reward) => (
-            <div
-              key={reward.id}
-              className="bg-white rounded-lg shadow-md p-6 text-left text-black"
-            >
-              <h3 className="font-bold text-lg mb-2">{reward.title}</h3>
-              <p className="text-sm text-gray-600 mb-4">{reward.description}</p>
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">
-                  {reward.points} Points
-                </span>
-                <button className="bg-[#4B6F44] text-white px-4 py-2 rounded-md hover:bg-[#3d5a37] transition-colors">
-                  Redeem
-                </button>
+        <div className="bg-[#9DC08B] p-8 rounded-4xl mt-20 mb-8">
+          <h2 className="text-2xl font-bold mb-8">
+            Redeem Your GreenPoints
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {rewards.map((reward) => (
+              <div
+                key={reward.id}
+                className="bg-[#EDF1D6] rounded-2xl shadow-md p-6 text-left text-black"
+              >
+                <h3 className="font-bold text-lg mb-2">{reward.title}</h3>
+                <p className="text-sm text-gray-600 mb-4">{reward.description}</p>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">
+                    {reward.points} GreenPoints
+                  </span>
+                  <button className="bg-[#609966] text-white px-4 py-2 rounded-lg hover:bg-[#40513B] transition-colors">
+                    Redeem
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
         {/* Challenges */}
-        <h2 className="text-xl font-bold text-[#2d4a29] mb-4">
+        <h2 className="text-2xl font-bold text-[#2d4a29] mb-4 mt-20">
           Join Eco-Challenges
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left mb-8">
           {challenges.map((challenge) => (
             <div
               key={challenge.id}
               className="bg-white rounded-lg shadow-md p-6"
             >
               <div className="flex items-start gap-4">
-                <div className="p-3 bg-green-100 rounded-lg text-green-600">
+                <div className="p-3 bg-[#EDF1D6] rounded-lg text-[#609966]">
                   {challenge.icon}
                 </div>
                 <div className="flex-1">
@@ -162,7 +243,7 @@ const GreenGame: React.FC = () => {
                   </p>
                   <div className="w-full bg-gray-200 rounded-full h-2 mb-2">
                     <div
-                      className="bg-green-600 h-2 rounded-full"
+                      className="bg-[#609966] h-2 rounded-full"
                       style={{
                         width: `${
                           (challenge.progress / challenge.total) * 100
@@ -174,7 +255,7 @@ const GreenGame: React.FC = () => {
                     <span className="text-gray-600">
                       {challenge.progress} / {challenge.total}
                     </span>
-                    <span className="font-medium text-green-600">
+                    <span className="font-medium text-[#609966]">
                       {challenge.points} GreenPoints
                     </span>
                   </div>
