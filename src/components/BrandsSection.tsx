@@ -59,7 +59,7 @@ const BrandsSection: React.FC<BrandsSectionProps> = ({ title }) => {
             : brands.map((brand) => (
                 <Link
                   key={brand.id}
-                  to={`/brands/${brand.id}`}
+                  to={`/brand/${brand.id}`}
                   className="flex items-center justify-center bg-white text-black rounded-lg shadow-sm hover:shadow-md p-4 transition-shadow"
                 >
                   <img
