@@ -15,6 +15,7 @@ export type CartItem = {
 interface CartContextType {
   cartItems: CartItem[];
   selectedItems: string[];
+  loading: boolean;
   selectItem: (id: string) => void;
   selectAllItems: () => void;
   deselectAllItems: () => void;
@@ -32,6 +33,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   // Update selected items when cart items change
   useEffect(() => {
@@ -44,9 +46,11 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     const fetchCartItems = async () => {
       try {
         const response = await axios.get("/carts");
+        setLoading(false);
         setCartItems(response.data);
       } catch (error) {
         console.error("Failed to fetch cart items:", error);
+        setLoading(false);
       }
     };
 
@@ -105,6 +109,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         cartItems,
         selectedItems,
+        loading,
         selectItem,
         selectAllItems,
         deselectAllItems,

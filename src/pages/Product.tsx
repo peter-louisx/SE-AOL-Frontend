@@ -91,6 +91,10 @@ const Product: React.FC = () => {
         product_id: product?.id,
         quantity: quantity,
       })
+      .then(() => {
+        toast.success("Product added to cart successfully!");
+        setQuantity(1); // Reset quantity after adding to cart
+      })
       .catch(() => {
         toast.error("Failed to add product to cart. Please try again later.");
       });

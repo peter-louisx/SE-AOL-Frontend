@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { useCart } from "../context/CartContext";
-import { toast } from "react-toastify";
 
-const CartSummary: React.FC = () => {
+interface CartSummaryProps {
+  onCheckout: () => void;
+}
+
+const CartSummary: React.FC<CartSummaryProps> = ({ onCheckout }) => {
   const { getTotalPrice, selectedItems } = useCart();
   const [voucher, setVoucher] = useState("");
 
@@ -11,12 +14,12 @@ const CartSummary: React.FC = () => {
 
   const handleCheckout = () => {
     if (!hasSelectedItems) return;
-    toast.success("Checkout successful!");
+    onCheckout();
   };
 
   return (
     <div className="bg-white rounded-lg p-6 shadow-sm text-black">
-      <h2 className="text-lg font-medium mb-4 ">Summary</h2>
+      <h2 className="text-lg font-medium mb-4">Summary</h2>
 
       <div className="flex justify-between items-center mb-4">
         <span className="text-gray-700">Total:</span>
