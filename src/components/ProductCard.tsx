@@ -1,6 +1,6 @@
 import React from "react";
-import { ShoppingBag, Heart } from "lucide-react";
-import { Link } from "react-router-dom";
+import { ShoppingBag } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 
 export interface Product {
   id: number;
@@ -12,6 +12,7 @@ export interface Product {
   reviews: number;
   inStock: boolean;
   discount?: number;
+  tags?: string[]; // e.g. ["Plastic-Free", "Organic"]
 }
 
 interface ProductCardProps {
@@ -19,92 +20,77 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  //turn product.rating from string to number
   const rating = parseFloat(product.rating);
-  const inStock = true;
+  //mathrandom a review from 100 - 300
+  product.reviews = Math.floor(Math.random() * (300 - 100 + 1)) + 100;
+
+  // Format number with dots for thousands (Indonesian style)
+  const formatNumber = (num: number) => {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
+
+  const navigate = useNavigate();
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-      <Link to={`/product/${product.id}`} className="block">
-        <div className="relative">
-          <img
-            src={product.product_url}
-            alt={product.name}
-            className="w-full h-48 object-cover"
-          />
-          <button
-            className="absolute top-2 right-2 bg-white p-1.5 rounded-full shadow-md hover:bg-gray-100 transition-colors"
-            onClick={(e) => {
-              e.preventDefault();
-              // Handle wishlist logic here
-            }}
-          >
-            <Heart
-              size={18}
-              className="text-gray-500 hover:text-red-500 transition-colors"
-            />
-          </button>
-          {product.discount && (
-            <span className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">
-              {product.discount}% OFF
-            </span>
-          )}
-        </div>
-      </Link>
-
-      <div className="p-4">
-        <Link to={`/products/${product.id}`} className="block">
-          <h3 className="font-medium text-gray-800 mb-1 truncate text-left">
-            {product.name}
-          </h3>
-
-          <div className="flex items-center mb-2">
-            <div className="flex text-yellow-400">
-              {[...Array(5)].map((_, i) => (
-                <span
-                  key={i}
-                  className={i < rating ? "text-yellow-400" : "text-gray-300"}
-                >
-                  ★
-                </span>
-              ))}
-            </div>
-            <span className="text-xs text-gray-500 ml-1">
-              ({product.reviews})
-            </span>
-          </div>
-
-          <div className="flex items-center justify-between mb-3">
-            <div>
-              <span className="font-bold text-[#4B6F44] text-lg">
-                ${product.price.toFixed(2)}
-              </span>
-              {product.originalPrice && (
-                <span className="text-gray-500 text-sm line-through ml-2">
-                  ${product.originalPrice.toFixed(2)}
-                </span>
-              )}
-            </div>
+    <div
+      className="bg-[#F4F8E8] rounded-xl shadow border border-[#E3E8D9] overflow-hidden flex flex-col relative cursor-pointer"
+      onClick={() => navigate(`/product/${product.id}`)}
+    >
+      <div className="pb-0 flex flex-col items-center">
+        <img
+          src={product.product_url}
+          alt={product.name}
+          className="w-full h-40 object-cover mb-2"
+        />
+      </div>
+      <div className="flex flex-col flex-1 justify-between p-4 pt-2">
+        {/* Tags */}
+        <div className="flex gap-2 mb-2">
+          {(product.tags || ["Plastic-Free", "Organic"]).map((tag) => (
             <span
-              className={`text-xs font-medium ${
-                inStock ? "text-green-600" : "text-red-500"
-              }`}
+              key={tag}
+              className="bg-[#D1E7C6] text-[#4B6F44] text-xs font-semibold px-3 py-1 rounded-full"
             >
-              {inStock ? "In Stock" : "Out of Stock"}
+              {tag}
             </span>
-          </div>
-        </Link>
-
+          ))}
+        </div>
+        {/* Name */}
+        <h3 className="font-bold text-lg text-[#222] mb-1">{product.name}</h3>
+        {/* Price */}
+        <div className="mb-2">
+          <span className="font-bold text-[#4B6F44] text-xl">
+            Rp{formatNumber(product.price)}
+          </span>
+        </div>
+        {/* Rating and sold */}
+        <div className="flex items-center text-sm text-[#4B6F44] mb-3">
+          <span className="flex items-center mr-1">
+            <svg
+              width="16"
+              height="16"
+              fill="currentColor"
+              className="text-[#4B6F44] mr-1"
+              viewBox="0 0 20 20"
+            >
+              <path d="M10 15l-5.878 3.09 1.122-6.545L.488 6.91l6.561-.955L10 0l2.951 5.955 6.561.955-4.756 4.635 1.122 6.545z" />
+            </svg>
+            {rating.toFixed(1)}
+          </span>
+          <span className="text-gray-500 ml-1">| {product.reviews} sold</span>
+        </div>
+        {/* Add to cart button */}
         <button
-          className="w-full bg-[#4B6F44] hover:bg-[#3d5a37] text-white py-2 px-4 rounded flex items-center justify-center space-x-2 transition-colors"
+          className="w-full bg-[#4B6F44] hover:bg-[#3d5a37] text-white py-2 rounded-full flex items-center justify-center text-base font-semibold transition-colors"
           disabled={!product.inStock}
           onClick={(e) => {
             e.preventDefault();
+            e.stopPropagation();
             // Handle add to cart logic here
           }}
         >
-          <ShoppingBag size={16} />
-          <span>Add to Cart</span>
+          <ShoppingBag size={18} className="mr-2" />
+          <span>Add</span>
         </button>
       </div>
     </div>

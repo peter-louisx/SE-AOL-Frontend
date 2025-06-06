@@ -1,225 +1,117 @@
 import React from "react";
-import {
-  Facebook,
-  Twitter,
-  Instagram,
-  Youtube,
-  Linkedin,
-  Mail,
-  Phone,
-  MapPin,
-} from "lucide-react";
+import { Facebook, Twitter, Instagram, Youtube } from "lucide-react";
+
+const paymentIcons = [
+  "/payments/1.png",
+  "/payments/2.png",
+  // "/payments/3.png",
+  "/payments/4.png",
+  "/payments/5.png",
+  "/payments/6.png",
+  "/payments/7.png",
+  "/payments/8.png",
+];
+
+const socialLinks = [
+  { icon: <Instagram size={24} />, href: "#" },
+  { icon: <Twitter size={24} />, href: "#" },
+  { icon: <Youtube size={24} />, href: "#" },
+  { icon: <Facebook size={24} />, href: "#" },
+];
 
 const Footer: React.FC = () => {
   return (
     <footer className="bg-[#3d5a37] text-white">
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Company Info */}
-          <div>
-            <div className="flex items-center mb-4">
-              <span className="text-xl font-bold">🌳 TreeStore</span>
+      <div className="container mx-auto px-12 py-8">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-8">
+          {/* Logo & Description */}
+          <div className="md:w-1/3">
+            <div className="flex items-center mb-2">
+              <img
+                src="/logo.png"
+                className="h-8 w-8 mr-2"
+                alt="Trashure Logo"
+              />
+              <span className="text-2xl font-bold">Trashure</span>
             </div>
-            <p className="text-sm mb-4">
-              Your premier destination for nature-inspired products. We're
-              committed to sustainability and bringing the beauty of nature into
-              your home.
+            <p className="text-xs font-extralight leading-relaxed">
+              Trashure is a sustainable e-commerce platform connecting
+              eco-conscious buyers with high-quality, upcycled, and ethically
+              sourced products. As a third-party marketplace, we make it easy to
+              discover and support brands that prioritize sustainability. Every
+              purchase helps reduce waste and protect the planet, because small
+              choices make a big difference!
             </p>
-            <div className="flex items-center space-x-1 text-sm mb-2">
-              <Phone size={16} />
-              <span>(555) 123-4567</span>
-            </div>
-            <div className="flex items-center space-x-1 text-sm mb-2">
-              <Mail size={16} />
-              <span>support@treestore.com</span>
-            </div>
-            <div className="flex items-center space-x-1 text-sm">
-              <MapPin size={16} />
-              <span>123 Nature Lane, Forestville, CA</span>
+          </div>
+
+          {/* Navigation */}
+          <div className="flex flex-col gap-2 md:w-1/6 mt-10 ">
+            <a
+              href="#"
+              className="text-md hover:text-green-200 transition-colors"
+            >
+              Shop
+            </a>
+            <a
+              href="#"
+              className="text-md hover:text-green-200 transition-colors"
+            >
+              Blog
+            </a>
+            <a
+              href="#"
+              className="text-md hover:text-green-200 transition-colors"
+            >
+              Green Game
+            </a>
+            <a
+              href="#"
+              className="text-md hover:text-green-200 transition-colors"
+            >
+              About Us
+            </a>
+            <a
+              href="#"
+              className="text-md hover:text-green-200 transition-colors"
+            >
+              Contact
+            </a>
+          </div>
+
+          {/* Payments */}
+          <div className="md:w-1/4">
+            <span className="font-bold mb-2 block">Accepted Payments</span>
+            <div className="grid grid-cols-4 gap-2">
+              {paymentIcons.map((src, idx) => (
+                <img
+                  key={idx}
+                  src={src}
+                  alt="Payment"
+                  className=" w-auto bg-white rounded p-1"
+                  style={{ background: "#fff" }}
+                />
+              ))}
             </div>
           </div>
 
-          {/* Shop Links */}
-          <div>
-            <h3 className="font-bold mb-4">Shop</h3>
-            <ul className="space-y-2">
-              <li>
+          {/* Social */}
+          <div className="md:w-1/6">
+            <span className="font-bold mb-2 block">Follow Us</span>
+            <div className="grid grid-cols-4 gap-x-4 mt-1">
+              {socialLinks.map((item, idx) => (
                 <a
-                  href="#"
-                  className="text-sm hover:text-green-200 transition-colors"
+                  key={idx}
+                  href={item.href}
+                  className="flex justify-center items-center text-white hover:text-green-200 transition-colors"
                 >
-                  New Arrivals
+                  {item.icon}
                 </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm hover:text-green-200 transition-colors"
-                >
-                  Best Sellers
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm hover:text-green-200 transition-colors"
-                >
-                  On Sale
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm hover:text-green-200 transition-colors"
-                >
-                  All Products
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm hover:text-green-200 transition-colors"
-                >
-                  Gift Cards
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Account & Help */}
-          <div>
-            <h3 className="font-bold mb-4">Account & Help</h3>
-            <ul className="space-y-2">
-              <li>
-                <a
-                  href="#"
-                  className="text-sm hover:text-green-200 transition-colors"
-                >
-                  My Account
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm hover:text-green-200 transition-colors"
-                >
-                  Track Order
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm hover:text-green-200 transition-colors"
-                >
-                  Returns & Exchanges
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm hover:text-green-200 transition-colors"
-                >
-                  Shipping Policy
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm hover:text-green-200 transition-colors"
-                >
-                  FAQ
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* About & Legal */}
-          <div>
-            <h3 className="font-bold mb-4">About Us</h3>
-            <ul className="space-y-2">
-              <li>
-                <a
-                  href="/about"
-                  className="text-sm hover:text-green-200 transition-colors"
-                >
-                  Our Story
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm hover:text-green-200 transition-colors"
-                >
-                  Sustainability
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm hover:text-green-200 transition-colors"
-                >
-                  Press
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm hover:text-green-200 transition-colors"
-                >
-                  Careers
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/contact"
-                  className="text-sm hover:text-green-200 transition-colors"
-                >
-                  Contact Us
-                </a>
-              </li>
-            </ul>
+              ))}
+            </div>
           </div>
         </div>
-
-        <div className="border-t border-[#4B6F44] mt-8 pt-6">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="text-sm mb-4 md:mb-0">
-              &copy; {new Date().getFullYear()} TreeStore. All rights reserved.
-            </div>
-
-            <div className="flex space-x-4">
-              <a
-                href="#"
-                className="text-white hover:text-green-200 transition-colors"
-              >
-                <Facebook size={20} />
-              </a>
-              <a
-                href="#"
-                className="text-white hover:text-green-200 transition-colors"
-              >
-                <Twitter size={20} />
-              </a>
-              <a
-                href="#"
-                className="text-white hover:text-green-200 transition-colors"
-              >
-                <Instagram size={20} />
-              </a>
-              <a
-                href="#"
-                className="text-white hover:text-green-200 transition-colors"
-              >
-                <Youtube size={20} />
-              </a>
-              <a
-                href="#"
-                className="text-white hover:text-green-200 transition-colors"
-              >
-                <Linkedin size={20} />
-              </a>
-            </div>
-          </div>
+        <div className="text-center text-xs mt-8 opacity-80">
+          © {new Date().getFullYear()} Trashure. All Rights Reserved.
         </div>
       </div>
     </footer>

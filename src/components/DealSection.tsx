@@ -1,44 +1,42 @@
 import React from "react";
 import ProductCard, { Product } from "./ProductCard";
-import { Clock } from "lucide-react";
-
 interface DealSectionProps {
   title: string;
   subtitle: string;
-  endTime: string;
+  // endTime: string;
   products: Product[];
 }
 
 const DealSection: React.FC<DealSectionProps> = ({
   title,
   subtitle,
-  endTime,
+  // endTime,
   products,
 }) => {
-  const [timeLeft, setTimeLeft] = React.useState<{
-    hours: number;
-    minutes: number;
-    seconds: number;
-  }>({ hours: 0, minutes: 0, seconds: 0 });
+  // const [timeLeft, setTimeLeft] = React.useState<{
+  //   hours: number;
+  //   minutes: number;
+  //   seconds: number;
+  // }>({ hours: 0, minutes: 0, seconds: 0 });
 
-  React.useEffect(() => {
-    const calculateTimeLeft = () => {
-      const difference = new Date(endTime).getTime() - new Date().getTime();
+  // React.useEffect(() => {
+  //   const calculateTimeLeft = () => {
+  //     const difference = new Date(endTime).getTime() - new Date().getTime();
 
-      if (difference > 0) {
-        setTimeLeft({
-          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-          minutes: Math.floor((difference / 1000 / 60) % 60),
-          seconds: Math.floor((difference / 1000) % 60),
-        });
-      }
-    };
+  //     if (difference > 0) {
+  //       setTimeLeft({
+  //         hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+  //         minutes: Math.floor((difference / 1000 / 60) % 60),
+  //         seconds: Math.floor((difference / 1000) % 60),
+  //       });
+  //     }
+  //   };
 
-    calculateTimeLeft();
-    const timer = setInterval(calculateTimeLeft, 1000);
+  //   calculateTimeLeft();
+  //   const timer = setInterval(calculateTimeLeft, 1000);
 
-    return () => clearInterval(timer);
-  }, [endTime]);
+  //   return () => clearInterval(timer);
+  // }, [endTime]);
 
   const formatTime = (value: number) => {
     return value.toString().padStart(2, "0");
@@ -56,7 +54,7 @@ const DealSection: React.FC<DealSectionProps> = ({
               <p className="text-[#4B6F44]">{subtitle}</p>
             </div>
 
-            <div className="flex items-center mt-4 md:mt-0">
+            {/* <div className="flex items-center mt-4 md:mt-0">
               <Clock size={20} className="text-[#4B6F44] mr-2" />
               <span className="font-medium mr-2">Ends in:</span>
               <div className="flex space-x-2">
@@ -72,7 +70,7 @@ const DealSection: React.FC<DealSectionProps> = ({
                   {formatTime(timeLeft.seconds)}
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
 

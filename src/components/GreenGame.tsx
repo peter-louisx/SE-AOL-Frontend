@@ -58,7 +58,7 @@ const GreenGame: React.FC = () => {
       id: 3,
       title: "Exclusive Merchandise",
       points: 7500,
-      description: "Get exclusive TreeStore merchandise",
+      description: "Get exclusive Trashure merchandise",
     },
   ];
 

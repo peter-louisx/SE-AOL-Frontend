@@ -47,6 +47,7 @@ const ProductListing: React.FC = () => {
                   className="flex items-center justify-between w-full font-medium mb-2 text-black"
                   onClick={() => setIsCategoryOpen(!isCategoryOpen)}
                 >
+                  Clothing and Apparel
                   {isCategoryOpen ? (
                     <ChevronUp size={18} />
                   ) : (
