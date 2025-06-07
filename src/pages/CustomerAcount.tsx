@@ -6,7 +6,7 @@ import {
   User,
   ShoppingBag,
   Ticket,
-  Loader2Icon,
+  Recycle,
 } from "lucide-react";
 import axios from "../api/axios";
 import { toast } from "react-toastify";
@@ -352,6 +352,12 @@ export default function CustomerAccount() {
                     <button className="w-full flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">
                       <Ticket className="w-5 h-5" />
                       <span>My Vouchers</span>
+                    </button>
+                  </a>
+                  <a href="/upcycle-requests">
+                    <button className="w-full flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">
+                      <Recycle className="w-5 h-5" />
+                      <span>Upcycle Requests</span>
                     </button>
                   </a>
                   <button

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { MapPin, Star, X } from "lucide-react";
+import axios from "../api/axios";
+import { toast } from "react-toastify";
 
 interface Vendor {
   id: number;
@@ -13,21 +15,15 @@ interface Vendor {
 }
 
 interface RequestFormData {
-  itemType: string;
   description: string;
   photos: FileList | null;
-  pickupAddress: string;
-  preferredDate: string;
 }
 
 const Upcycle: React.FC = () => {
   const [selectedVendor, setSelectedVendor] = useState<Vendor | null>(null);
   const [formData, setFormData] = useState<RequestFormData>({
-    itemType: "",
     description: "",
     photos: null,
-    pickupAddress: "",
-    preferredDate: "",
   });
 
   const vendors: Vendor[] = [
@@ -74,13 +70,21 @@ const Upcycle: React.FC = () => {
     // Handle form submission here
     console.log("Form submitted:", formData);
     setSelectedVendor(null);
-    setFormData({
-      itemType: "",
-      description: "",
-      photos: null,
-      pickupAddress: "",
-      preferredDate: "",
-    });
+
+    axios
+      .post("/send-recycle-request", {
+        notes: formData.description,
+      })
+      .then((response) => {
+        toast.success("Request sent successfully!");
+        setFormData({
+          description: "",
+          photos: null,
+        });
+      })
+      .catch((error) => {
+        console.error("Error sending request:", error);
+      });
   };
 
   return (
@@ -162,27 +166,6 @@ const Upcycle: React.FC = () => {
                 <form onSubmit={handleSubmit} className="space-y-7">
                   <div>
                     <label className="block text-sm font-semibold text-[#40513B] mb-2">
-                      Item Type
-                    </label>
-                    <select
-                      className="w-full border-[#b7d3b0] rounded-lg shadow-sm focus:ring-[#609966] focus:border-[#609966] p-3"
-                      value={formData.itemType}
-                      onChange={(e) =>
-                        setFormData({ ...formData, itemType: e.target.value })
-                      }
-                      required
-                    >
-                      <option value="">Select item type</option>
-                      {selectedVendor.specialties.map((specialty) => (
-                        <option key={specialty} value={specialty}>
-                          {specialty}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-[#40513B] mb-2">
                       Description
                     </label>
                     <textarea
@@ -212,44 +195,6 @@ const Upcycle: React.FC = () => {
                         setFormData({ ...formData, photos: e.target.files })
                       }
                       className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold p-2 file:bg-[#EDF1D6] file:text-[#40513B] hover:file:bg-[#d2e3c8] cursor-pointer hover:file:cursor-pointer"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-[#40513B] mb-2">
-                      Pickup Address
-                    </label>
-                    <input
-                      type="text"
-                      className="w-full border-[#b7d3b0] rounded-lg shadow-sm focus:ring-[#609966] focus:border-[#609966] p-3"
-                      value={formData.pickupAddress}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          pickupAddress: e.target.value,
-                        })
-                      }
-                      placeholder="Enter your address for item pickup"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-[#40513B] mb-2">
-                      Preferred Pickup Date
-                    </label>
-                    <input
-                      type="date"
-                      className="w-full p-3 border-[#b7d3b0] rounded-lg shadow-sm focus:ring-[#609966] focus:border-[#609966]"
-                      value={formData.preferredDate}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          preferredDate: e.target.value,
-                        })
-                      }
-                      min={new Date().toISOString().split("T")[0]}
-                      required
                     />
                   </div>
 

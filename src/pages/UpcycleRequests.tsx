@@ -1,51 +1,39 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  User,
-  ShoppingBag,
-  Ticket,
-  ChevronLeft,
-  ChevronRight,
-  Recycle,
-  Trash2,
-} from "lucide-react";
+import { User, ShoppingBag, Ticket, Recycle, Trash2 } from "lucide-react";
 import axios from "../api/axios";
 import { toast } from "react-toastify";
 
-interface Product {
+// --- Interfaces ---
+interface RecycleRequest {
   id: number;
-  name: string;
-  price: number;
+  status: string;
+  request_date: string;
+  notes?: string;
+  total_payment: number;
   image_url: string;
-}
-
-interface Order {
-  id: number;
-  order_status: string;
-  order_date: string;
-  order_code?: string;
-  total_pay: number;
-  product: Product;
+  code?: string;
 }
 
 const STATUS_OPTIONS = [
   "All",
-  "On Going",
-  "Completed",
+  "On Review",
+  "Accepted",
   "Returned",
   "Cancelled",
 ] as const;
+
 type StatusFilter = (typeof STATUS_OPTIONS)[number];
 
-export default function Order() {
+export default function UpcycleRequests() {
   const [user, setUser] = useState<{ name: string; profile?: string } | null>(
     null
   );
-  const [orders, setOrders] = useState<Order[]>([]);
+  const [requests, setRequests] = useState<RecycleRequest[]>([]);
   const [filter, setFilter] = useState<StatusFilter>("All");
-  const [page, setPage] = useState(1);
   const [loadingUser, setLoadingUser] = useState(true);
-  const [loadingOrders, setLoadingOrders] = useState(true);
+  const [loadingRequests, setLoadingRequests] = useState(true);
+
   const PAGE_SIZE = 5;
   const navigate = useNavigate();
 
@@ -76,7 +64,6 @@ export default function Order() {
         localStorage.removeItem("auth_token");
         localStorage.removeItem("role");
         toast.success("Logged out successfully");
-        //time out for 0.5 seconds
         setTimeout(() => {
           navigate("/login");
           window.location.reload();
@@ -87,16 +74,15 @@ export default function Order() {
       });
   };
 
-  // Fetch orders
+  // Fetch recycle requests
   useEffect(() => {
     const token = localStorage.getItem("auth_token");
     if (!token) return;
-    setLoadingOrders(true);
     axios
-      .get("/orders")
-      .then((res) => setOrders(res.data))
+      .get("/recycle-requests")
+      .then((res) => setRequests(res.data))
       .catch(console.error)
-      .finally(() => setLoadingOrders(false));
+      .finally(() => setLoadingRequests(false));
   }, []);
 
   // Skeleton component
@@ -139,17 +125,14 @@ export default function Order() {
   );
 
   // Filter & paginate
-  const filtered = orders.filter((o) =>
-    filter === "All" ? true : o.order_status === filter
+  const filtered = requests.filter((r) =>
+    filter === "All" ? true : r.status === filter
   );
-  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
-  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-12 gap-8">
         {/* Sidebar */}
-
         {loadingUser ? (
           <div className="md:col-span-3">
             <div className="bg-white rounded-lg p-6 shadow-sm">
@@ -196,7 +179,7 @@ export default function Order() {
                   </button>
                 </a>
                 <a href="/order">
-                  <button className="w-full flex items-center gap-3 px-4 py-2 text-white bg-[#9DC08B] hover:bg-gray-50 rounded-lg cursor-pointer">
+                  <button className="w-full flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">
                     <ShoppingBag className="w-5 h-5" />
                     <span>My Orders</span>
                   </button>
@@ -208,7 +191,7 @@ export default function Order() {
                   </button>
                 </a>
                 <a href="/upcycle-requests">
-                  <button className="w-full flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">
+                  <button className="w-full flex items-center gap-3 px-4 py-2 text-white bg-[#9DC08B] hover:bg-gray-50 rounded-lg cursor-pointer">
                     <Recycle className="w-5 h-5" />
                     <span>Upcycle Requests</span>
                   </button>
@@ -225,10 +208,12 @@ export default function Order() {
           </div>
         )}
 
-        {/* Orders List */}
+        {/* Requests List */}
         <section className="md:col-span-9 space-y-6">
           <div className="bg-white rounded-lg p-6 shadow-sm">
-            <h2 className="text-xl font-semibold mb-6 text-black">My Orders</h2>
+            <h2 className="text-xl font-semibold mb-6 text-black">
+              My Recycle Requests
+            </h2>
 
             {/* Status Filters */}
             <div className="flex flex-wrap gap-3 mb-6">
@@ -237,7 +222,6 @@ export default function Order() {
                   key={status}
                   onClick={() => {
                     setFilter(status);
-                    setPage(1);
                   }}
                   className={`px-6 py-2 rounded-full ${
                     filter === status
@@ -250,99 +234,78 @@ export default function Order() {
               ))}
             </div>
 
-            {/* Orders */}
-            {loadingOrders ? (
+            {/* Requests */}
+            {loadingRequests ? (
               <Skeleton />
-            ) : paginated.length === 0 ? (
-              <p className="text-gray-500">No orders to display.</p>
+            ) : filtered.length === 0 ? (
+              <p className="text-gray-500">No recycle requests to display.</p>
             ) : (
-              paginated.map((order) => (
+              filtered.map((request) => (
                 <div
-                  key={order.id}
+                  key={request.id}
                   className="border border-gray-200 rounded-lg p-6"
                 >
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-4">
                       <span
                         className={`px-4 py-1 rounded-full text-sm ${
-                          order.order_status === "On Going"
+                          request.status === "On Review"
                             ? "bg-yellow-400 text-white"
+                            : request.status === "Accepted"
+                            ? "bg-green-500 text-white"
+                            : request.status === "Returned"
+                            ? "bg-blue-400 text-white"
+                            : request.status === "Cancelled"
+                            ? "bg-red-400 text-white"
                             : "bg-[#9DC08B] text-white"
                         }`}
                       >
-                        {order.order_status}
+                        {request.status}
                       </span>
                       <span className="text-gray-500">
-                        {new Date(order.order_date).toLocaleDateString()}
+                        {new Date(request.request_date).toLocaleDateString()}
                       </span>
                     </div>
                     <span className="text-gray-500">
-                      {order.order_code ?? `ORD/${order.id}`}
+                      {request.code ?? `REC/${request.id}`}
                     </span>
                   </div>
 
                   <div className="flex items-center gap-6">
                     <img
-                      src={order.product.image_url}
-                      alt={order.product.name}
+                      src={request.image_url}
+                      alt={`Recycle request ${request.id}`}
                       className="w-24 h-24 object-cover rounded-lg"
                     />
+
                     <div className="flex-1">
-                      <h3 className="font-semibold mb-2 text-black">
-                        {order.product.name}
-                      </h3>
-                      <p className="text-gray-500">Quantity: 1</p>
-                      <p className="text-gray-500">
-                        Price: Rp{order.product.price}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-gray-500 mb-2">Total:</p>
-                      <p className="font-semibold text-black">
-                        Rp{order.total_pay}
-                      </p>
-                      {order.order_status === "On Going" && (
-                        <button className="mt-2 px-4 py-1 border border-[#9DC08B] text-[#9DC08B] rounded-lg hover:bg-[#9DC08B] hover:bg-opacity-5">
-                          Check Status
-                        </button>
+                      {request.notes && (
+                        <p className="text-gray-700 mb-2">
+                          <span className="font-semibold">Notes:</span>{" "}
+                          {request.notes}
+                        </p>
                       )}
                     </div>
+
+                    {request.status !== "On Review" && (
+                      <div className="text-right">
+                        <p className="text-gray-500 mb-2">Total Payment:</p>
+                        <p className="font-semibold text-black">
+                          Rp{request.total_payment}
+                        </p>
+                        <button
+                          className="mt-2 px-4 py-1 border border-[#9DC08B] text-[#9DC08B] rounded-lg hover:bg-[#9DC08B] hover:bg-opacity-5"
+                          onClick={() =>
+                            navigate(`/upcycle-checkout/${request.id}`)
+                          }
+                        >
+                          Checkout
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))
-            )}
-
-            {/* Pagination */}
-            {!loadingOrders && totalPages > 1 && (
-              <div className="flex items-center justify-center gap-2 mt-8 text-black">
-                <button
-                  onClick={() => setPage((p) => Math.max(p - 1, 1))}
-                  disabled={page === 1}
-                  className="p-2 rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-50"
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                </button>
-                {Array.from({ length: totalPages }, (_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setPage(i + 1)}
-                    className={`w-8 h-8 rounded-lg ${
-                      page === i + 1
-                        ? "bg-[#9DC08B] text-white"
-                        : "hover:bg-gray-50"
-                    }`}
-                  >
-                    {i + 1}
-                  </button>
-                ))}
-                <button
-                  onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
-                  disabled={page === totalPages}
-                  className="p-2 rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-50"
-                >
-                  <ChevronRight className="w-5 h-5" />
-                </button>
-              </div>
             )}
           </div>
         </section>

@@ -34,8 +34,9 @@ import BlogDetail from "./pages/BlogDetail";
 import { AuthProvider } from "./context/AuthContext";
 import CartPage from "./pages/Cart";
 import Upcycle from "./pages/Upcycle";
-import Checkout from "./components/Checkout";
 import CheckoutSuccess from "./components/CheckoutSuccess";
+import UpcycleRequests from "./pages/UpcycleRequests";
+import UpcycleCheckout from "./pages/UpcycleCheckout";
 
 // buyer
 function App() {
@@ -67,8 +68,10 @@ function App() {
           <Route path="/account" element={<CustomerAccount />} />
           <Route path="/order" element={<Order />} />
           <Route path="/voucher" element={<Voucher />} />
+          <Route path="/upcycle-requests" element={<UpcycleRequests />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout/success" element={<CheckoutSuccess />} />
+          <Route path="/upcycle-checkout/:id" element={<UpcycleCheckout />} />
           <Route path="/upcycle" element={<Upcycle />} />
         </Route>
 
