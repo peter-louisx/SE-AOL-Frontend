@@ -169,7 +169,7 @@ const ProductListing: React.FC = () => {
                       >
                         <input
                           type="checkbox"
-                          className="rounded border-gray-300"
+                          className="rounded border-gray-300 accent-[#609966]"
                           checked={selectedCategories.includes(category)}
                           onChange={() =>
                             handleCheckboxChange(
