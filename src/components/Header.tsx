@@ -134,12 +134,21 @@ const Header: React.FC = () => {
             <div className="relative w-full">
               <input
                 type="text"
+                name="search"
                 placeholder="Search for sustainable products..."
                 className="text-sm w-full px-4 py-2 rounded-md focus:outline-none focus:ring-2 text-gray-300 focus:ring-green-500 bg-[#609966] placeholder-white"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    const target = e.target as HTMLInputElement;
+                    const keyword = target.value.trim();
+                    if (keyword) {
+                      window.location.href = `/products?search=${encodeURIComponent(
+                        keyword
+                      )}`;
+                    }
+                  }
+                }}
               />
-              <button className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500">
-                <Search size={20} color={"white"} />
-              </button>
             </div>
           </div>
 

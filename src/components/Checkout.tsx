@@ -260,8 +260,7 @@ const Checkout: React.FC<CheckoutProps> = ({ onSuccess }) => {
                           Quantity: {item.quantity}
                         </span>
                         <span className="font-medium text-gray-900">
-                          Price: {item.currency}
-                          {item.price.toLocaleString()}
+                          Rp{(item.price * item.quantity).toLocaleString()}
                         </span>
                       </div>
                     </div>

@@ -38,26 +38,33 @@ export default function Landing() {
       id: 1,
       name: "Clothing & Apparel",
       image: "/Categories/clothing.jpg",
+      href: `/products?category=${encodeURIComponent("Clothing and Apparel")}`,
     },
     {
       id: 2,
       name: "Accessories",
       image: "/Categories/accessories.jpg",
+      href: `/products?category=${encodeURIComponent("Accessories")}`,
     },
     {
       id: 3,
       name: "Home & Living",
       image: "/Categories/home.jpg",
+      href: `/products?${encodeURIComponent("Home and Living")}`,
     },
     {
       id: 4,
       name: "Personal Care & Beauty",
       image: "/Categories/personal.jpg",
+      href: `/products?category=${encodeURIComponent(
+        "Personal Care and Beauty"
+      )}`,
     },
     {
       id: 5,
       name: "Zero-Waste Essentials",
       image: "/Categories/zero.jpg",
+      href: `/products?category=${encodeURIComponent("Zero-Waste Essentials")}`,
     },
   ];
 

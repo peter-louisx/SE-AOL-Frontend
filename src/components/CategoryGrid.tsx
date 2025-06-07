@@ -1,9 +1,11 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 interface Category {
   id: number;
   name: string;
   image: string;
+  href: string;
 }
 
 interface CategoryGridProps {
@@ -18,9 +20,9 @@ const CategoryGrid: React.FC<CategoryGridProps> = ({ title, categories }) => {
         <h2 className="text-2xl font-bold text-[#2d4a29] mb-6">{title}</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {categories.map((category) => (
-            <a
+            <Link
               key={category.id}
-              href="#"
+              to={category.href}
               className="group block overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
             >
               <div className="relative pb-[100%]">
@@ -36,7 +38,7 @@ const CategoryGrid: React.FC<CategoryGridProps> = ({ title, categories }) => {
                   </h3>
                 </div>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
       </div>
