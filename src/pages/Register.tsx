@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "../api/axios";
 import { Store, User } from "lucide-react";
 import { toast } from "react-toastify";
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 // Configure Axios base URL (include `/api` in URL)
 axios.defaults.baseURL =
@@ -66,12 +67,13 @@ export default function Register() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-        <div className="hidden md:block">
-          <img
-            src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Frelprod.relianceanimation.in%2Fdist%2Fimages%2Flogin_illustration1.png&f=1&nofb=1"
-            alt="Eco-friendly illustration"
-            className="w-full h-auto rounded-lg"
+      <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-0 items-center">
+        <div className="hidden md:flex justify-center items-center py-12">
+          <DotLottieReact 
+            src="https://lottie.host/c6f47393-0544-4c9f-b876-822bbcc55b84/QQkLjJEykG.lottie"
+            loop
+            autoplay
+            style={{ height: 300, width: 600 }}
           />
         </div>
 
