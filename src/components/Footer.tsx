@@ -34,7 +34,7 @@ const Footer: React.FC = () => {
               />
               <span className="text-2xl font-bold">Trashure</span>
             </div>
-            <p className="text-xs font-extralight leading-relaxed">
+            <p className="text-md font-extralight leading-relaxed">
               Trashure is a sustainable e-commerce platform connecting
               eco-conscious buyers with high-quality, upcycled, and ethically
               sourced products. As a third-party marketplace, we make it easy to

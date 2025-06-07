@@ -1,7 +1,6 @@
 import Axios from "axios";
 import api from "./api";
 
-//get local storage token
 const token = localStorage.getItem("auth_token") || "";
 
 const axios = Axios.create({

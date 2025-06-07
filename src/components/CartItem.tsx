@@ -28,6 +28,13 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
     updateQuantity(item.id, item.quantity + 1);
   };
 
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+    }).format(price);
+  };
+
   return (
     <div className="py-4 border-b border-gray-200">
       <div className="flex items-center">
@@ -58,8 +65,7 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
               <p className="text-sm text-gray-600">
                 Price:{" "}
                 <span className="font-medium">
-                  {item.currency}
-                  {item.price.toLocaleString()}
+                  {formatPrice(item.price * item.quantity)}
                 </span>
               </p>
             </div>

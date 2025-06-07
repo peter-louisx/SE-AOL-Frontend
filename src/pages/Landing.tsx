@@ -8,6 +8,7 @@ import axios from "../api/axios";
 import { useEffect, useState } from "react";
 import { Product } from "../components/ProductCard";
 import { toast } from "react-toastify";
+import { AxiosError } from "axios";
 
 // Skeleton loader for product grid
 function ProductGridSkeleton({ count = 5 }: { count?: number }) {
@@ -75,7 +76,13 @@ export default function Landing() {
         setBestSellers(data.sort(() => Math.random() - 0.5).slice(0, 5));
         setLimited(data.sort(() => Math.random() - 0.5).slice(0, 5));
       } catch (error) {
-        toast.error("Failed to load products. Please try again later.");
+        if (error instanceof AxiosError) {
+          toast.error(
+            `Error fetching products: ${
+              error.response?.data.message || error.message
+            }`
+          );
+        }
       } finally {
         setLoading(false);
       }

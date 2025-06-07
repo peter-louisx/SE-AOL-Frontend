@@ -74,15 +74,19 @@ const BrandDetail: React.FC = () => {
         <img
           src={brand.cover}
           alt={`${brand.name} cover`}
-          className="w-full h-64 md:h-96 object-cover rounded-xl mb-8"
+          className="w-full h-96 object-cover rounded-xl mb-8"
         />
       </div>
       <div className="container mx-auto px-10 pb-8">
         {/* Brand Logo and Description */}
         <div className="flex flex-col  mb-6">
-          <img src={brand.logo} alt={brand.name} className="w-50 h-30 mr-4" />
+          <img
+            src={brand.logo}
+            alt={brand.name}
+            className="w-50 max-h-50 mr-4"
+          />
           <div>
-            <p className="text-gray-600">{brand.description}</p>
+            <p className="text-gray-600 mt-2">{brand.description}</p>
           </div>
         </div>
         {/* Products */}

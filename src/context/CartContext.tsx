@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "../api/axios";
+import { toast } from "react-toastify";
+import { AxiosError } from "axios";
 
 export type CartItem = {
   id: string;
@@ -49,7 +51,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
         setLoading(false);
         setCartItems(response.data);
       } catch (error) {
-        console.error("Failed to fetch cart items:", error);
+        if (error instanceof AxiosError) {
+          toast.error("Error fetching cart items");
+        }
         setLoading(false);
       }
     };
@@ -82,17 +86,39 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     setSelectedItems([]);
   };
 
-  const removeItem = (id: string) => {
-    setCartItems(cartItems.filter((item) => item.id !== id));
-    setSelectedItems(selectedItems.filter((itemId) => itemId !== id));
+  const removeItem = async (id: string) => {
+    await axios
+      .delete(`/delete-cart/${id}`)
+      .then(() => {
+        toast.success("Item removed from cart");
+        setCartItems(cartItems.filter((item) => item.id !== id));
+        setSelectedItems(selectedItems.filter((itemId) => itemId !== id));
+      })
+      .catch((error) => {
+        if (error instanceof AxiosError) {
+          toast.error("Error removing item from cart");
+        }
+      });
   };
 
-  const updateQuantity = (id: string, quantity: number) => {
+  const updateQuantity = async (id: string, quantity: number) => {
     if (quantity < 1) return;
 
-    setCartItems(
-      cartItems.map((item) => (item.id === id ? { ...item, quantity } : item))
-    );
+    await axios
+      .put(`/update-cart-quantity/${id}`, { quantity })
+      .then(() => {
+        toast.success("Cart item updated successfully");
+        setCartItems(
+          cartItems.map((item) =>
+            item.id === id ? { ...item, quantity } : item
+          )
+        );
+      })
+      .catch((error) => {
+        if (error instanceof AxiosError) {
+          toast.error("Error updating cart item");
+        }
+      });
   };
 
   const getTotalPrice = () => {
