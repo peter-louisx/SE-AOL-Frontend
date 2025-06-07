@@ -34,7 +34,7 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
         <div className="mr-4">
           <input
             type="checkbox"
-            className="appearance-none border checked:bg-blue-500 checked:text-white h-5 w-5 text-white rounded border-gray-300 focus:ring-green-500 "
+            className="appearance-none border checked:bg-[#609966] checked:text-white h-5 w-5 text-white rounded border-gray-300 focus:ring-green-500 "
             checked={selectedItems.includes(item.id)}
             onChange={handleSelectItem}
           />

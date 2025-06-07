@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ArrowLeft, MapPin, Edit3 } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { toast } from "react-toastify";
+import axios from "../api/axios";
 
 type CheckoutProps = {
   onSuccess: () => void;
@@ -19,7 +20,6 @@ const Checkout: React.FC<CheckoutProps> = ({ onSuccess }) => {
   const subtotal = getTotalPrice();
   const shippingFee = 1000;
   const serviceFee = 2000;
-  const totalPrice = subtotal + shippingFee + serviceFee;
 
   const paymentMethods = [
     {
@@ -57,28 +57,46 @@ const Checkout: React.FC<CheckoutProps> = ({ onSuccess }) => {
       id: "economy",
       name: "Economy",
       price: "Rp3.000 | 3-7 days",
+      priceValue: 3000,
       selected: true,
     },
     {
       id: "regular",
       name: "Regular",
       price: "Rp5.000 | 2-3 days",
+      priceValue: 5000,
       selected: false,
     },
     {
       id: "instant",
       name: "Instant",
       price: "Rp8.000 | 1-2 days",
+      priceValue: 8000,
       selected: false,
     },
   ];
 
-  const handlePayNow = () => {
-    //set timeout to simulate payment processing
-    toast.success("Payment successful!");
-    setTimeout(() => {
-      onSuccess();
-    }, 2000);
+  const deviveryFee =
+    deliveryOptions.find((option) => option.id === selectedDelivery)
+      ?.priceValue || 0;
+  const totalPrice = subtotal + shippingFee + serviceFee + deviveryFee;
+
+  const handlePayNow = async () => {
+    await axios
+      .post("/checkout", {
+        delivery_option: selectedDelivery,
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          window.location.href = response.data.invoice_url;
+        } else {
+          toast.error("Payment failed. Please try again.");
+        }
+      })
+      .catch((error) => {
+        console.error("Payment error:", error);
+        toast.error("Payment failed. Please try again.");
+      });
   };
 
   return (
@@ -101,19 +119,19 @@ const Checkout: React.FC<CheckoutProps> = ({ onSuccess }) => {
                 <h2 className="text-lg font-medium text-gray-900">
                   Delivery Address
                 </h2>
-                <button className="flex items-center text-green-600 hover:text-green-700 text-sm font-medium">
+                <button className="flex items-center text-[#609966] hover:text-green-700 text-sm font-medium">
                   <Edit3 size={14} className="mr-1" />
                   Change Address
                 </button>
               </div>
 
               <div className="flex items-start">
-                <div className="bg-green-100 p-2 rounded-full mr-3 mt-1">
-                  <MapPin size={16} className="text-green-600" />
+                <div className="bg-[#9DC08B] p-2 rounded-full mr-3 mt-1">
+                  <MapPin size={16} className="text-white" />
                 </div>
                 <div>
                   <div className="flex items-center mb-1">
-                    <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full mr-2">
+                    <span className="bg-[#9DC08B] text-white text-xs px-2 py-1 rounded-full mr-2">
                       Home
                     </span>
                     <span className="font-medium text-gray-900">
@@ -149,7 +167,7 @@ const Checkout: React.FC<CheckoutProps> = ({ onSuccess }) => {
                     <div
                       className={`flex items-center p-3 border-2 rounded-lg transition-all ${
                         selectedPayment === method.id
-                          ? "border-green-500 bg-green-50"
+                          ? "border-[#40513B80] bg-green-50"
                           : "border-gray-200 hover:border-gray-300"
                       }`}
                     >
@@ -187,7 +205,7 @@ const Checkout: React.FC<CheckoutProps> = ({ onSuccess }) => {
                     <div
                       className={`flex items-center justify-between p-3 border-2 rounded-lg transition-all ${
                         selectedDelivery === option.id
-                          ? "border-green-500 bg-green-50"
+                          ? "border-[#40513B80] bg-green-50"
                           : "border-gray-200 hover:border-gray-300"
                       }`}
                     >
@@ -195,7 +213,7 @@ const Checkout: React.FC<CheckoutProps> = ({ onSuccess }) => {
                         <div
                           className={`w-4 h-4 rounded-full border-2 mr-3 ${
                             selectedDelivery === option.id
-                              ? "border-green-500 bg-green-500"
+                              ? "border-[#40513B80] bg-green-500"
                               : "border-gray-300"
                           }`}
                         >
@@ -261,18 +279,18 @@ const Checkout: React.FC<CheckoutProps> = ({ onSuccess }) => {
               </h2>
 
               {/* Plant a Tree Option */}
-              <div className="flex items-center justify-between mb-4 p-3 bg-green-50 rounded-lg text-black">
+              <div className="flex items-center justify-between mb-4 p-3 bg-[#EDF1D6] rounded-lg text-black">
                 <div className="flex items-center">
-                  <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center mr-2">
+                  <div className="w-6 h-6 bg-[#EDF1D6] rounded-full flex items-center justify-center mr-2">
                     <span className="text-white text-xs">🌱</span>
                   </div>
-                  <span className="text-sm font-medium text-green-800">
+                  <span className="text-sm font-medium text-black">
                     Plant a Tree
                   </span>
                 </div>
                 <input
                   type="checkbox"
-                  className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
+                  className="w-4 h-4 accent-green-600  rounded focus:ring-green-500"
                   defaultChecked
                 />
               </div>
@@ -282,7 +300,7 @@ const Checkout: React.FC<CheckoutProps> = ({ onSuccess }) => {
                 <div className="relative">
                   <input
                     type="text"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500 text-black"
+                    className="w-full px-4 py-3  bg-[#EDF1D6] rounded-lg focus:ring-green-500 focus:border-green-500 text-black"
                     placeholder="Use Voucher"
                     value={voucher}
                     onChange={(e) => setVoucher(e.target.value)}
@@ -313,6 +331,14 @@ const Checkout: React.FC<CheckoutProps> = ({ onSuccess }) => {
                     Rp{serviceFee.toLocaleString()}
                   </span>
                 </div>
+
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600">Delivery Fee</span>
+                  <span className="text-gray-900">
+                    Rp{deviveryFee.toLocaleString()}
+                  </span>
+                </div>
+
                 <div className="border-t pt-3">
                   <div className="flex justify-between font-semibold">
                     <span className="text-gray-900">Total Pay</span>
@@ -325,12 +351,9 @@ const Checkout: React.FC<CheckoutProps> = ({ onSuccess }) => {
 
               {/* Action Buttons */}
               <div className="space-y-3">
-                <button className="w-full bg-gray-100 text-gray-700 py-3 px-4 rounded-lg font-medium hover:bg-gray-200 transition-colors">
-                  Pay Later via ShopeePay
-                </button>
                 <button
                   onClick={handlePayNow}
-                  className="w-full bg-green-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-green-700 transition-colors"
+                  className="w-full bg-[#609966] text-white py-3 px-4 rounded-lg font-medium hover:bg-green-700 transition-colors"
                 >
                   Pay Now
                 </button>

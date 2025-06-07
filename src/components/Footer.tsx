@@ -21,7 +21,7 @@ const socialLinks = [
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-[#3d5a37] text-white">
+    <footer className="bg-[#40513B] text-white">
       <div className="container mx-auto px-12 py-8">
         <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-8">
           {/* Logo & Description */}
