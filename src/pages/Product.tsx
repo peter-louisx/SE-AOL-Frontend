@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Star, Truck, Shield, ArrowLeft } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { LeafIcon, Star } from "lucide-react";
 import axios from "../api/axios";
 import { toast } from "react-toastify";
 
@@ -11,37 +10,44 @@ const ProductSkeleton = () => (
       {/* Image Skeleton */}
       <div>
         <div className="mb-4">
-          <div className="w-full h-96 bg-gray-200 rounded-lg" />
-        </div>
-        <div className="grid grid-cols-3 gap-4">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="w-full h-24 bg-gray-200 rounded-lg" />
-          ))}
+          <div className="w-full h-[450px] bg-gray-200 rounded-lg" />
         </div>
       </div>
       {/* Info Skeleton */}
-      <div>
+      <div className="text-left">
+        <div className="w-24 h-24 mb-4 bg-gray-200 rounded" />
         <div className="h-8 bg-gray-200 rounded w-2/3 mb-4" />
         <div className="flex items-center mb-4">
-          <div className="flex gap-1">
-            {[1, 2, 3, 4, 5].map((i) => (
-              <div key={i} className="w-5 h-5 bg-gray-200 rounded" />
-            ))}
+          <div className="w-5 h-5 bg-gray-200 rounded mr-1" />
+          <div className="h-5 w-10 bg-gray-200 rounded mr-1" />
+          <div className="h-5 w-20 bg-gray-200 rounded mr-2" />
+          <div className="h-5 w-6 bg-gray-200 rounded mx-2" />
+          <div className="h-5 w-14 bg-gray-200 rounded" />
+        </div>
+        <div className="flex gap-2 mb-4">
+          <div className="bg-gray-200 h-7 w-24 rounded-full" />
+          <div className="bg-gray-200 h-7 w-20 rounded-full" />
+        </div>
+        <div className="flex items-center mb-6">
+          <div className="h-10 w-40 bg-gray-200 rounded" />
+          <div className="ml-4 flex items-center px-5 py-2 rounded-xl bg-gray-200 w-48 h-10" />
+        </div>
+        <div className="mb-6">
+          <div className="h-6 bg-gray-200 rounded w-1/3 mb-2" />
+          <div className="h-16 bg-gray-200 rounded" />
+        </div>
+        <div className="mb-6">
+          <div className="h-6 bg-gray-200 rounded w-1/4 mb-2" />
+          <div className="h-16 bg-gray-200 rounded" />
+        </div>
+        <div className="flex flex-col gap-4 mb-6">
+          <div className="flex items-center border rounded-md">
+            <div className="h-6 w-20 bg-gray-200 rounded" />
+            <div className="ml-4 h-10 w-10 bg-gray-200 rounded-tl-md rounded-bl-md" />
+            <div className="h-10 w-12 bg-gray-200 border-x" />
+            <div className="h-10 w-10 bg-gray-200 rounded-tr-md rounded-br-md" />
           </div>
-          <div className="ml-2 h-5 w-24 bg-gray-200 rounded" />
-        </div>
-        <div className="h-10 bg-gray-200 rounded w-1/3 mb-6" />
-        <div className="h-6 bg-gray-200 rounded w-1/2 mb-2" />
-        <div className="h-16 bg-gray-200 rounded mb-6" />
-        <div className="h-6 bg-gray-200 rounded w-1/2 mb-2" />
-        <div className="h-16 bg-gray-200 rounded mb-6" />
-        <div className="flex items-center gap-4 mb-6">
-          <div className="w-32 h-10 bg-gray-200 rounded" />
-          <div className="flex-1 h-10 bg-gray-200 rounded" />
-        </div>
-        <div className="space-y-4">
-          <div className="h-6 w-1/3 bg-gray-200 rounded" />
-          <div className="h-6 w-1/4 bg-gray-200 rounded" />
+          <div className="flex-1 bg-gray-200 h-10 rounded-md" />
         </div>
       </div>
     </div>
@@ -90,6 +96,11 @@ type Product = {
   features: string[];
   images: string[];
   reviews: Review[];
+  brand: {
+    id: number;
+    name: string;
+    logo: string;
+  };
 };
 
 const dummyProduct: Product = {
@@ -138,6 +149,11 @@ const dummyProduct: Product = {
       date: "2024-03-13",
     },
   ],
+  brand: {
+    id: 1,
+    name: "EcoCoconut",
+    logo: "https://example.com/logo.png",
+  },
 };
 
 const Product: React.FC = () => {
@@ -181,6 +197,11 @@ const Product: React.FC = () => {
           features: data.features ?? dummyProduct.features,
           images: data.images ?? dummyProduct.images,
           reviews: data.reviews ?? dummyProduct.reviews,
+          brand: {
+            id: data.brand?.id ?? dummyProduct.brand.id,
+            name: data.brand?.name ?? dummyProduct.brand.name,
+            logo: data.brand?.logo ?? dummyProduct.brand.logo,
+          },
         });
 
         if (data.product_url) {
@@ -210,16 +231,6 @@ const Product: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="container mx-auto px-4">
-        <Link
-          to="/products"
-          className="text-left  text-gray-600 hover:text-gray-800 mb-6"
-        >
-          <div className="flex items-center pb-5">
-            <ArrowLeft size={20} className="mr-2" />
-            Back to Products
-          </div>
-        </Link>
-
         <div className="bg-white rounded-lg shadow-lg p-6 md:p-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Product Images */}
@@ -228,55 +239,60 @@ const Product: React.FC = () => {
                 <img
                   src={selectedImage}
                   alt={product.name}
-                  className="w-full h-96 object-cover rounded-lg"
+                  className="w-full h-[450px] object-cover rounded-lg"
                 />
-              </div>
-              <div className="grid grid-cols-3 gap-4">
-                {product.images.map((image, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedImage(image)}
-                    className={`relative rounded-lg overflow-hidden ${
-                      selectedImage === image ? "ring-2 ring-green-500" : ""
-                    }`}
-                  >
-                    <img
-                      src={image}
-                      alt={`${product.name} ${index + 1}`}
-                      className="w-full h-24 object-cover"
-                    />
-                  </button>
-                ))}
               </div>
             </div>
 
             {/* Product Info */}
             <div className="text-left">
+              <Link to={`/brand/${product.brand.id}`}>
+                <img
+                  src={product.brand.logo}
+                  alt={product.brand.name}
+                  className="w-24 h-24 mb-4"
+                />
+              </Link>
               <h1 className="text-3xl font-bold text-gray-800 mb-4">
                 {product.name}
               </h1>
 
               <div className="flex items-center mb-4">
-                <div className="flex items-center">
-                  {[...Array(5)].map((_, index) => (
-                    <Star
-                      key={index}
-                      size={20}
-                      className={
-                        index < Math.floor(product.rating)
-                          ? "text-yellow-400 fill-current"
-                          : "text-gray-300"
-                      }
-                    />
-                  ))}
-                </div>
-                <span className="ml-2 text-gray-600">
-                  {product.rating} ({product.totalReviews} reviews)
+                <Star
+                  size={20}
+                  className="text-[#609966] mr-1"
+                  fill="#609966"
+                />
+                <span className="text-gray-800 font-semibold mr-1">
+                  {product.rating}
+                </span>
+                <span className="text-gray-600 mr-2">
+                  ({product.totalReviews} reviews)
+                </span>
+                <span className="text-gray-400 mx-2">|</span>
+                <span className="text-gray-800">
+                  {product.sold ?? 328} sold
+                </span>
+              </div>
+              <div className="flex gap-2 mb-4">
+                <span className="bg-[#609966] text-white px-4 py-1 rounded-full text-sm font-semibold">
+                  Plastic-Free
+                </span>
+                <span className="bg-[#609966] text-white px-4 py-1 rounded-full text-sm font-semibold">
+                  Organic
                 </span>
               </div>
 
-              <div className="text-3xl font-bold text-green-600 mb-6">
-                Rp{product.price.toLocaleString()}
+              <div className="flex items-center mb-6">
+                <div className="text-3xl font-bold text-black">
+                  Rp {product.price.toLocaleString()}
+                </div>
+                <div className="ml-4 flex items-center px-5 py-2 rounded-xl bg-gradient-to-r from-[#609966] to-[#4A5A41]">
+                  <LeafIcon size={20} className="text-white mr-2" />
+                  <span className="text-white font-semibold text-lg">
+                    50 GreenPoints
+                  </span>
+                </div>
               </div>
 
               <div className="mb-6">
@@ -295,10 +311,11 @@ const Product: React.FC = () => {
                 </ul>
               </div>
 
-              <div className="flex items-center gap-4 mb-6">
+              <div className="flex flex-col gap-4 mb-6">
                 <div className="flex items-center border rounded-md">
+                  <div className="text-lg text-black text-bold">Quantity</div>
                   <button
-                    className="px-4 py-2 text-gray-600 hover:bg-gray-100 border rounded-tl-md rounded-bl-md"
+                    className="ml-4 px-4 py-2 text-gray-600 hover:bg-gray-100 border rounded-tl-md rounded-bl-md"
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                   >
                     -
@@ -314,22 +331,11 @@ const Product: React.FC = () => {
                   </button>
                 </div>
                 <button
-                  className="flex-1 bg-green-600 text-white py-2 px-6 rounded-md hover:bg-green-700 transition-colors"
+                  className="flex-1 bg-[#609966] text-white py-2 px-6 rounded-md hover:bg-green-700 transition-colors"
                   onClick={addToCart}
                 >
                   Add to Cart
                 </button>
-              </div>
-
-              <div className="space-y-4">
-                <div className="flex items-center gap-3 text-gray-600">
-                  <Truck size={20} />
-                  <span>Free shipping on orders over Rp200.000</span>
-                </div>
-                <div className="flex items-center gap-3 text-gray-600">
-                  <Shield size={20} />
-                  <span>1 year warranty</span>
-                </div>
               </div>
             </div>
           </div>
