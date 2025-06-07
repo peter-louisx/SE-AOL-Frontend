@@ -44,13 +44,13 @@ const Header: React.FC = () => {
   }, []);
 
   return (
-    <header className="bg-[#4B6F44] text-white   top-0 sticky z-50 w-full ">
+    <header className="bg-[#40513B] text-white   top-0 sticky z-50 w-full ">
       <div className="container mx-auto px-8 py-3">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div
             className={cn(
-              "fixed z-50 inset-0  bg-[#3d5a37]  w-72 h-full flex flex-col p-6 transform transition-transform duration-300 ease-in-out",
+              "fixed z-50 inset-0  bg-[#40513B]  w-72 h-full flex flex-col p-6 transform transition-transform duration-300 ease-in-out",
               isMenuOpen ? "translate-x-0" : "-translate-x-full"
             )}
             style={{

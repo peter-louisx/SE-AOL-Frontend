@@ -32,7 +32,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({ onCheckout }) => {
         <div className="relative">
           <input
             type="text"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:border-gray-300 focus:ring-green-500"
             placeholder="Voucher code"
             value={voucher}
             onChange={(e) => setVoucher(e.target.value)}
@@ -48,7 +48,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({ onCheckout }) => {
         disabled={!hasSelectedItems}
         className={`w-full py-2 px-4 rounded-md font-medium transition-colors ${
           hasSelectedItems
-            ? "bg-green-600 text-white hover:bg-green-700"
+            ? "bg-[#609966] text-white hover:bg-green-700"
             : "bg-gray-300 text-gray-500 cursor-not-allowed"
         }`}
       >

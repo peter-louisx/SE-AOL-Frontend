@@ -22,7 +22,7 @@ const QuantityControl: React.FC<QuantityControlProps> = ({
       <div className="w-8 text-center">
         <input
           type="text"
-          className="w-full text-center focus:outline-none"
+          className="w-full text-center focus:outline-none text-black"
           value={quantity}
           readOnly
         />

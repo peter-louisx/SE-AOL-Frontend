@@ -24,7 +24,7 @@ const CartHeader: React.FC = () => {
         <label className="inline-flex items-center cursor-pointer">
           <input
             type="checkbox"
-            className="appearance-none border checked:bg-blue-500 h-5 w-5 text-green-600 rounded border-gray-300 focus:ring-green-500"
+            className="appearance-none border checked:bg-[#609966] h-5 w-5 text-green-600 rounded border-gray-300 focus:ring-green-500"
             checked={isAllSelected()}
             onChange={handleSelectAll}
           />
@@ -37,7 +37,7 @@ const CartHeader: React.FC = () => {
         className={`text-sm ${
           selectedItems.length === 0
             ? "text-gray-400 cursor-not-allowed"
-            : "text-green-600 hover:text-green-700"
+            : "text-[#609966] hover:text-green-700"
         }`}
       >
         Remove
