@@ -11,6 +11,72 @@ import {
 import axios from "../api/axios";
 import { toast } from "react-toastify";
 
+const ProfileSkeleton = () => (
+  <div className="grid grid-cols-1 md:grid-cols-12 gap-8 animate-pulse">
+    {/* Sidebar Skeleton */}
+    <div className="md:col-span-3">
+      <div className="bg-white rounded-lg p-6 shadow-sm">
+        <div className="flex items-center gap-3 mb-8">
+          <div className="w-12 h-12 rounded-full bg-gray-200" />
+          <div>
+            <div className="h-4 w-24 bg-gray-200 rounded mb-2" />
+            <div className="h-3 w-16 bg-gray-200 rounded" />
+          </div>
+        </div>
+        <div className="space-y-2">
+          <div className="h-10 bg-gray-200 rounded-lg" />
+          <div className="h-10 bg-gray-100 rounded-lg" />
+          <div className="h-10 bg-gray-100 rounded-lg" />
+          <div className="h-10 bg-gray-100 rounded-lg" />
+        </div>
+      </div>
+    </div>
+    {/* Profile & Addresses Skeleton */}
+    <div className="md:col-span-6 space-y-6">
+      <div className="bg-white rounded-lg p-6 shadow-sm mb-6">
+        <div className="h-6 w-40 bg-gray-200 rounded mb-6" />
+        <div className="space-y-4">
+          <div className="h-4 w-24 bg-gray-100 rounded mb-1" />
+          <div className="h-10 bg-gray-100 rounded-lg" />
+          <div className="h-4 w-24 bg-gray-100 rounded mb-1 mt-4" />
+          <div className="h-10 bg-gray-100 rounded-lg" />
+          <div className="h-4 w-32 bg-gray-100 rounded mb-1 mt-4" />
+          <div className="h-10 bg-gray-100 rounded-lg" />
+          <div className="h-10 w-24 bg-gray-200 rounded-lg mt-4" />
+        </div>
+      </div>
+      <div className="bg-white rounded-lg p-6 shadow-sm">
+        <div className="h-6 w-32 bg-gray-200 rounded mb-6" />
+        <div className="space-y-4">
+          {[1, 2].map((i) => (
+            <div key={i} className="border border-gray-200 rounded-lg p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="px-3 py-1 bg-gray-200 rounded-md w-16 h-6" />
+                <div className="h-4 w-32 bg-gray-100 rounded" />
+              </div>
+              <div className="h-4 w-40 bg-gray-100 rounded mb-3" />
+              <div className="flex items-center gap-2">
+                <div className="h-6 w-6 bg-gray-200 rounded" />
+                <div className="h-6 w-6 bg-gray-200 rounded" />
+              </div>
+            </div>
+          ))}
+          <div className="w-full border-2 border-dashed border-gray-200 py-3 rounded-lg h-12" />
+        </div>
+      </div>
+    </div>
+    {/* Profile Picture Skeleton */}
+    <div className="md:col-span-3">
+      <div className="bg-white rounded-lg p-6 shadow-sm text-center">
+        <div className="w-48 h-48 rounded-full bg-gray-200 mx-auto mb-4" />
+        <div className="h-10 w-full bg-gray-100 rounded-lg mb-2" />
+        <div className="h-10 w-full bg-gray-200 rounded-lg mb-2" />
+        <div className="h-4 w-32 bg-gray-100 rounded mx-auto mt-2" />
+      </div>
+    </div>
+  </div>
+);
+
 export default function CustomerAccount() {
   const [user, setUser] = useState<any>(null);
   const [profileForm, setProfileForm] = useState({
@@ -244,12 +310,7 @@ export default function CustomerAccount() {
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 py-8">
         {loading ? (
-          <div className="flex justify-center items-center min-h-[60vh]">
-            <div className="text-lg text-gray-600 animate-pulse">
-              Loading account...
-              <Loader2Icon className="inline-block animate-spin ml-2" />
-            </div>
-          </div>
+          <ProfileSkeleton />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
             {/* Sidebar */}
