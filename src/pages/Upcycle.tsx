@@ -35,7 +35,7 @@ const Upcycle: React.FC = () => {
       id: 1,
       name: "EcoArt Studios",
       image:
-        "https://m.media-amazon.com/images/I/912F1y4WWnL._AC_UF1000,1000_QL80_.jpg",
+        "https://images.squarespace-cdn.com/content/v1/5a678b247131a5f7e3269988/1582050183715-CRWD582LE4FQ2QMH2YWC/processed_Natalia+Kapchuk..jpg",
       rating: 4.8,
       reviews: 156,
       location: "Jakarta, Indonesia",
@@ -47,7 +47,7 @@ const Upcycle: React.FC = () => {
       id: 2,
       name: "Green Crafters Collective",
       image:
-        "https://images.pexels.com/photos/5726837/pexels-photo-5726837.jpeg",
+        "https://lh4.googleusercontent.com/proxy/EWAKiVCpG9avAjCgrHAW0KRiFDlJJhfJOw51ISKGmW4IDV1oL1Ks7j40CX2B8LyNnqIkAwpbV8dfx5P7PkkoqoHATRD8W6odHUB-MpSXZX0bSt9vrNPzaFWb_cSk6YsFwKh_X0tuSFOwuTDgxjZvTj-Llvk",
       rating: 4.6,
       reviews: 98,
       location: "Bandung, Indonesia",
@@ -59,7 +59,7 @@ const Upcycle: React.FC = () => {
       id: 3,
       name: "Sustainable Solutions",
       image:
-        "https://images.pexels.com/photos/6963098/pexels-photo-6963098.jpeg",
+        "https://litextension.com/blog/wp-content/uploads/2023/08/image2.webp",
       rating: 4.9,
       reviews: 212,
       location: "Surabaya, Indonesia",
