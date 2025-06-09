@@ -43,7 +43,7 @@ const Upcycle: React.FC = () => {
       id: 2,
       name: "Green Crafters Collective",
       image:
-        "https://lh4.googleusercontent.com/proxy/EWAKiVCpG9avAjCgrHAW0KRiFDlJJhfJOw51ISKGmW4IDV1oL1Ks7j40CX2B8LyNnqIkAwpbV8dfx5P7PkkoqoHATRD8W6odHUB-MpSXZX0bSt9vrNPzaFWb_cSk6YsFwKh_X0tuSFOwuTDgxjZvTj-Llvk",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKrPqHxIUgF6136pkrf4Nv8UECSx76bxKE2A&s",
       rating: 4.6,
       reviews: 98,
       location: "Bandung, Indonesia",
