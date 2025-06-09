@@ -99,6 +99,70 @@ export default function Order() {
       .finally(() => setLoadingOrders(false));
   }, []);
 
+  // Fill with dummy orders if empty
+  useEffect(() => {
+    if (orders.length === 0) {
+      setOrders([
+        {
+          id: 1,
+          order_status: "On Going",
+          order_date: new Date().toISOString(),
+          order_code: "ORD/001",
+          total_pay: 15000,
+          product: {
+            id: 101,
+            name: "Eco Tote Bag",
+            price: 9000,
+            image_url:
+              "https://www.intelligentchange.com/cdn/shop/products/4X5-WebRes-Intelligent-Change-Tote-Bags-1_301b012d-03b9-4917-96ff-e911c5783d56.jpg?v=1671127106&width=1120",
+          },
+        },
+        {
+          id: 2,
+          order_status: "Completed",
+          order_date: new Date(Date.now() - 86400000).toISOString(),
+          order_code: "ORD/002",
+          total_pay: 95000,
+          product: {
+            id: 102,
+            name: "Upcycled Wallet",
+            price: 95000,
+            image_url:
+              "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
+          },
+        },
+        {
+          id: 3,
+          order_status: "Returned",
+          order_date: new Date(Date.now() - 2 * 86400000).toISOString(),
+          order_code: "ORD/003",
+          total_pay: 50000,
+          product: {
+            id: 103,
+            name: "Recycled Notebook",
+            price: 50000,
+            image_url:
+              "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80",
+          },
+        },
+        {
+          id: 4,
+          order_status: "Cancelled",
+          order_date: new Date(Date.now() - 3 * 86400000).toISOString(),
+          order_code: "ORD/004",
+          total_pay: 200000,
+          product: {
+            id: 104,
+            name: "Eco Bottle",
+            price: 200000,
+            image_url:
+              "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80",
+          },
+        },
+      ]);
+    }
+  }, [orders, setOrders]);
+
   // Skeleton component
   const Skeleton = () => (
     <div className="animate-pulse">

@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { User as UserIcon, ShoppingBag, Ticket } from 'lucide-react';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { User as UserIcon, ShoppingBag, Ticket, Recycle } from "lucide-react";
 
 interface Voucher {
   id: number;
@@ -10,57 +10,82 @@ interface Voucher {
 }
 
 export default function Voucher() {
-  const [user, setUser] = useState<{ name: string; profile?: string } | null>(null);
-  const [vouchers, setVouchers] = useState<Voucher[]>([]);
-  const [loadingVouchers, setLoadingVouchers] = useState(true);
+  const [user, setUser] = useState<{ name: string; profile?: string } | null>({
+    name: "Peter Louis Anderson",
+  });
+  const [vouchers, setVouchers] = useState<Voucher[]>([
+    {
+      id: 1,
+      title: "10% Off All Items",
+      min_spend: 50000,
+      valid_until: "2024-12-31",
+    },
+    {
+      id: 2,
+      title: "Free Shipping",
+      min_spend: 100000,
+      valid_until: "2024-11-30",
+    },
+    {
+      id: 3,
+      title: "Rp20.000 Discount",
+      min_spend: 150000,
+      valid_until: "2024-10-15",
+    },
+  ]);
+  const [loadingVouchers, setLoadingVouchers] = useState(false);
   const navigate = useNavigate();
 
   // Fetch authenticated user
   useEffect(() => {
-    const token = localStorage.getItem('auth_token');
+    const token = localStorage.getItem("auth_token");
     if (!token) {
-      navigate('/login');
+      navigate("/login");
       return;
     }
 
-    fetch('http://localhost:8000/api/user', {
+    fetch("http://localhost:8000/api/user", {
       headers: {
         Authorization: `Bearer ${token}`,
-        Accept: 'application/json',
+        Accept: "application/json",
       },
     })
-      .then(res => {
+      .then((res) => {
         if (!res.ok) throw new Error();
         return res.json();
       })
-      .then(data => {
+      .then((data) => {
         setUser({ name: data.name, profile: data.profile });
       })
       .catch(() => {
-        localStorage.removeItem('auth_token');
-        navigate('/login');
+        localStorage.removeItem("auth_token");
+        navigate("/login");
       });
   }, [navigate]);
 
   // Fetch vouchers
-  useEffect(() => {
-    const token = localStorage.getItem('auth_token');
-    if (!token) return;
+  // useEffect(() => {
+  //   const token = localStorage.getItem("auth_token");
+  //   if (!token) return;
 
-    fetch('http://localhost:8000/api/vouchers', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: 'application/json',
-      },
-    })
-      .then(res => res.json())
-      .then((data: Voucher[]) => setVouchers(data))
-      .catch(err => console.error('Failed to fetch vouchers:', err))
-      .finally(() => setLoadingVouchers(false));
-  }, []);
+  //   setLoadingVouchers(false);
+
+  //   // fetch("http://localhost:8000/api/vouchers", {
+  //   //   headers: {
+  //   //     Authorization: `Bearer ${token}`,
+  //   //     Accept: "application/json",
+  //   //   },
+  //   // })
+  //   //   .then((res) => res.json())
+  //   //   .then((data: Voucher[]) => setVouchers(data))
+  //   //   .catch((err) => console.error("Failed to fetch vouchers:", err))
+  //   //   .finally(() => setLoadingVouchers(false));
+  // }, []);
 
   if (!user) {
-    return <div className="min-h-screen flex items-center justify-center">Loading profile…</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center"></div>
+    );
   }
 
   return (
@@ -73,7 +98,7 @@ export default function Voucher() {
               src={
                 user.profile
                   ? `http://localhost:8000/storage/public/${user.profile}`
-                  : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
+                  : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
               }
               alt="Profile"
               className="w-12 h-12 rounded-full object-cover"
@@ -85,13 +110,13 @@ export default function Voucher() {
           </div>
           <nav className="space-y-2">
             <button
-              onClick={() => navigate('/account')}
+              onClick={() => navigate("/account")}
               className="w-full flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-50 rounded-lg"
             >
               <UserIcon className="w-5 h-5" /> My Account
             </button>
             <button
-              onClick={() => navigate('/order')}
+              onClick={() => navigate("/order")}
               className="w-full flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-50 rounded-lg"
             >
               <ShoppingBag className="w-5 h-5" /> My Orders
@@ -102,19 +127,27 @@ export default function Voucher() {
             >
               <Ticket className="w-5 h-5" /> My Vouchers
             </button>
+            <button
+              onClick={() => navigate("/upcycle-requests")}
+              className="w-full flex items-center gap-3 px-4 py-2 text-gray-600 bg-opacity-10 rounded-lg"
+            >
+              <Recycle className="w-5 h-5" /> Upcycle Requests
+            </button>
           </nav>
         </aside>
 
         {/* Main Content */}
         <section className="md:col-span-9">
           <div className="bg-white rounded-lg p-6 shadow-sm">
-            <h2 className="text-xl font-semibold mb-6 text-black">My Vouchers</h2>
+            <h2 className="text-xl font-semibold mb-6 text-black">
+              My Vouchers
+            </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {loadingVouchers ? (
                 <p className="text-gray-500">Loading vouchers...</p>
               ) : vouchers.length > 0 ? (
-                vouchers.map(voucher => (
+                vouchers.map((voucher) => (
                   <div key={voucher.id} className="bg-[#F4F9F0] rounded-lg p-6">
                     <h3 className="text-lg font-semibold text-[#40513B] mb-2">
                       {voucher.title}
@@ -123,7 +156,8 @@ export default function Voucher() {
                       Minimum Spend Rp{voucher.min_spend.toLocaleString()}
                     </p>
                     <p className="text-sm text-gray-500">
-                      Valid until {new Date(voucher.valid_until).toLocaleDateString()}
+                      Valid until{" "}
+                      {new Date(voucher.valid_until).toLocaleDateString()}
                     </p>
                   </div>
                 ))
