@@ -319,9 +319,7 @@ export default function CustomerAccount() {
                 <div className="flex items-center gap-3 mb-8">
                   <img
                     src={
-                      user?.profile
-                        ? `http://localhost:8000/storage/public/${user.profile}`
-                        : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                      "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
                     }
                     alt="Profile"
                     className="w-12 h-12 rounded-full object-cover"
@@ -486,9 +484,7 @@ export default function CustomerAccount() {
               <div className="bg-white rounded-lg p-6 shadow-sm text-center">
                 <img
                   src={
-                    user?.profile
-                      ? `http://localhost:8000/storage/public/${user.profile}`
-                      : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
                   }
                   alt="Profile"
                   className="w-48 h-48 rounded-full object-cover mx-auto mb-4"
