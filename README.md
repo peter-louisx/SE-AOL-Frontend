@@ -24,6 +24,13 @@ Trashure aims not only to raise public awareness about the importance of sustain
 
 ---
 
+## Demo & Prototype
+
+- **Live Demo:** [Demo Link](https://binusianorg-my.sharepoint.com/personal/peter_anderson_binus_ac_id/_layouts/15/stream.aspx?id=%2Fpersonal%2Fpeter%5Fanderson%5Fbinus%5Fac%5Fid%2FDocuments%2FSE%2FSE%20DEMO%20%2D%20Made%20with%20Clipchamp%2Emp4&nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0&ga=1&referrer=StreamWebApp%2EWeb&referrerScenario=AddressBarCopied%2Eview%2E324d21de%2D145e%2D4a7c%2Dbc83%2D2958de707571)
+- **Figma Prototype:** [Figma Link](https://www.figma.com/proto/NA88eT3dMKYZ8AvBpOkv75/Trashure?page-id=0%3A1&node-id=10-6&viewport=-1443%2C-2334%2C0.35&t=8EWMKwh1tiJIVT83-1&scaling=scale-down-width&content-scaling=fixed&starting-point-node-id=10%3A6)
+
+---
+
 ### Join Us!
 
 Be a part of the Trashure movement—shop sustainably, learn more about the circular economy, and help build a greener future!
