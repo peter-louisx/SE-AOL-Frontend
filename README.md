@@ -1,54 +1,29 @@
-# React + TypeScript + Vite
+# Trashure
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Trashure is an innovative solution designed to bridge the gap in sustainable living by providing a dedicated e-commerce platform for recycled and upcycled products. Our mission is to make it easier for people to discover, purchase, and appreciate the value of eco-friendly goods, while simultaneously educating them about the importance of the circular economy.
 
-Currently, two official plugins are available:
+## What Makes Trashure Different?
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Unlike traditional marketplaces, Trashure offers unique value through the following core features:
 
-## Expanding the ESLint configuration
+### 1. Sustainable E-Commerce
+Trashure is a curated platform that provides a wide selection of recycled and environmentally friendly products. We make it simple for consumers to find and buy sustainable goods from various local partners and small businesses.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 2. Gamification
+Our integrated rewards system includes points, challenges, and incentives, making eco-conscious shopping a fun and interactive experience. This feature encourages responsible consumption habits in a playful way.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### 3. Educational Blog
+Trashure features a blog packed with informative content about sustainable living, recycling tips, success stories from local businesses, and insights into the positive impact of the circular economy.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 4. Upcycle Hub
+Users can send their used or broken items to trusted partners for repair or upcycling into valuable new products, which are then delivered back to them. This feature provides a real, practical alternative to waste, extending product lifecycles and reducing landfill.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Our Mission
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+Trashure aims not only to raise public awareness about the importance of sustainable lifestyles, but also to create economic opportunities for small and medium enterprises (SMEs) engaged in recycling and upcycling. Through Trashure, we hope to empower communities to easily contribute to reducing negative environmental impacts by making more responsible consumption choices.
+
+---
+
+### Join Us!
+
+Be a part of the Trashure movement—shop sustainably, learn more about the circular economy, and help build a greener future!
